@@ -1,10 +1,10 @@
 # Gmail SMTP Server Setup
 
-This document explains how to set up Gmail to act as the mail server for this project. Because Google no longer supports "Less Secure Apps," we will need to use an **App Password** to authenticate the SMTP connection securely.
+This document explains how to set up Gmail to act as the mail server for the MJ Griffin Wedding project. The primary email used for notifications and sending is **`dagriffinwedding@gmail.com`**. Because Google no longer supports "Less Secure Apps," we must use an **App Password** to authenticate the SMTP connection securely.
 
 ## 1. Enable 2-Step Verification
 Before you can create an App Password, your Google account must have 2-Step Verification enabled.
-1. Go to your [Google Account](https://myaccount.google.com/).
+1. Go to the [Google Account](https://myaccount.google.com/) for `dagriffinwedding@gmail.com`.
 2. On the left navigation panel, click **Security**.
 3. Under the "How you sign in to Google" section, click on **2-Step Verification**.
 4. Follow the on-screen steps to enable it if it isn't already.
@@ -18,21 +18,20 @@ Before you can create an App Password, your Google account must have 2-Step Veri
 6. A modal will appear with a 16-character password. **Copy this password** and save it somewhere secure. You won't be able to view it again once you close the window.
 
 ## 3. Server Integration Settings
-When configuring the environment variables for your application, use the following SMTP details:
+This application uses Nuxt server routes (or Supabase Edge Functions) triggered by contact form submissions. When configuring the environment variables for your application, use the following SMTP details:
 
 - **SMTP Host:** `smtp.gmail.com`
 - **SMTP Port:** `587` (TLS) or `465` (SSL)
-- **SMTP Username:** Your full Gmail address (e.g., `youremail@gmail.com`)
+- **SMTP Username:** `dagriffinwedding@gmail.com`
 - **SMTP Password:** The 16-character App Password generated in step 2 (without spaces)
 
 ### Example Environment Variables (`.env`)
 ```env
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=youremail@gmail.com
+SMTP_USER=dagriffinwedding@gmail.com
 SMTP_PASS=your-16-character-app-password
 ```
 
-## 4. Notes on Usage
-- Gmail has sending limits (typically ~500 emails per day for standard accounts). If this site exceeds that volume, consider moving to a dedicated email service provider like Resend, SendGrid, or AWS SES.
-- Do not commit the `.env` file containing the App Password to version control.
+## 4. Webhook Trigger Notification
+A Database Webhook in Supabase is set up to listen for `INSERT` events on the `contact_messages` table. When a guest submits a contact form, the webhook triggers an Edge Function which connects to this Gmail SMTP server to send a notification directly to Jesse and Maddie.
