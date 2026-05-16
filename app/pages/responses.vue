@@ -38,6 +38,7 @@
           <table class="responses-table">
             <thead>
               <tr>
+                <th>Guest Name</th>
                 <th>Guest Email</th>
                 <th>Status</th>
                 <th>Adults</th>
@@ -48,6 +49,7 @@
             </thead>
             <tbody>
               <tr v-for="response in mockData.responses" :key="response.id">
+                <td>{{ response.name }}</td>
                 <td>{{ response.email }}</td>
                 <td>
                   <span :class="response.attending ? 'status-yes' : 'status-no'">
@@ -101,6 +103,18 @@ const fetchResponses = async () => {
       .select('*, auth.users(email)');
 
     if (error) throw error;
+    
+    // Fetch profiles to get names
+    const { data: profilesData } = await supabase
+      .from('profiles')
+      .select('id, first_name, last_name');
+      
+    const profilesMap = {};
+    if (profilesData) {
+      profilesData.forEach(p => {
+        profilesMap[p.id] = `${p.first_name || ''} ${p.last_name || ''}`.trim();
+      });
+    }
 
     let attending = 0;
     let declined = 0;
@@ -118,6 +132,7 @@ const fetchResponses = async () => {
       
       return {
         id: r.id,
+        name: profilesMap[r.user_id] || 'Unknown',
         email: r.users?.email || 'Unknown',
         attending: r.attending,
         adults_count: r.adults_count,

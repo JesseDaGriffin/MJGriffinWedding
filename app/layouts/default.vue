@@ -13,6 +13,7 @@
           <NuxtLink to="/questionnaire" class="nav-link" @click="closeMenu">Questionnaire</NuxtLink>
           <NuxtLink v-if="isAdmin" to="/responses" class="nav-link text-accent" @click="closeMenu">Responses</NuxtLink>
           <NuxtLink to="/rsvp" class="btn rsvp-btn" @click="closeMenu">RSVP</NuxtLink>
+          <NuxtLink v-if="isAuthenticated" to="/account" class="nav-link" @click="closeMenu">Account</NuxtLink>
           <button v-if="isAuthenticated" @click="logout" class="nav-link logout-btn">Logout</button>
         </nav>
         <button class="mobile-menu-btn" @click="toggleMenu">

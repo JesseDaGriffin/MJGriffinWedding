@@ -28,6 +28,28 @@
             required
           />
         </div>
+
+        <div v-if="!isLogin" class="form-group">
+          <label class="form-label">First Name</label>
+          <input 
+            v-model="form.firstName" 
+            type="text" 
+            class="form-input" 
+            placeholder="First Name"
+            required
+          />
+        </div>
+
+        <div v-if="!isLogin" class="form-group">
+          <label class="form-label">Last Name</label>
+          <input 
+            v-model="form.lastName" 
+            type="text" 
+            class="form-input" 
+            placeholder="Last Name"
+            required
+          />
+        </div>
         
         <div class="form-group">
           <label class="form-label">Email</label>
@@ -51,6 +73,7 @@
           />
         </div>
 
+        <p v-if="successMsg" class="success-msg">{{ successMsg }}</p>
         <p v-if="errorMsg" class="error-msg">{{ errorMsg }}</p>
 
         <button type="submit" class="btn w-100 mt-md">
@@ -74,10 +97,13 @@ const user = useSupabaseUser();
 const isLogin = ref(true);
 const router = useRouter();
 const errorMsg = ref('');
+const successMsg = ref('');
 const loading = ref(false);
 
 const form = ref({
   code: '',
+  firstName: '',
+  lastName: '',
   email: '',
   password: ''
 });
@@ -94,6 +120,7 @@ watchEffect(() => {
 
 const handleSubmit = async () => {
   errorMsg.value = '';
+  successMsg.value = '';
   loading.value = true;
   
   try {
@@ -104,12 +131,34 @@ const handleSubmit = async () => {
         return;
       }
       
-      const { error } = await supabase.auth.signUp({
+      const { error, data } = await supabase.auth.signUp({
         email: form.value.email,
         password: form.value.password,
+        options: {
+          data: {
+            first_name: form.value.firstName,
+            last_name: form.value.lastName
+          }
+        }
       });
       
       if (error) throw error;
+      
+      // Reset form
+      form.value = {
+        code: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: ''
+      };
+      
+      // Show success message if email confirmation is required (user not immediately logged in)
+      if (data?.user && data?.session === null) {
+        successMsg.value = 'Account created! Please check your email to verify your account.';
+      } else {
+        successMsg.value = 'Account created successfully!';
+      }
       
     } else {
       const { error } = await supabase.auth.signInWithPassword({
@@ -194,6 +243,13 @@ const handleSubmit = async () => {
 
 .error-msg {
   color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.success-msg {
+  color: #4CAF50;
   font-size: 0.9rem;
   margin-top: 0.5rem;
   text-align: center;

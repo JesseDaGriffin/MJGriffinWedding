@@ -158,3 +158,49 @@ CREATE POLICY "Admins can view all questionnaires" ON questionnaires
 CREATE POLICY "Admins can view all contact messages" ON contact_messages
   FOR SELECT USING (public.is_admin());
 ```
+
+### Update: User Profiles for First and Last Names
+**Date:** May 16, 2026
+**Purpose:** Create a `profiles` table to track first and last names of users, with a trigger to automatically populate data from Auth sign-ups.
+
+Run the following SQL in the Supabase SQL Editor:
+
+```sql
+-- Create profiles table
+CREATE TABLE profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id),
+  first_name TEXT,
+  last_name TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Enable RLS
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+-- Add RLS policies for Profiles
+CREATE POLICY "Users can view their own profile" ON profiles
+  FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "Users can insert their own profile" ON profiles
+  FOR INSERT WITH CHECK (auth.uid() = id);
+
+CREATE POLICY "Users can update their own profile" ON profiles
+  FOR UPDATE USING (auth.uid() = id);
+
+CREATE POLICY "Admins can view all profiles" ON profiles
+  FOR SELECT USING (public.is_admin());
+
+-- Trigger to create profile on signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+BEGIN
+  INSERT INTO public.profiles (id, first_name, last_name)
+  VALUES (new.id, new.raw_user_meta_data->>'first_name', new.raw_user_meta_data->>'last_name');
+  RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+```
