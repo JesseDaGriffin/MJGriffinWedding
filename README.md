@@ -1,6 +1,6 @@
 # MJ Griffin Wedding Project
 
-This is the repository for the MJ Griffin Wedding web application. It serves as a central portal for wedding guests to RSVP, view the itinerary, provide travel details, and contact the couple.
+This is the repository for the MJ Griffin Wedding web application. It serves as a central portal for wedding guests to RSVP, view the itinerary, provide travel details, manage their guest profiles, and contact the couple.
 
 ## Tech Stack
 - **Framework:** Nuxt.js

@@ -17,7 +17,8 @@ The initial schema includes setup for:
 - **`rsvps` table:** Track attendance, counts, and event RSVPs.
 - **`questionnaires` table:** Track guest travel dates and activity interests.
 - **`contact_messages` table:** Track contact forms sent by guests.
-- **Authentication:** Custom function for the `dagriffinwedding@gmail.com` admin superuser role and user-based Row Level Security (RLS) policies.
+- **`profiles` table:** Track user first and last names for personalized interaction and admin dashboard mapping.
+- **Authentication:** Custom function for the `dagriffinwedding@gmail.com` admin superuser role, Postgres triggers for automatic profile creation, and user-based Row Level Security (RLS) policies.
 
 ## Deployment & Hosting (Netlify)
 *(Deployment steps and build configuration will be logged here)*
