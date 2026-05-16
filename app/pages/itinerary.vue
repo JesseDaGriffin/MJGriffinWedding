@@ -56,7 +56,7 @@
         <div class="timeline-marker"></div>
         <GlassCard class="timeline-content">
           <h2 class="day-title">Day 4: Monday</h2>
-          <h3 class="event-title text-accent">Farewells & Us Time</h3>
+          <h3 class="event-title text-accent">Farewells &amp; Us Time</h3>
           <p class="event-desc">
             Most people will be traveling back home today. Safe travels!
             Maddie and Jesse will be spending the rest of the day relaxing and enjoying our first day of married life together.
@@ -67,6 +67,38 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, useTemplateRef } from 'vue';
+
+const revealElements = ref([]);
+let observer = null;
+
+onMounted(() => {
+  const items = document.querySelectorAll('.timeline-item');
+
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  items.forEach((el, index) => {
+    el.style.setProperty('--reveal-delay', `${index * 0.15}s`);
+    observer.observe(el);
+  });
+});
+
+onUnmounted(() => {
+  if (observer) observer.disconnect();
+});
+</script>
 
 <style scoped>
 .text-center { text-align: center; }
@@ -116,6 +148,26 @@
   margin-bottom: 0;
 }
 
+/* ─── Card animation ─── */
+.timeline-item .timeline-content {
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  filter: blur(3px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
+    filter 0.6s ease var(--reveal-delay, 0s),
+    box-shadow 0.5s ease calc(var(--reveal-delay, 0s) + 0.3s);
+}
+
+.timeline-item.revealed .timeline-content {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  box-shadow: 0 0 18px rgba(107, 142, 35, 0.1), 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* ─── Marker animation ─── */
 .timeline-marker {
   position: absolute;
   top: 0;
@@ -126,6 +178,18 @@
   background-color: var(--color-background);
   border: 4px solid var(--color-primary);
   box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.2);
+  transform: scale(0);
+  opacity: 0;
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--reveal-delay, 0s) + 0.25s),
+    opacity 0.3s ease calc(var(--reveal-delay, 0s) + 0.25s),
+    box-shadow 0.4s ease calc(var(--reveal-delay, 0s) + 0.4s);
+}
+
+.timeline-item.revealed .timeline-marker {
+  transform: scale(1);
+  opacity: 1;
+  box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.2), 0 0 12px rgba(107, 142, 35, 0.35);
 }
 
 .timeline-content {
@@ -178,6 +242,19 @@
   .timeline-item:nth-child(even) .timeline-marker {
     left: -10px;
     right: auto;
+  }
+
+  /* Desktop: cards slide toward the line */
+  .timeline-item:nth-child(odd) .timeline-content {
+    transform: translateX(-50px) scale(0.96);
+  }
+
+  .timeline-item:nth-child(even) .timeline-content {
+    transform: translateX(50px) scale(0.96);
+  }
+
+  .timeline-item.revealed .timeline-content {
+    transform: translateX(0) scale(1);
   }
 }
 </style>
