@@ -3,12 +3,13 @@
     <!-- Hero Section -->
     <section class="hero">
       <div class="hero-content">
+        <p class="hero-prelude">The Wedding of</p>
         <h1 class="hero-title">Maddie & Jesse</h1>
-        <p class="hero-subtitle">Are getting married</p>
+        <p class="hero-surname">Griffin</p>
         <p class="hero-date">March 13th, 2027 • Las Vegas, NV</p>
         
         <CountdownTimer targetDate="2027-03-13T00:00:00" />
-        
+
         <div v-if="user" class="hero-actions">
           <NuxtLink to="/rsvp" class="btn rsvp-hero-btn">RSVP Now</NuxtLink>
         </div>
@@ -20,8 +21,9 @@
       <h2 class="text-center mb-md">Our Story</h2>
       <GlassCard class="about-content">
         <p class="text-center">
-          Welcome to our wedding website! We are so thrilled to celebrate our special day with the people we love most.
-          Las Vegas has always been a special place for us, filled with fun, memories, and now, the beginning of our forever.
+          Welcome to the official home of the soon-to-be Griffins! We are so thrilled to celebrate our
+          special day with the people we love most. Las Vegas has always been a special place for us,
+          filled with fun, memories, and now — the beginning of our forever as the Griffin family.
           We can't wait for you to join us for an unforgettable weekend.
         </p>
       </GlassCard>
@@ -50,18 +52,35 @@ const user = useSupabaseUser();
   /* TODO: Add a nice background image url() here */
 }
 
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-prelude {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
 .hero-title {
   font-size: 5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
   color: #fff;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-.hero-subtitle {
-  font-size: 1.5rem;
+.hero-surname {
   font-family: var(--font-heading);
+  font-size: 2.2rem;
   color: var(--color-primary);
-  margin-bottom: 1rem;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
 }
 
 .hero-date {

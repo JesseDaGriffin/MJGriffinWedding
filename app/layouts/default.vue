@@ -72,7 +72,7 @@
 
     <footer class="footer">
       <div class="container">
-        <p>Maddie &amp; Jesse's Wedding — March 13, 2027</p>
+        <p>The Griffin Wedding — March 13, 2027</p>
       </div>
     </footer>
   </div>

@@ -2,7 +2,7 @@
   <div class="login-page">
     <GlassCard class="login-container">
       <h1 class="text-center">Welcome</h1>
-      <p class="text-center mb-md">Maddie & Jesse's Wedding</p>
+      <p class="text-center mb-md">The Griffin Wedding</p>
       
       <div class="tabs">
         <button 

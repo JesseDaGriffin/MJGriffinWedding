@@ -2,9 +2,12 @@
     <div class="container section">
         <div class="rsvp-container">
             <h1 class="text-center mb-md">RSVP</h1>
-            <p class="text-center mb-lg">
+            <p class="text-center mb-sm">
                 Please let us know if you can make it by December 1st, 2026.
             </p>
+            <div class="text-center mb-lg">
+                <CountdownTimer targetDate="2026-12-01T00:00:00" label="RSVP Deadline" :compact="true" />
+            </div>
 
             <GlassCard v-if="submitted" class="text-center success-message">
                 <h2 class="mb-sm">Thank You!</h2>
