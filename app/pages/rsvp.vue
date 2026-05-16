@@ -1,12 +1,12 @@
 <template>
     <div class="container section">
         <div class="rsvp-container">
-            <h1 class="text-center mb-md">RSVP</h1>
-            <p class="text-center mb-sm">
+            <h1 class="text-center">RSVP</h1>
+            <p class="text-center subtitle">
                 Please let us know if you can make it by December 1st, 2026.
             </p>
-            <div class="text-center mb-lg">
-                <CountdownTimer targetDate="2026-12-01T00:00:00" label="RSVP Deadline" :compact="true" />
+            <div class="deadline-countdown">
+                <CountdownTimer targetDate="2026-12-01T00:00:00" :compact="true" />
             </div>
 
             <GlassCard v-if="submitted" class="text-center success-message">
@@ -180,6 +180,17 @@ const submitRsvp = async () => {
 
 .text-center {
     text-align: center;
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: 0.5rem;
+}
+
+.deadline-countdown {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
 }
 
 .mb-sm {
