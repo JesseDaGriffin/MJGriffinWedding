@@ -8,6 +8,10 @@
         <p class="hero-date">March 13th, 2027 • Las Vegas, NV</p>
         
         <CountdownTimer targetDate="2027-03-13T00:00:00" />
+        
+        <div v-if="user" class="hero-actions">
+          <NuxtLink to="/rsvp" class="btn rsvp-hero-btn">RSVP Now</NuxtLink>
+        </div>
       </div>
     </section>
 
@@ -30,6 +34,10 @@
     </section>
   </div>
 </template>
+
+<script setup>
+const user = useSupabaseUser();
+</script>
 
 <style scoped>
 .hero {
@@ -60,6 +68,18 @@
   font-size: 1.2rem;
   letter-spacing: 2px;
   text-transform: uppercase;
+}
+
+.hero-actions {
+  margin-top: var(--spacing-lg);
+}
+
+.rsvp-hero-btn {
+  display: inline-block;
+  font-size: 1.2rem;
+  padding: 1rem 3rem;
+  font-family: var(--font-heading);
+  letter-spacing: 1px;
 }
 
 .mb-md {
