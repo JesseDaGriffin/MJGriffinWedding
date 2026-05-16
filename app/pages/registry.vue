@@ -22,7 +22,7 @@
           However, if you're feeling incredibly generous and would like to contribute to our new life together or our honeymoon fund, you can do so below.
         </p>
 
-        <a href="https://venmo.com/u/Jesse" target="_blank" class="btn venmo-btn">
+        <a href="https://venmo.com/u/Jesse_da_Griffin" target="_blank" class="btn venmo-btn">
           <span class="venmo-icon">v</span> Contribute via Venmo
         </a>
       </GlassCard>
