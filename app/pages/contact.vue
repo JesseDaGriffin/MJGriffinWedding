@@ -64,7 +64,7 @@ const submitContact = async () => {
       email: form.value.email,
       subject: form.value.subject,
       message: form.value.message,
-      user_id: user.value ? user.value.id : null
+      user_id: user.value ? (user.value.id || user.value.sub) : null
     };
 
     const { error } = await supabase

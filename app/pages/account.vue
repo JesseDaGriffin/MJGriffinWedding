@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -63,20 +63,21 @@ const profile = ref({
   last_name: ''
 });
 
-onMounted(async () => {
-  if (user.value) {
+watchEffect(async () => {
+  const userId = user.value?.id || user.value?.sub;
+  if (user.value && userId) {
     try {
       const { data, error } = await supabase
         .from('profiles')
         .select('first_name, last_name')
-        .eq('id', user.value.id)
+        .eq('id', userId)
         .single();
         
       if (error && error.code !== 'PGRST116') throw error; // PGRST116 is no rows returned
       
       if (data) {
-        profile.value.first_name = data.first_name || '';
-        profile.value.last_name = data.last_name || '';
+        profile.value.first_name = data.first_name || (user.value.user_metadata && user.value.user_metadata.first_name) || '';
+        profile.value.last_name = data.last_name || (user.value.user_metadata && user.value.user_metadata.last_name) || '';
       } else if (user.value.user_metadata) {
         // Fallback to metadata if profile doesn't exist yet
         profile.value.first_name = user.value.user_metadata.first_name || '';
@@ -89,7 +90,8 @@ onMounted(async () => {
 });
 
 const updateProfile = async () => {
-  if (!user.value) return;
+  const userId = user.value?.id || user.value?.sub;
+  if (!user.value || !userId) return;
   
   loading.value = true;
   successMsg.value = '';
@@ -99,7 +101,7 @@ const updateProfile = async () => {
     const { error } = await supabase
       .from('profiles')
       .upsert({
-        id: user.value.id,
+        id: userId,
         first_name: profile.value.first_name,
         last_name: profile.value.last_name
       });

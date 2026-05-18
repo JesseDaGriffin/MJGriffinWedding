@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -76,12 +76,13 @@ const form = ref({
   suggestions: ''
 });
 
-onMounted(async () => {
-  if (user.value) {
+watchEffect(async () => {
+  const userId = user.value?.id || user.value?.sub;
+  if (user.value && userId) {
     const { data } = await supabase
       .from('questionnaires')
       .select('*')
-      .eq('user_id', user.value.id)
+      .eq('user_id', userId)
       .single();
       
     if (data) {
@@ -97,10 +98,13 @@ onMounted(async () => {
 });
 
 const submitQuestionnaire = async () => {
+  const userId = user.value?.id || user.value?.sub;
+  if (!userId) return;
+  
   loading.value = true;
   try {
     const payload = {
-      user_id: user.value.id,
+      user_id: userId,
       arrival_date: form.value.arrivalDate,
       departure_date: form.value.departureDate,
       activities: form.value.activities,
