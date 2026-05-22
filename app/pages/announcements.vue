@@ -32,11 +32,27 @@
           <AlertMessage v-if="successMsg" type="success" :message="successMsg" />
           <AlertMessage v-if="errorMsg" type="error" :message="errorMsg" />
 
+          <div class="recipients-section mb-md mt-sm">
+            <div class="toggle-recipients" @click="showRecipients = !showRecipients">
+              <span>{{ recipientEmails.length }} Recipients Found</span>
+              <span class="toggle-icon">{{ showRecipients ? '▲' : '▼' }}</span>
+            </div>
+            
+            <div v-if="showRecipients" class="recipients-list">
+              <div v-if="loadingUsers" class="loading-text">Loading users...</div>
+              <ul v-else-if="recipientEmails.length > 0">
+                <li v-for="email in recipientEmails" :key="email">{{ email }}</li>
+              </ul>
+              <div v-else class="empty-text">No registered users found.</div>
+            </div>
+          </div>
+
           <AppButton 
             type="submit" 
             class="mt-sm" 
-            :loading="sending || loadingUsers" 
-            :text="`Send to ${userCount} Users`" 
+            :loading="sending" 
+            :disabled="recipientEmails.length === 0 || loadingUsers"
+            text="Send Announcement to All Users" 
             loading-text="Sending..." 
           />
         </form>
@@ -56,8 +72,8 @@ const loadingUsers = ref(true);
 const sending = ref(false);
 const errorMsg = ref('');
 const successMsg = ref('');
-const userCount = ref(0);
 const recipientEmails = ref([]);
+const showRecipients = ref(false);
 
 const form = ref({
   subject: '',
@@ -68,32 +84,19 @@ onMounted(async () => {
   if (user.value && (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' || localStorage.getItem('wedding_admin') === 'true')) {
     isAdmin.value = true;
     await fetchUsers();
-  } else {
-    loadingUsers.value = false;
   }
 });
 
 const fetchUsers = async () => {
   try {
-    // We fetch emails from the RSVP table or we can just fetch auth.users if we have access.
-    // Assuming profiles doesn't store emails, but rsvps does via auth.users relation.
-    // Let's use the same query as in responses.vue to get all users.
-    const { data, error } = await supabase
-      .from('rsvps')
-      .select('auth.users(email)');
-
-    if (error) throw error;
-    
-    // Filter out missing emails and create unique list
-    const emails = [...new Set(
-      data.map(r => r.users?.email).filter(Boolean)
-    )];
-
-    recipientEmails.value = emails;
-    userCount.value = emails.length;
-  } catch (error) {
-    console.error('Error fetching users:', error.message);
-    errorMsg.value = 'Failed to load user list.';
+    const response = await $fetch('/api/admin/users');
+    if (response.success) {
+      recipientEmails.value = response.emails;
+    } else {
+      console.error('Failed to load users:', response.error);
+    }
+  } catch (err) {
+    console.error('Exception fetching users:', err.message);
   } finally {
     loadingUsers.value = false;
   }
@@ -104,17 +107,10 @@ const sendAnnouncement = async () => {
   successMsg.value = '';
   sending.value = true;
 
-  if (recipientEmails.value.length === 0) {
-    errorMsg.value = 'No users found to send email to.';
-    sending.value = false;
-    return;
-  }
-
   try {
     const response = await $fetch('/api/send-announcement', {
       method: 'POST',
       body: {
-        emails: recipientEmails.value,
         subject: form.value.subject,
         message: form.value.message.replace(/\n/g, '<br>') // Convert newlines to HTML breaks
       }
@@ -159,15 +155,64 @@ const sendAnnouncement = async () => {
   font-family: inherit;
 }
 
-.error-msg {
-  color: #ff6b6b;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
+.recipients-section {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
 }
 
-.success-msg {
-  color: #4CAF50;
+.toggle-recipients {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-primary);
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.toggle-recipients:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.toggle-icon {
+  font-size: 0.8rem;
+}
+
+.recipients-list {
+  padding: 0 16px 16px;
+  max-height: 200px;
+  overflow-y: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 8px;
+  padding-top: 16px;
+}
+
+.recipients-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.recipients-list li {
   font-size: 0.9rem;
-  margin-top: 0.5rem;
+  color: #eaeaea;
+  padding: 6px 10px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+}
+
+.loading-text, .empty-text {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+  text-align: center;
+  padding: 10px 0;
 }
 </style>

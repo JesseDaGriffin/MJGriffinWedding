@@ -19,6 +19,7 @@
           v-model="form.name" 
           label="Name" 
           placeholder="Your Name" 
+          :disabled="!!user"
           required 
         />
 
@@ -27,6 +28,7 @@
           label="Email" 
           type="email" 
           placeholder="your.email@example.com" 
+          :disabled="!!user"
           required 
         />
 
@@ -56,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -68,6 +70,36 @@ const form = ref({
   email: '',
   subject: '',
   message: ''
+});
+
+watchEffect(async () => {
+  if (user.value) {
+    form.value.email = user.value.email || '';
+    
+    if (user.value.user_metadata) {
+      const { first_name, last_name } = user.value.user_metadata;
+      if (first_name || last_name) {
+        form.value.name = `${first_name || ''} ${last_name || ''}`.trim();
+      }
+    }
+    
+    const userId = user.value.id || user.value.sub;
+    if (userId) {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('first_name, last_name')
+          .eq('id', userId)
+          .single();
+          
+        if (!error && data && (data.first_name || data.last_name)) {
+          form.value.name = `${data.first_name || ''} ${data.last_name || ''}`.trim();
+        }
+      } catch (err) {
+        console.error('Error fetching profile for contact form:', err.message);
+      }
+    }
+  }
 });
 
 const submitContact = async () => {
@@ -86,6 +118,18 @@ const submitContact = async () => {
       .insert([payload]);
 
     if (error) throw error;
+    
+    // Send email notification to admin
+    await $fetch('/api/send-contact', {
+      method: 'POST',
+      body: {
+        name: form.value.name,
+        email: form.value.email,
+        subject: form.value.subject,
+        message: form.value.message
+      }
+    });
+
     submitted.value = true;
   } catch (error) {
     console.error('Error sending message:', error.message);

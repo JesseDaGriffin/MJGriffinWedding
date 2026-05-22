@@ -68,8 +68,11 @@ defineEmits(['click']);
 }
 
 .btn:disabled {
-  opacity: 0.7;
+  opacity: 0.5;
   cursor: not-allowed;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  border-color: transparent !important;
 }
 
 .btn:disabled:hover {

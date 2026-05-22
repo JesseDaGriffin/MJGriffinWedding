@@ -111,3 +111,47 @@ export const getAnnouncementEmailTemplate = (messageHtml: string) => {
   </html>
   `;
 };
+
+export const getContactEmailTemplate = (name: string, email: string, subject: string, message: string) => {
+  return `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <style>
+      body { font-family: 'Inter', Helvetica, Arial, sans-serif; color: #eaeaea; line-height: 1.6; background-color: #1c1c1c; padding: 20px; }
+      .container { max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 8px; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); }
+      .header { padding-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+      .header h1 { color: #6b8e23; margin: 0; font-size: 24px; font-family: 'Playfair Display', serif; font-weight: 600; }
+      .content { padding: 30px 0; }
+      .footer { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 12px; color: rgba(255, 255, 255, 0.5); }
+      .detail-row { margin-bottom: 15px; }
+      .label { color: #9e591f; font-weight: 600; }
+    </style>
+  </head>
+  <body style="background-color: #1c1c1c;">
+    <div class="container" style="background-color: #242424;">
+      <div class="header">
+        <h1>New Contact Message</h1>
+      </div>
+      <div class="content">
+        <div class="detail-row">
+          <span class="label">Name:</span> ${name}
+        </div>
+        <div class="detail-row">
+          <span class="label">Email:</span> ${email}
+        </div>
+        <div class="detail-row">
+          <span class="label">Subject:</span> ${subject}
+        </div>
+        <div class="detail-row" style="margin-top: 20px; padding: 15px; background-color: rgba(0,0,0,0.2); border-radius: 4px;">
+          ${message.replace(/\n/g, '<br>')}
+        </div>
+      </div>
+      <div class="footer">
+        <p>This message was sent from the Griffin Wedding contact form.</p>
+      </div>
+    </div>
+  </body>
+  </html>
+  `;
+};
