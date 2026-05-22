@@ -1,39 +1,53 @@
 <template>
   <div class="container section">
     <div class="contact-container">
-      <h1 class="text-center mb-md">Contact Us</h1>
-      <p class="text-center mb-lg">Have any questions? Send us a message and we'll get back to you!</p>
+      <PageHeader 
+        title="Contact Us" 
+        subtitle="Have any questions? Send us a message and we'll get back to you!" 
+      />
 
       <GlassCard v-if="submitted" class="text-center success-message">
         <h2 class="mb-sm">Message Sent!</h2>
         <p>Thank you for reaching out. We'll be in touch soon.</p>
-        <button @click="submitted = false; form.message = ''" class="btn mt-md">Send Another Message</button>
+        <AppButton @click="submitted = false; form.message = ''" class="mt-md" text="Send Another Message" />
       </GlassCard>
 
       <form v-else @submit.prevent="submitContact" class="contact-form">
         <GlassCard>
-        <div class="form-group mb-md">
-          <label class="form-label">Name</label>
-          <input type="text" v-model="form.name" class="form-input" required placeholder="Your Name">
-        </div>
+        
+        <FormGroup 
+          v-model="form.name" 
+          label="Name" 
+          placeholder="Your Name" 
+          required 
+        />
 
-        <div class="form-group mb-md">
-          <label class="form-label">Email</label>
-          <input type="email" v-model="form.email" class="form-input" required placeholder="your.email@example.com">
-        </div>
+        <FormGroup 
+          v-model="form.email" 
+          label="Email" 
+          type="email" 
+          placeholder="your.email@example.com" 
+          required 
+        />
 
-        <div class="form-group mb-md">
-          <label class="form-label">Subject</label>
-          <input type="text" v-model="form.subject" class="form-input" required placeholder="What is this regarding?">
-        </div>
+        <FormGroup 
+          v-model="form.subject" 
+          label="Subject" 
+          placeholder="What is this regarding?" 
+          required 
+        />
 
-        <div class="form-group mb-md">
-          <label class="form-label">Message</label>
-          <textarea v-model="form.message" rows="6" class="form-textarea" required placeholder="Your message..."></textarea>
-        </div>
+        <FormGroup 
+          v-model="form.message" 
+          label="Message" 
+          as="textarea" 
+          rows="6" 
+          placeholder="Your message..." 
+          required 
+        />
 
         <div class="form-actions mt-lg">
-          <button type="submit" class="btn w-100">Send Message</button>
+          <AppButton type="submit" block :loading="loading" loading-text="Sending..." text="Send Message" />
         </div>
         </GlassCard>
       </form>

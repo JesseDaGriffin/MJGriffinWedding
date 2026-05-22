@@ -1,6 +1,6 @@
 <template>
   <div class="container section">
-    <h1 class="text-center mb-md">Admin Announcements</h1>
+    <PageHeader title="Admin Announcements" />
     
     <div v-if="!isAdmin" class="text-center">
       <p>You do not have permission to view this page.</p>
@@ -13,34 +13,32 @@
         <p class="mb-md">This email will be sent via BCC to all registered users in the database.</p>
         
         <form @submit.prevent="sendAnnouncement" class="form">
-          <div class="form-group">
-            <label class="form-label">Subject</label>
-            <input 
-              v-model="form.subject" 
-              type="text" 
-              class="form-input" 
-              placeholder="e.g., Update on the Wedding Schedule!"
-              required
-            />
-          </div>
+          <FormGroup 
+            v-model="form.subject" 
+            label="Subject" 
+            placeholder="e.g., Update on the Wedding Schedule!" 
+            required 
+          />
 
-          <div class="form-group">
-            <label class="form-label">Message (HTML is supported)</label>
-            <textarea 
-              v-model="form.message" 
-              class="form-input textarea" 
-              rows="8"
-              placeholder="Write your announcement here..."
-              required
-            ></textarea>
-          </div>
+          <FormGroup 
+            v-model="form.message" 
+            label="Message (HTML is supported)" 
+            as="textarea" 
+            rows="8" 
+            placeholder="Write your announcement here..." 
+            required 
+          />
 
-          <p v-if="successMsg" class="success-msg">{{ successMsg }}</p>
-          <p v-if="errorMsg" class="error-msg">{{ errorMsg }}</p>
+          <AlertMessage v-if="successMsg" type="success" :message="successMsg" />
+          <AlertMessage v-if="errorMsg" type="error" :message="errorMsg" />
 
-          <button type="submit" class="btn mt-sm" :disabled="sending || loadingUsers">
-            {{ sending ? 'Sending...' : `Send to ${userCount} Users` }}
-          </button>
+          <AppButton 
+            type="submit" 
+            class="mt-sm" 
+            :loading="sending || loadingUsers" 
+            :text="`Send to ${userCount} Users`" 
+            loading-text="Sending..." 
+          />
         </form>
       </GlassCard>
     </div>

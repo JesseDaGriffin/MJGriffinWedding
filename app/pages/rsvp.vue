@@ -1,10 +1,11 @@
 <template>
     <div class="container section">
         <div class="rsvp-container">
-            <h1 class="text-center">RSVP</h1>
-            <p class="text-center subtitle">
-                Please let us know if you can make it by December 1st, 2026.
-            </p>
+            <PageHeader 
+                title="RSVP" 
+                subtitle="Please let us know if you can make it by December 1st, 2026." 
+                subtitle-class="subtitle"
+            />
             <div class="deadline-countdown">
                 <CountdownTimer targetDate="2026-12-01T00:00:00" :compact="true" />
             </div>
@@ -12,9 +13,7 @@
             <GlassCard v-if="submitted" class="text-center success-message">
                 <h2 class="mb-sm">Thank You!</h2>
                 <p>Your RSVP has been received. We can't wait to see you!</p>
-                <button @click="submitted = false" class="btn mt-md">
-                    Update RSVP
-                </button>
+                <AppButton @click="submitted = false" class="mt-md" text="Update RSVP" />
             </GlassCard>
 
             <form v-else @submit.prevent="submitRsvp" class="rsvp-form">
@@ -44,32 +43,22 @@
 
                     <div v-if="form.attending" class="attending-details">
                         <div class="grid-2">
-                            <div class="form-group">
-                                <label class="form-label"
-                                    >Number of Adults</label
-                                >
-                                <input
-                                    type="number"
-                                    v-model="form.adults"
-                                    min="1"
-                                    max="10"
-                                    class="form-input"
-                                    required
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label"
-                                    >Number of Children</label
-                                >
-                                <input
-                                    type="number"
-                                    v-model="form.kids"
-                                    min="0"
-                                    max="10"
-                                    class="form-input"
-                                    required
-                                />
-                            </div>
+                            <FormGroup 
+                                v-model="form.adults" 
+                                label="Number of Adults" 
+                                type="number" 
+                                :min="1" 
+                                :max="10" 
+                                required 
+                            />
+                            <FormGroup 
+                                v-model="form.kids" 
+                                label="Number of Children" 
+                                type="number" 
+                                :min="0" 
+                                :max="10" 
+                                required 
+                            />
                         </div>
 
                         <h3 class="mt-md mb-sm">Events to Attend</h3>
@@ -95,9 +84,7 @@
                     </div>
 
                     <div class="form-actions mt-lg">
-                        <button type="submit" class="btn w-100">
-                            Send RSVP
-                        </button>
+                        <AppButton type="submit" block :loading="loading" text="Send RSVP" />
                     </div>
                 </GlassCard>
             </form>

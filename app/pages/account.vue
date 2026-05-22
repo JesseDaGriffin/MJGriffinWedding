@@ -2,46 +2,39 @@
   <div class="container section">
     <div class="account-container">
       <GlassCard class="account-card">
-        <h1 class="text-center mb-md text-primary">Account Settings</h1>
+        <PageHeader title="Account Settings" />
         
         <form @submit.prevent="updateProfile" class="form">
-          <div class="form-group">
-            <label class="form-label">First Name</label>
-            <input 
-              v-model="profile.first_name" 
-              type="text" 
-              class="form-input" 
-              required
-            />
-          </div>
+          <FormGroup 
+            v-model="profile.first_name" 
+            label="First Name" 
+            required 
+          />
           
-          <div class="form-group">
-            <label class="form-label">Last Name</label>
-            <input 
-              v-model="profile.last_name" 
-              type="text" 
-              class="form-input" 
-              required
-            />
-          </div>
+          <FormGroup 
+            v-model="profile.last_name" 
+            label="Last Name" 
+            required 
+          />
           
-          <div class="form-group">
-            <label class="form-label">Email</label>
-            <input 
-              :value="user?.email" 
-              type="email" 
-              class="form-input" 
-              disabled
-            />
-            <small class="text-muted">Email cannot be changed.</small>
-          </div>
+          <FormGroup 
+            :modelValue="user?.email" 
+            label="Email" 
+            type="email" 
+            disabled 
+            hint="Email cannot be changed." 
+          />
 
-          <p v-if="successMsg" class="success-msg">{{ successMsg }}</p>
-          <p v-if="errorMsg" class="error-msg">{{ errorMsg }}</p>
+          <AlertMessage v-if="successMsg" type="success" :message="successMsg" />
+          <AlertMessage v-if="errorMsg" type="error" :message="errorMsg" />
 
-          <button type="submit" class="btn w-100 mt-md" :disabled="loading">
-            {{ loading ? 'Saving...' : 'Update Name' }}
-          </button>
+          <AppButton 
+            type="submit" 
+            class="mt-md" 
+            block 
+            :loading="loading" 
+            text="Update Name" 
+          />
         </form>
       </GlassCard>
     </div>
@@ -153,30 +146,5 @@ const updateProfile = async () => {
 
 .w-100 {
   width: 100%;
-}
-
-.text-primary {
-  color: var(--color-primary);
-}
-
-.text-muted {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.85rem;
-  display: block;
-  margin-top: 4px;
-}
-
-.success-msg {
-  color: #4CAF50;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-  text-align: center;
-}
-
-.error-msg {
-  color: #F44336;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-  text-align: center;
 }
 </style>

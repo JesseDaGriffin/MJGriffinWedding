@@ -1,13 +1,15 @@
 <template>
   <div class="container section">
     <div class="questionnaire-container">
-      <h1 class="text-center mb-md">Guest Questionnaire</h1>
-      <p class="text-center mb-lg">Help us plan the best weekend possible by sharing your preferences!</p>
+      <PageHeader 
+        title="Guest Questionnaire" 
+        subtitle="Help us plan the best weekend possible by sharing your preferences!" 
+      />
 
       <GlassCard v-if="submitted" class="text-center success-message">
         <h2 class="mb-sm">Thank You!</h2>
         <p>Your responses have been recorded.</p>
-        <button @click="submitted = false" class="btn mt-md">Edit Responses</button>
+        <AppButton @click="submitted = false" class="mt-md" text="Edit Responses" />
       </GlassCard>
 
       <form v-else @submit.prevent="submitQuestionnaire" class="questionnaire-form">
@@ -15,14 +17,8 @@
         <div class="form-group mb-md">
           <label class="form-label">Days of Attendance (Date Range)</label>
           <div class="grid-2">
-            <div>
-              <label class="sub-label">Arrival Date</label>
-              <input type="date" v-model="form.arrivalDate" class="form-input" required>
-            </div>
-            <div>
-              <label class="sub-label">Departure Date</label>
-              <input type="date" v-model="form.departureDate" class="form-input" required>
-            </div>
+            <FormGroup v-model="form.arrivalDate" label="Arrival Date" type="date" required />
+            <FormGroup v-model="form.departureDate" label="Departure Date" type="date" required />
           </div>
         </div>
 
@@ -38,13 +34,16 @@
           </div>
         </div>
 
-        <div class="form-group mb-md">
-          <label class="form-label">Any other ideas or suggestions?</label>
-          <textarea v-model="form.suggestions" rows="4" class="form-textarea" placeholder="Let us know..."></textarea>
-        </div>
+        <FormGroup 
+          v-model="form.suggestions" 
+          label="Any other ideas or suggestions?" 
+          as="textarea" 
+          rows="4" 
+          placeholder="Let us know..." 
+        />
 
         <div class="form-actions mt-lg">
-          <button type="submit" class="btn w-100">Submit Questionnaire</button>
+          <AppButton type="submit" block :loading="loading" text="Submit Questionnaire" />
         </div>
         </GlassCard>
       </form>

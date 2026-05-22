@@ -1,9 +1,11 @@
 <template>
   <div class="login-page">
     <GlassCard class="login-container">
-      <h1 class="text-center">Welcome</h1>
-      <p class="text-center mb-md">The Griffin Wedding</p>
-      
+      <PageHeader 
+        title="Welcome" 
+        subtitle="The Griffin Wedding" 
+        subtitle-class="mb-md" 
+      />
       <div class="tabs">
         <button 
           class="tab-btn" 
@@ -18,67 +20,25 @@
       </div>
 
       <form @submit.prevent="handleSubmit" class="form">
-        <div v-if="!isLogin" class="form-group">
-          <label class="form-label">Invitation Code</label>
-          <input 
-            v-model="form.code" 
-            type="text" 
-            class="form-input" 
-            placeholder="Enter the code from your invite"
-            required
-          />
-        </div>
-
-        <div v-if="!isLogin" class="form-group">
-          <label class="form-label">First Name</label>
-          <input 
-            v-model="form.firstName" 
-            type="text" 
-            class="form-input" 
-            placeholder="First Name"
-            required
-          />
-        </div>
-
-        <div v-if="!isLogin" class="form-group">
-          <label class="form-label">Last Name</label>
-          <input 
-            v-model="form.lastName" 
-            type="text" 
-            class="form-input" 
-            placeholder="Last Name"
-            required
-          />
-        </div>
+        <template v-if="!isLogin">
+          <FormGroup v-model="form.code" label="Invitation Code" placeholder="Enter the code from your invite" required />
+          <FormGroup v-model="form.firstName" label="First Name" placeholder="First Name" required />
+          <FormGroup v-model="form.lastName" label="Last Name" placeholder="Last Name" required />
+        </template>
         
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input 
-            v-model="form.email" 
-            type="email" 
-            class="form-input" 
-            placeholder="your@email.com"
-            required
-          />
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input 
-            v-model="form.password" 
-            type="password" 
-            class="form-input" 
-            placeholder="••••••••"
-            required
-          />
-        </div>
+        <FormGroup v-model="form.email" label="Email" type="email" placeholder="your@email.com" required />
+        <FormGroup v-model="form.password" label="Password" type="password" placeholder="••••••••" required />
 
-        <p v-if="successMsg" class="success-msg">{{ successMsg }}</p>
-        <p v-if="errorMsg" class="error-msg">{{ errorMsg }}</p>
+        <AlertMessage v-if="successMsg" type="success" :message="successMsg" />
+        <AlertMessage v-if="errorMsg" type="error" :message="errorMsg" />
 
-        <button type="submit" class="btn w-100 mt-md">
-          {{ isLogin ? 'Login' : 'Create Account' }}
-        </button>
+        <AppButton 
+          type="submit" 
+          class="mt-md" 
+          block 
+          :loading="loading" 
+          :text="isLogin ? 'Login' : 'Create Account'" 
+        />
       </form>
     </GlassCard>
   </div>

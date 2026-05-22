@@ -1,6 +1,6 @@
 <template>
   <div class="container section">
-    <h1 class="text-center mb-md">The Ceremony</h1>
+    <PageHeader title="The Ceremony" />
     
     <div class="ceremony-grid">
       <!-- Main Info -->

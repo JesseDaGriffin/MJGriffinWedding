@@ -1,8 +1,10 @@
 <template>
   <div class="container section">
-    <h1 class="text-center mb-md">Weekend Itinerary</h1>
-    <p class="text-center mb-lg subtitle">A guide to our wedding weekend in Las Vegas</p>
-
+    <PageHeader 
+      title="Weekend Itinerary" 
+      subtitle="A guide to our wedding weekend in Las Vegas" 
+      subtitle-class="subtitle" 
+    />
     <div class="timeline">
       
       <!-- Day 1 -->

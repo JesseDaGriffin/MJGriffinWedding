@@ -1,7 +1,7 @@
 <template>
   <div class="container section">
     <div class="registry-container text-center">
-      <h1 class="mb-md">Registry</h1>
+      <PageHeader title="Registry" />
       
       <GlassCard class="registry-card">
         <div class="icon-container mb-md">
