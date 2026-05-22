@@ -144,6 +144,19 @@ const handleSubmit = async () => {
       
       if (error) throw error;
       
+      // Send welcome email
+      try {
+        await $fetch('/api/send-welcome', {
+          method: 'POST',
+          body: {
+            email: form.value.email,
+            firstName: form.value.firstName
+          }
+        });
+      } catch (e) {
+        console.error('Failed to send welcome email:', e);
+      }
+
       // Reset form
       form.value = {
         code: '',

@@ -15,7 +15,13 @@
           <NuxtLink to="/registry" class="nav-link" @click="closeMenu">Registry</NuxtLink>
           <NuxtLink to="/contact" class="nav-link" @click="closeMenu">Contact</NuxtLink>
           <NuxtLink to="/questionnaire" class="nav-link" @click="closeMenu">Questionnaire</NuxtLink>
-          <NuxtLink v-if="isAdmin" to="/responses" class="nav-link nav-link--admin" @click="closeMenu">Responses</NuxtLink>
+          <div v-if="isAdmin" class="admin-group desktop-only">
+            <span class="nav-link nav-link--admin admin-label">Admin Tools ▼</span>
+            <div class="admin-dropdown">
+              <NuxtLink to="/responses" class="dropdown-item" @click="closeMenu">Responses</NuxtLink>
+              <NuxtLink to="/announcements" class="dropdown-item" @click="closeMenu">Announcements</NuxtLink>
+            </div>
+          </div>
         </nav>
 
         <!-- Desktop right-side actions (hidden on mobile) -->
@@ -56,7 +62,12 @@
         <NuxtLink to="/registry" class="mobile-nav-link" @click="closeMenu">Registry</NuxtLink>
         <NuxtLink to="/contact" class="mobile-nav-link" @click="closeMenu">Contact</NuxtLink>
         <NuxtLink to="/questionnaire" class="mobile-nav-link" @click="closeMenu">Questionnaire</NuxtLink>
-        <NuxtLink v-if="isAdmin" to="/responses" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Responses</NuxtLink>
+        <template v-if="isAdmin">
+          <div class="mobile-nav-divider"></div>
+          <span class="mobile-nav-link mobile-nav-link--admin" style="font-weight: 700; opacity: 0.8; pointer-events: none;">Admin Tools</span>
+          <NuxtLink to="/responses" class="mobile-nav-link mobile-nav-link--admin pl-md" @click="closeMenu">Responses</NuxtLink>
+          <NuxtLink to="/announcements" class="mobile-nav-link mobile-nav-link--admin pl-md" @click="closeMenu">Announcements</NuxtLink>
+        </template>
         <div class="mobile-nav-divider"></div>
         <NuxtLink to="/rsvp" class="btn rsvp-btn mobile-rsvp" @click="closeMenu">RSVP</NuxtLink>
         <template v-if="isAuthenticated">
@@ -274,6 +285,44 @@ watchEffect(() => {
 
 .dropdown-item--danger { color: #ff6b6b; }
 .dropdown-item--danger:hover { background: rgba(255, 107, 107, 0.1); }
+
+/* ─── Admin Grouping ─── */
+.admin-group {
+  position: relative;
+  display: inline-block;
+}
+
+.admin-label {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.admin-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--border-radius);
+  padding: 0.5rem 0;
+  min-width: 160px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 200;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.admin-group:hover .admin-dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.pl-md {
+  padding-left: 1.5rem !important;
+}
 
 /* ─── Hamburger ─── */
 .mobile-menu-btn {
