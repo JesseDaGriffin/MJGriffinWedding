@@ -155,3 +155,61 @@ export const getContactEmailTemplate = (name: string, email: string, subject: st
   </html>
   `;
 };
+
+export const getRsvpEmailTemplate = (name: string, email: string, attending: boolean, adults: number, kids: number, ceremony: boolean, dinner: boolean) => {
+  return `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <style>
+      body { font-family: 'Inter', Helvetica, Arial, sans-serif; color: #eaeaea; line-height: 1.6; background-color: #1c1c1c; padding: 20px; }
+      .container { max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 8px; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); }
+      .header { padding-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
+      .header h1 { color: #6b8e23; margin: 0; font-size: 24px; font-family: 'Playfair Display', serif; font-weight: 600; }
+      .content { padding: 30px 0; }
+      .footer { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 12px; color: rgba(255, 255, 255, 0.5); }
+      .detail-row { margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+      .label { color: #9e591f; font-weight: 600; display: inline-block; width: 150px; }
+      .status-yes { color: #4CAF50; font-weight: bold; }
+      .status-no { color: #F44336; font-weight: bold; }
+    </style>
+  </head>
+  <body style="background-color: #1c1c1c;">
+    <div class="container" style="background-color: #242424;">
+      <div class="header">
+        <h1>New RSVP Received!</h1>
+      </div>
+      <div class="content">
+        <div class="detail-row">
+          <span class="label">Guest Name:</span> ${name || 'Unknown'}
+        </div>
+        <div class="detail-row">
+          <span class="label">Email:</span> ${email || 'Unknown'}
+        </div>
+        <div class="detail-row">
+          <span class="label">Attending:</span> 
+          <span class="${attending ? 'status-yes' : 'status-no'}">${attending ? 'Yes, Joyfully Accepting' : 'No, Regretfully Declining'}</span>
+        </div>
+        ${attending ? `
+        <div class="detail-row">
+          <span class="label">Adults:</span> ${adults}
+        </div>
+        <div class="detail-row">
+          <span class="label">Children:</span> ${kids}
+        </div>
+        <div class="detail-row">
+          <span class="label">Ceremony:</span> ${ceremony ? 'Yes' : 'No'}
+        </div>
+        <div class="detail-row">
+          <span class="label">Dinner:</span> ${dinner ? 'Yes' : 'No'}
+        </div>
+        ` : ''}
+      </div>
+      <div class="footer">
+        <p>This automated message was sent from your wedding website.</p>
+      </div>
+    </div>
+  </body>
+  </html>
+  `;
+};

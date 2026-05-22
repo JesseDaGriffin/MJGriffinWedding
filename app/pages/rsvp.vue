@@ -154,6 +154,37 @@ const submitRsvp = async () => {
             .upsert(payload, { onConflict: "user_id" });
 
         if (error) throw error;
+        
+        // Fetch user profile to get the name for the email
+        let guestName = user.value?.user_metadata?.first_name 
+            ? `${user.value.user_metadata.first_name} ${user.value.user_metadata.last_name || ''}`.trim() 
+            : '';
+            
+        if (!guestName) {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('first_name, last_name')
+                .eq('id', userId)
+                .single();
+            if (profile && (profile.first_name || profile.last_name)) {
+                guestName = `${profile.first_name || ''} ${profile.last_name || ''}`.trim();
+            }
+        }
+
+        // Send email notification to admin
+        await $fetch('/api/send-rsvp', {
+            method: 'POST',
+            body: {
+                name: guestName,
+                email: user.value?.email || '',
+                attending: form.value.attending,
+                adults: form.value.adults,
+                kids: form.value.kids,
+                ceremony: form.value.events.ceremony,
+                dinner: form.value.events.dinner
+            }
+        });
+
         submitted.value = true;
     } catch (error) {
         console.error("Error submitting RSVP:", error.message);
