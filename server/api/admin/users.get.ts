@@ -18,6 +18,6 @@ export default defineEventHandler(async (event) => {
     return { success: true, emails };
   } catch (err: any) {
     console.error('Exception in get-users:', err.message);
-    return { success: false, error: 'Internal server error occurred' };
+    return { success: false, error: `Internal server error: ${err.message}` };
   }
 });

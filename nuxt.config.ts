@@ -12,5 +12,10 @@ export default defineNuxtConfig({
       Inter: [400, 500, 600, 700],
       'Playfair Display': [400, 600, 700]
     }
+  },
+  supabase: {
+    cookieOptions: {
+      secure: process.env.NODE_ENV === 'production'
+    }
   }
 })

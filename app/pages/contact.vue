@@ -9,7 +9,7 @@
       <GlassCard v-if="submitted" class="text-center success-message">
         <h2 class="mb-sm">Message Sent!</h2>
         <p>Thank you for reaching out. We'll be in touch soon.</p>
-        <AppButton @click="submitted = false; form.message = ''" class="mt-md" text="Send Another Message" />
+        <AppButton @click="submitted = false" class="mt-md" text="Send Another Message" />
       </GlassCard>
 
       <form v-else @submit.prevent="submitContact" class="contact-form">
@@ -131,6 +131,8 @@ const submitContact = async () => {
     });
 
     submitted.value = true;
+    form.value.subject = '';
+    form.value.message = '';
   } catch (error) {
     console.error('Error sending message:', error.message);
   } finally {

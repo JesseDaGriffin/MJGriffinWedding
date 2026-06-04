@@ -27,12 +27,43 @@
             rows="8" 
             placeholder="Write your announcement here..." 
             required 
+            class="mb-sm"
           />
+
+          <div class="link-buttons mb-md">
+            <p class="text-sm text-primary mb-sm">Insert Link to Page:</p>
+            <div class="button-group">
+              <button 
+                v-for="route in siteRoutes" 
+                :key="route.path"
+                type="button"
+                class="route-btn"
+                @click="insertLink(route)"
+              >
+                {{ route.name }}
+              </button>
+            </div>
+          </div>
+
+          <div class="preview-section mb-md" v-if="form.subject || form.message">
+            <h3 class="mb-sm text-primary">Email Preview</h3>
+            <div class="preview-subject-bar mb-sm"><strong>Subject:</strong> {{ form.subject || '(No subject)' }}</div>
+            <EmailPreview :messageHtml="previewMessage" />
+          </div>
 
           <AlertMessage v-if="successMsg" type="success" :message="successMsg" />
           <AlertMessage v-if="errorMsg" type="error" :message="errorMsg" />
 
-          <div class="recipients-section mb-md mt-sm">
+          <AppButton 
+            type="submit" 
+            class="mt-sm mb-md" 
+            :loading="sending" 
+            :disabled="recipientEmails.length === 0 || loadingUsers"
+            text="Send Announcement to All Users" 
+            loading-text="Sending..." 
+          />
+
+          <div class="recipients-section">
             <div class="toggle-recipients" @click="showRecipients = !showRecipients">
               <span>{{ recipientEmails.length }} Recipients Found</span>
               <span class="toggle-icon">{{ showRecipients ? '▲' : '▼' }}</span>
@@ -46,15 +77,6 @@
               <div v-else class="empty-text">No registered users found.</div>
             </div>
           </div>
-
-          <AppButton 
-            type="submit" 
-            class="mt-sm" 
-            :loading="sending" 
-            :disabled="recipientEmails.length === 0 || loadingUsers"
-            text="Send Announcement to All Users" 
-            loading-text="Sending..." 
-          />
         </form>
       </GlassCard>
     </div>
@@ -62,10 +84,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
+const router = useRouter();
 const isAdmin = ref(false);
 
 const loadingUsers = ref(true);
@@ -81,6 +104,9 @@ const form = ref({
 });
 
 onMounted(async () => {
+  currentGreeting.value = greetings[Math.floor(Math.random() * greetings.length)];
+  currentSignOff.value = signOffs[Math.floor(Math.random() * signOffs.length)];
+
   if (user.value && (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' || localStorage.getItem('wedding_admin') === 'true')) {
     isAdmin.value = true;
     await fetchUsers();
@@ -102,6 +128,66 @@ const fetchUsers = async () => {
   }
 };
 
+const greetings = [
+  "Hello friends and family!",
+  "Hi everyone!",
+  "Greetings everyone!",
+  "Hey everyone!",
+  "Dear loved ones,"
+];
+
+const signOffs = [
+  "With love,\nMaddie & Jesse",
+  "Warmly,\nMaddie & Jesse",
+  "Can't wait to see you all!\nMaddie & Jesse",
+  "Best,\nMaddie & Jesse",
+  "Thanks,\nMaddie & Jesse"
+];
+
+const currentGreeting = ref('');
+const currentSignOff = ref('');
+
+const siteRoutes = computed(() => {
+  return router.getRoutes().filter(route => 
+    route.path && 
+    !route.path.includes(':') && 
+    route.name && 
+    !route.path.startsWith('/api') &&
+    !route.path.includes('admin') &&
+    !route.path.includes('login') &&
+    !route.path.includes('account') &&
+    !route.path.includes('responses') &&
+    !route.path.includes('announcements')
+  ).map(route => {
+    let name = String(route.name).replace(/-/g, ' ');
+    // capitalize words
+    name = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    if (name.toLowerCase() === 'index') name = 'Home';
+    return { name, path: route.path };
+  });
+});
+
+const insertLink = async (route) => {
+  const origin = window.location.origin;
+  const linkHtml = `<a href="${origin}${route.path}" style="color: #6b8e23; text-decoration: none; font-weight: bold;">${route.name}</a>`;
+  const msg = form.value.message;
+  form.value.message += (msg && !msg.endsWith(' ') && !msg.endsWith('\n') ? ' ' : '') + linkHtml;
+  
+  await nextTick();
+  const textarea = document.querySelector('textarea');
+  if (textarea) {
+    textarea.focus();
+    // Optional: move cursor to the end of the newly inserted text
+    textarea.selectionStart = textarea.value.length;
+    textarea.selectionEnd = textarea.value.length;
+  }
+};
+
+const previewMessage = computed(() => {
+  const messageHtml = form.value.message.replace(/\n/g, '<br>');
+  return `${currentGreeting.value}<br><br>${messageHtml}<br><br>${currentSignOff.value}`.replace(/\n/g, '<br>');
+});
+
 const sendAnnouncement = async () => {
   errorMsg.value = '';
   successMsg.value = '';
@@ -112,7 +198,7 @@ const sendAnnouncement = async () => {
       method: 'POST',
       body: {
         subject: form.value.subject,
-        message: form.value.message.replace(/\n/g, '<br>') // Convert newlines to HTML breaks
+        message: previewMessage.value
       }
     });
 
@@ -120,6 +206,8 @@ const sendAnnouncement = async () => {
       successMsg.value = 'Announcement sent successfully!';
       form.value.subject = '';
       form.value.message = '';
+      currentGreeting.value = greetings[Math.floor(Math.random() * greetings.length)];
+      currentSignOff.value = signOffs[Math.floor(Math.random() * signOffs.length)];
     } else {
       throw new Error(response.error || 'Unknown error occurred');
     }
@@ -214,5 +302,49 @@ const sendAnnouncement = async () => {
   font-style: italic;
   text-align: center;
   padding: 10px 0;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.route-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  padding: 6px 12px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.route-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--color-primary);
+}
+
+.text-sm {
+  font-size: 0.85rem;
+}
+
+.preview-section {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  padding: 24px;
+}
+
+.preview-subject-bar {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 16px;
+  border-radius: 4px;
+  border-left: 3px solid var(--color-primary);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin-bottom: 16px;
 }
 </style>
