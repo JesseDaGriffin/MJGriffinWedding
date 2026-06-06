@@ -19,6 +19,7 @@
             <span class="nav-link nav-link--admin admin-label">Admin Tools ▼</span>
             <div class="admin-dropdown">
               <NuxtLink to="/responses" class="dropdown-item" @click="closeMenu">Responses</NuxtLink>
+              <NuxtLink to="/questionnaires" class="dropdown-item" @click="closeMenu">Questionnaires</NuxtLink>
               <NuxtLink to="/announcements" class="dropdown-item" @click="closeMenu">Announcements</NuxtLink>
             </div>
           </div>
@@ -66,6 +67,7 @@
           <div class="mobile-nav-divider"></div>
           <span class="mobile-nav-link mobile-nav-link--admin" style="font-weight: 700; opacity: 0.8; pointer-events: none;">Admin Tools</span>
           <NuxtLink to="/responses" class="mobile-nav-link mobile-nav-link--admin pl-md" @click="closeMenu">Responses</NuxtLink>
+          <NuxtLink to="/questionnaires" class="mobile-nav-link mobile-nav-link--admin pl-md" @click="closeMenu">Questionnaires</NuxtLink>
           <NuxtLink to="/announcements" class="mobile-nav-link mobile-nav-link--admin pl-md" @click="closeMenu">Announcements</NuxtLink>
         </template>
         <div class="mobile-nav-divider"></div>

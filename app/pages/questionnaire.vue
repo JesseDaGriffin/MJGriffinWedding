@@ -3,7 +3,7 @@
     <div class="questionnaire-container">
       <PageHeader 
         title="Guest Questionnaire" 
-        subtitle="Help us plan the best weekend possible by sharing your preferences!" 
+        subtitle="If you would like to join in group activities, help us plan the best weekend possible by sharing your preferences!" 
       />
 
       <GlassCard v-if="submitted" class="text-center success-message">
@@ -115,6 +115,39 @@ const submitQuestionnaire = async () => {
       .upsert(payload, { onConflict: 'user_id' });
 
     if (error) throw error;
+    
+    // Also send an email notification
+    try {
+      // Get the profile for name
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('first_name, last_name')
+        .eq('id', userId)
+        .single();
+        
+      const guestName = profile ? `${profile.first_name || ''} ${profile.last_name || ''}`.trim() : 'Unknown';
+      const guestEmail = user.value.email || 'Unknown';
+      
+      const activityNames = form.value.activities.map(id => {
+        const found = availableActivities.find(a => a.id === id);
+        return found ? found.name : id;
+      });
+
+      await $fetch('/api/send-questionnaire', {
+        method: 'POST',
+        body: {
+          name: guestName,
+          email: guestEmail,
+          arrivalDate: form.value.arrivalDate,
+          departureDate: form.value.departureDate,
+          activities: activityNames,
+          suggestions: form.value.suggestions
+        }
+      });
+    } catch (emailErr) {
+      console.error('Error triggering questionnaire email:', emailErr.message);
+    }
+
     submitted.value = true;
   } catch (error) {
     console.error('Error submitting questionnaire:', error.message);
