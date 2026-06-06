@@ -17,6 +17,7 @@ export const sendEmail = async (options: {
   bcc?: string[];
   subject: string;
   html: string;
+  replyTo?: string;
 }) => {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
     console.warn('SMTP credentials are not set. Email not sent.');
@@ -30,6 +31,7 @@ export const sendEmail = async (options: {
       bcc: options.bcc,
       subject: options.subject,
       html: options.html,
+      replyTo: options.replyTo,
     });
     console.log('Message sent: %s', info.messageId);
     return true;

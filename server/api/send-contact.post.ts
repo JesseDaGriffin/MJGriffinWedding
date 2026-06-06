@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
     to: 'dagriffinwedding@gmail.com',
     subject: `New Contact Form Message: ${subject}`,
     html: html,
+    replyTo: email,
   });
 
   if (!success) {
