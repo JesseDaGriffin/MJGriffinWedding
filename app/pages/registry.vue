@@ -27,7 +27,7 @@
         <div class="divider mb-lg"></div>
 
         <p class="mb-md">
-          However, if you're feeling incredibly generous and would like to contribute to our new life together or our honeymoon fund, you can do so below.
+          However, if you're feeling incredibly generous and would like to contribute to this wedding or our honeymoon fund, you can do so below.
         </p>
 
         <a href="https://venmo.com/u/Jesse_da_Griffin" target="_blank" class="btn venmo-btn">
