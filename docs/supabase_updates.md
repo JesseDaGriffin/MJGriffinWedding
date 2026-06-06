@@ -204,3 +204,20 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
 ```
+
+### Update: Per-Event Attendance Tracking and New After Party Event
+**Date:** June 5, 2026
+**Purpose:** Update RSVPs to track adult and child counts per event instead of globally, and add the "21+ Ceremony After Party".
+
+Run the following SQL in the Supabase SQL Editor:
+
+```sql
+ALTER TABLE rsvps
+ADD COLUMN ceremony_adults INTEGER DEFAULT 0,
+ADD COLUMN ceremony_kids INTEGER DEFAULT 0,
+ADD COLUMN dinner_adults INTEGER DEFAULT 0,
+ADD COLUMN dinner_kids INTEGER DEFAULT 0,
+ADD COLUMN attending_afterparty BOOLEAN DEFAULT false,
+ADD COLUMN afterparty_adults INTEGER DEFAULT 0,
+ADD COLUMN afterparty_kids INTEGER DEFAULT 0;
+```

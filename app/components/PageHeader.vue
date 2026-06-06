@@ -24,7 +24,7 @@ defineProps({
 
 <style scoped>
 .page-header {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 .text-center {

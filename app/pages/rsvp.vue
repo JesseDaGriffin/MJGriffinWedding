@@ -42,44 +42,87 @@
                     </div>
 
                     <div v-if="form.attending" class="attending-details">
-                        <div class="grid-2">
-                            <FormGroup 
-                                v-model="form.adults" 
-                                label="Number of Adults" 
-                                type="number" 
-                                :min="1" 
-                                :max="10" 
-                                required 
-                            />
-                            <FormGroup 
-                                v-model="form.kids" 
-                                label="Number of Children" 
-                                type="number" 
-                                :min="0" 
-                                :max="10" 
-                                required 
-                            />
-                        </div>
-
                         <h3 class="mt-md mb-sm">Events to Attend</h3>
 
                         <div class="form-group checkbox-group">
-                            <label class="checkbox-label">
-                                <input
-                                    type="checkbox"
-                                    v-model="form.events.ceremony"
-                                />
-                                <span class="custom-checkbox"></span>
-                                Ceremony
-                            </label>
-                            <label class="checkbox-label">
-                                <input
-                                    type="checkbox"
-                                    v-model="form.events.dinner"
-                                />
-                                <span class="custom-checkbox"></span>
-                                Dinner on Sunday
-                            </label>
+                            <div class="event-item">
+                                <label class="checkbox-label">
+                                    <input
+                                        type="checkbox"
+                                        v-model="form.events.ceremony.attending"
+                                    />
+                                    <span class="custom-checkbox"></span>
+                                    Ceremony
+                                </label>
+                                <div v-if="form.events.ceremony.attending" class="grid-2 mt-sm pl-lg" style="padding-left: 2rem;">
+                                    <FormGroup 
+                                        v-model="form.events.ceremony.adults" 
+                                        label="Adults" 
+                                        type="number" 
+                                        :min="1" 
+                                        :max="10" 
+                                        required 
+                                    />
+                                    <FormGroup 
+                                        v-model="form.events.ceremony.kids" 
+                                        label="Children" 
+                                        type="number" 
+                                        :min="0" 
+                                        :max="10" 
+                                        required 
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="event-item mt-md">
+                                <label class="checkbox-label">
+                                    <input
+                                        type="checkbox"
+                                        v-model="form.events.afterparty.attending"
+                                    />
+                                    <span class="custom-checkbox"></span>
+                                    21+ Ceremony After Party
+                                </label>
+                                <div v-if="form.events.afterparty.attending" class="grid-1 mt-sm pl-lg" style="padding-left: 2rem; max-width: 50%;">
+                                    <FormGroup 
+                                        v-model="form.events.afterparty.adults" 
+                                        label="Adults (21+)" 
+                                        type="number" 
+                                        :min="1" 
+                                        :max="10" 
+                                        required 
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="event-item mt-md">
+                                <label class="checkbox-label">
+                                    <input
+                                        type="checkbox"
+                                        v-model="form.events.dinner.attending"
+                                    />
+                                    <span class="custom-checkbox"></span>
+                                    Reception Dinner on Sunday
+                                </label>
+                                <div v-if="form.events.dinner.attending" class="grid-2 mt-sm pl-lg" style="padding-left: 2rem;">
+                                    <FormGroup 
+                                        v-model="form.events.dinner.adults" 
+                                        label="Adults" 
+                                        type="number" 
+                                        :min="1" 
+                                        :max="10" 
+                                        required 
+                                    />
+                                    <FormGroup 
+                                        v-model="form.events.dinner.kids" 
+                                        label="Children" 
+                                        type="number" 
+                                        :min="0" 
+                                        :max="10" 
+                                        required 
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -102,11 +145,10 @@ const loading = ref(false);
 
 const form = ref({
     attending: null,
-    adults: 1,
-    kids: 0,
     events: {
-        ceremony: true,
-        dinner: false,
+        ceremony: { attending: false, adults: 1, kids: 0 },
+        dinner: { attending: false, adults: 1, kids: 0 },
+        afterparty: { attending: false, adults: 1, kids: 0 },
     },
 });
 
@@ -122,11 +164,22 @@ watchEffect(async () => {
         if (data) {
             form.value = {
                 attending: data.attending,
-                adults: data.adults_count,
-                kids: data.kids_count,
                 events: {
-                    ceremony: data.attending_ceremony,
-                    dinner: data.attending_dinner,
+                    ceremony: {
+                        attending: data.attending_ceremony,
+                        adults: data.ceremony_adults || 1,
+                        kids: data.ceremony_kids || 0,
+                    },
+                    dinner: {
+                        attending: data.attending_dinner,
+                        adults: data.dinner_adults || 1,
+                        kids: data.dinner_kids || 0,
+                    },
+                    afterparty: {
+                        attending: data.attending_afterparty,
+                        adults: data.afterparty_adults || 1,
+                        kids: data.afterparty_kids || 0,
+                    }
                 },
             };
             submitted.value = true;
@@ -143,10 +196,24 @@ const submitRsvp = async () => {
         const payload = {
             user_id: userId,
             attending: form.value.attending,
-            adults_count: form.value.adults,
-            kids_count: form.value.kids,
-            attending_ceremony: form.value.events.ceremony,
-            attending_dinner: form.value.events.dinner,
+            adults_count: Math.max(
+                form.value.events.ceremony.attending ? form.value.events.ceremony.adults : 0, 
+                form.value.events.dinner.attending ? form.value.events.dinner.adults : 0, 
+                form.value.events.afterparty.attending ? form.value.events.afterparty.adults : 0
+            ),
+            kids_count: Math.max(
+                form.value.events.ceremony.attending ? form.value.events.ceremony.kids : 0, 
+                form.value.events.dinner.attending ? form.value.events.dinner.kids : 0
+            ),
+            attending_ceremony: form.value.events.ceremony.attending,
+            ceremony_adults: form.value.events.ceremony.attending ? form.value.events.ceremony.adults : 0,
+            ceremony_kids: form.value.events.ceremony.attending ? form.value.events.ceremony.kids : 0,
+            attending_dinner: form.value.events.dinner.attending,
+            dinner_adults: form.value.events.dinner.attending ? form.value.events.dinner.adults : 0,
+            dinner_kids: form.value.events.dinner.attending ? form.value.events.dinner.kids : 0,
+            attending_afterparty: form.value.events.afterparty.attending,
+            afterparty_adults: form.value.events.afterparty.attending ? form.value.events.afterparty.adults : 0,
+            afterparty_kids: 0,
         };
 
         const { error } = await supabase
@@ -178,10 +245,9 @@ const submitRsvp = async () => {
                 name: guestName,
                 email: user.value?.email || '',
                 attending: form.value.attending,
-                adults: form.value.adults,
-                kids: form.value.kids,
                 ceremony: form.value.events.ceremony,
-                dinner: form.value.events.dinner
+                dinner: form.value.events.dinner,
+                afterparty: form.value.events.afterparty
             }
         });
 

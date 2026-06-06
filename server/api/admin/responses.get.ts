@@ -1,0 +1,59 @@
+import { defineEventHandler } from 'h3';
+import { serverSupabaseServiceRole } from '#supabase/server';
+
+export default defineEventHandler(async (event) => {
+  try {
+    const supabaseAdmin = await serverSupabaseServiceRole(event);
+    
+    // 1. Fetch all RSVPs
+    const { data: rsvps, error: rsvpError } = await supabaseAdmin
+      .from('rsvps')
+      .select('*');
+      
+    if (rsvpError) {
+      console.error('Error fetching RSVPs:', rsvpError.message);
+      return { success: false, error: 'Failed to retrieve RSVPs' };
+    }
+
+    // 2. Fetch all Profiles for names
+    const { data: profiles, error: profileError } = await supabaseAdmin
+      .from('profiles')
+      .select('id, first_name, last_name');
+
+    if (profileError) {
+      console.error('Error fetching profiles:', profileError.message);
+      return { success: false, error: 'Failed to retrieve profiles' };
+    }
+
+    // 3. Fetch all Users for emails
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.listUsers();
+    
+    if (authError) {
+      console.error('Error fetching users:', authError.message);
+      return { success: false, error: 'Failed to retrieve user emails' };
+    }
+
+    // Map profiles and emails
+    const profilesMap = {};
+    profiles?.forEach(p => {
+      profilesMap[p.id] = `${p.first_name || ''} ${p.last_name || ''}`.trim();
+    });
+
+    const emailsMap = {};
+    authData?.users?.forEach(u => {
+      emailsMap[u.id] = u.email;
+    });
+
+    // Format responses
+    const formattedResponses = rsvps.map(r => ({
+      ...r,
+      name: profilesMap[r.user_id] || 'Unknown',
+      email: emailsMap[r.user_id] || 'Unknown',
+    }));
+
+    return { success: true, data: formattedResponses };
+  } catch (err: any) {
+    console.error('Exception in admin/responses:', err.message);
+    return { success: false, error: `Internal server error: ${err.message}` };
+  }
+});

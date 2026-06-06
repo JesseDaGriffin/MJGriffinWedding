@@ -28,6 +28,29 @@
             <span class="stat-label">Total Kids</span>
           </div>
         </div>
+
+        <div class="event-summary mt-md">
+          <div class="event-summary-item">
+            <span class="event-name">Ceremony</span>
+            <div class="event-counts">
+              <span class="count-badge">{{ mockData.eventTotals.ceremonyAdults }} Adults</span>
+              <span class="count-badge" v-if="mockData.eventTotals.ceremonyKids > 0">{{ mockData.eventTotals.ceremonyKids }} Kids</span>
+            </div>
+          </div>
+          <div class="event-summary-item">
+            <span class="event-name">Dinner</span>
+            <div class="event-counts">
+              <span class="count-badge">{{ mockData.eventTotals.dinnerAdults }} Adults</span>
+              <span class="count-badge" v-if="mockData.eventTotals.dinnerKids > 0">{{ mockData.eventTotals.dinnerKids }} Kids</span>
+            </div>
+          </div>
+          <div class="event-summary-item">
+            <span class="event-name">After Party</span>
+            <div class="event-counts">
+              <span class="count-badge">{{ mockData.eventTotals.afterpartyAdults }} Adults</span>
+            </div>
+          </div>
+        </div>
       </GlassCard>
 
       <!-- Individual Responses -->
@@ -41,10 +64,9 @@
                 <th>Guest Name</th>
                 <th>Guest Email</th>
                 <th>Status</th>
-                <th>Adults</th>
-                <th>Kids</th>
                 <th>Ceremony</th>
                 <th>Dinner</th>
+                <th>After Party</th>
               </tr>
             </thead>
             <tbody>
@@ -56,10 +78,9 @@
                     {{ response.attending ? 'Attending' : 'Declined' }}
                   </span>
                 </td>
-                <td>{{ response.adults_count }}</td>
-                <td>{{ response.kids_count }}</td>
-                <td>{{ response.attending_ceremony ? 'Yes' : 'No' }}</td>
-                <td>{{ response.attending_dinner ? 'Yes' : 'No' }}</td>
+                <td>{{ response.attending_ceremony ? `Yes (${response.ceremony_adults}A/${response.ceremony_kids}K)` : 'No' }}</td>
+                <td>{{ response.attending_dinner ? `Yes (${response.dinner_adults}A/${response.dinner_kids}K)` : 'No' }}</td>
+                <td>{{ response.attending_afterparty ? `Yes (${response.afterparty_adults}A)` : 'No' }}</td>
               </tr>
             </tbody>
           </table>
@@ -84,6 +105,13 @@ const mockData = ref({
     totalAdults: 0,
     totalKids: 0
   },
+  eventTotals: {
+    ceremonyAdults: 0,
+    ceremonyKids: 0,
+    dinnerAdults: 0,
+    dinnerKids: 0,
+    afterpartyAdults: 0
+  },
   responses: []
 });
 
@@ -98,51 +126,64 @@ onMounted(async () => {
 
 const fetchResponses = async () => {
   try {
-    const { data, error } = await supabase
-      .from('rsvps')
-      .select('*, auth.users(email)');
-
-    if (error) throw error;
+    const res = await $fetch('/api/admin/responses');
     
-    // Fetch profiles to get names
-    const { data: profilesData } = await supabase
-      .from('profiles')
-      .select('id, first_name, last_name');
-      
-    const profilesMap = {};
-    if (profilesData) {
-      profilesData.forEach(p => {
-        profilesMap[p.id] = `${p.first_name || ''} ${p.last_name || ''}`.trim();
-      });
+    if (!res.success) {
+      throw new Error(res.error || 'Failed to fetch responses');
     }
 
     let attending = 0;
     let declined = 0;
     let adults = 0;
     let kids = 0;
+    let ceremonyAdults = 0;
+    let ceremonyKids = 0;
+    let dinnerAdults = 0;
+    let dinnerKids = 0;
+    let afterpartyAdults = 0;
 
-    const formattedResponses = data.map(r => {
+    const formattedResponses = res.data.map(r => {
       if (r.attending) {
         attending++;
         adults += r.adults_count || 0;
         kids += r.kids_count || 0;
+        
+        if (r.attending_ceremony) {
+          ceremonyAdults += r.ceremony_adults || 0;
+          ceremonyKids += r.ceremony_kids || 0;
+        }
+        if (r.attending_dinner) {
+          dinnerAdults += r.dinner_adults || 0;
+          dinnerKids += r.dinner_kids || 0;
+        }
+        if (r.attending_afterparty) {
+          afterpartyAdults += r.afterparty_adults || 0;
+        }
       } else {
         declined++;
       }
       
       return {
         id: r.id,
-        name: profilesMap[r.user_id] || 'Unknown',
-        email: r.users?.email || 'Unknown',
+        name: r.name,
+        email: r.email,
         attending: r.attending,
         adults_count: r.adults_count,
         kids_count: r.kids_count,
         attending_ceremony: r.attending_ceremony,
-        attending_dinner: r.attending_dinner
+        ceremony_adults: r.ceremony_adults || 0,
+        ceremony_kids: r.ceremony_kids || 0,
+        attending_dinner: r.attending_dinner,
+        dinner_adults: r.dinner_adults || 0,
+        dinner_kids: r.dinner_kids || 0,
+        attending_afterparty: r.attending_afterparty,
+        afterparty_adults: r.afterparty_adults || 0,
+        afterparty_kids: r.afterparty_kids || 0
       };
     });
 
     mockData.value.summary = { attending, declined, totalAdults: adults, totalKids: kids };
+    mockData.value.eventTotals = { ceremonyAdults, ceremonyKids, dinnerAdults, dinnerKids, afterpartyAdults };
     mockData.value.responses = formattedResponses;
   } catch (error) {
     console.error('Error fetching responses:', error.message);
@@ -158,6 +199,7 @@ const fetchResponses = async () => {
 .mb-md { margin-bottom: var(--spacing-md); }
 .mt-md { margin-top: var(--spacing-md); }
 .text-primary { color: var(--color-primary); }
+.text-sm { font-size: 1.1rem; opacity: 0.6; font-weight: 500; margin-left: 2px; }
 
 .full-width {
   grid-column: 1 / -1;
@@ -234,5 +276,47 @@ const fetchResponses = async () => {
 .status-no {
   color: #F44336;
   font-weight: bold;
+}
+
+.event-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  min-width: 140px;
+}
+
+.event-name {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.event-counts {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.count-badge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #fff;
 }
 </style>

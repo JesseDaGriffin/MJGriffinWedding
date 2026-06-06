@@ -3,9 +3,9 @@ import { sendEmail, getRsvpEmailTemplate } from '../utils/email';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const { name, email, attending, adults, kids, ceremony, dinner } = body;
+  const { name, email, attending, ceremony, dinner, afterparty } = body;
 
-  const html = getRsvpEmailTemplate(name, email, attending, adults, kids, ceremony, dinner);
+  const html = getRsvpEmailTemplate(name, email, attending, ceremony, dinner, afterparty);
 
   const success = await sendEmail({
     to: 'dagriffinwedding@gmail.com',

@@ -290,7 +290,8 @@ watchEffect(() => {
 /* ─── Admin Grouping ─── */
 .admin-group {
   position: relative;
-  display: inline-block;
+  display: flex;
+  align-items: center;
 }
 
 .admin-label {

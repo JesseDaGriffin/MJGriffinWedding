@@ -146,7 +146,14 @@ export const getContactEmailTemplate = (name: string, email: string, subject: st
   `;
 };
 
-export const getRsvpEmailTemplate = (name: string, email: string, attending: boolean, adults: number, kids: number, ceremony: boolean, dinner: boolean) => {
+export const getRsvpEmailTemplate = (
+  name: string, 
+  email: string, 
+  attending: boolean, 
+  ceremony: { attending: boolean, adults: number, kids: number }, 
+  dinner: { attending: boolean, adults: number, kids: number },
+  afterparty: { attending: boolean, adults: number }
+) => {
   return `
   <!DOCTYPE html>
   <html>
@@ -188,16 +195,13 @@ export const getRsvpEmailTemplate = (name: string, email: string, attending: boo
               </div>
               ${attending ? `
               <div class="detail-row">
-                <span class="label">Adults:</span> ${adults}
+                <span class="label">Ceremony:</span> ${ceremony.attending ? `Yes (${ceremony.adults} Adults, ${ceremony.kids} Kids)` : 'No'}
               </div>
               <div class="detail-row">
-                <span class="label">Children:</span> ${kids}
+                <span class="label">Dinner:</span> ${dinner.attending ? `Yes (${dinner.adults} Adults, ${dinner.kids} Kids)` : 'No'}
               </div>
               <div class="detail-row">
-                <span class="label">Ceremony:</span> ${ceremony ? 'Yes' : 'No'}
-              </div>
-              <div class="detail-row">
-                <span class="label">Dinner:</span> ${dinner ? 'Yes' : 'No'}
+                <span class="label">21+ After Party:</span> ${afterparty.attending ? `Yes (${afterparty.adults} Adults)` : 'No'}
               </div>
               ` : ''}
             </div>
