@@ -126,7 +126,8 @@ const logout = async () => {
 watchEffect(() => {
   if (user.value) {
     isAuthenticated.value = true;
-    if (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' || localStorage.getItem('wedding_admin') === 'true') {
+    const isLocalAdmin = import.meta.client ? localStorage.getItem('wedding_admin') === 'true' : false;
+    if (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' || isLocalAdmin) {
       isAdmin.value = true;
     }
   } else {
