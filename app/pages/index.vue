@@ -22,9 +22,7 @@
       <GlassCard class="about-content">
         <p class="text-center">
           Welcome to the official home of the soon-to-be Griffins! We are so thrilled to celebrate our
-          special day with the people we love most. Las Vegas has always been a special place for us,
-          filled with fun, memories, and now — the beginning of our forever as the Griffin family.
-          We can't wait for you to join us for an unforgettable weekend.
+          special day with the people we love most.
         </p>
       </GlassCard>
     </section>
