@@ -17,5 +17,10 @@ export default defineNuxtConfig({
     cookieOptions: {
       secure: process.env.NODE_ENV === 'production'
     }
+  },
+  runtimeConfig: {
+    cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+    cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET
   }
 })
