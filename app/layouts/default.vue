@@ -65,15 +65,15 @@
         <NuxtLink to="/questionnaire" class="mobile-nav-link" @click="closeMenu">Questionnaire</NuxtLink>
         <template v-if="isAdmin">
           <div class="mobile-nav-divider"></div>
-          <span class="mobile-nav-link mobile-nav-link--admin" style="font-weight: 700; opacity: 0.8; pointer-events: none;">Admin Tools</span>
-          <NuxtLink to="/responses" class="mobile-nav-link mobile-nav-link--admin pl-md" @click="closeMenu">Responses</NuxtLink>
-          <NuxtLink to="/questionnaires" class="mobile-nav-link mobile-nav-link--admin pl-md" @click="closeMenu">Questionnaires</NuxtLink>
-          <NuxtLink to="/announcements" class="mobile-nav-link mobile-nav-link--admin pl-md" @click="closeMenu">Announcements</NuxtLink>
+          <span class="mobile-nav-link mobile-nav-link--admin admin-heading">Admin Tools</span>
+          <NuxtLink to="/responses" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Responses</NuxtLink>
+          <NuxtLink to="/questionnaires" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Questionnaires</NuxtLink>
+          <NuxtLink to="/announcements" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Announcements</NuxtLink>
         </template>
         <div class="mobile-nav-divider"></div>
         <NuxtLink to="/rsvp" class="btn rsvp-btn mobile-rsvp" @click="closeMenu">RSVP</NuxtLink>
         <template v-if="isAuthenticated">
-          <NuxtLink to="/account" class="mobile-nav-link" @click="closeMenu">Account</NuxtLink>
+          <NuxtLink to="/account" class="mobile-nav-link mobile-nav-link--small" @click="closeMenu">Account</NuxtLink>
           <button @click="logout" class="mobile-nav-link mobile-nav-link--danger">Logout</button>
         </template>
       </nav>
@@ -351,63 +351,96 @@ watchEffect(() => {
 /* ─── Mobile nav drawer ─── */
 .nav-mobile {
   display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 72px);
+  background: rgba(26, 26, 26, 0.98);
+  backdrop-filter: blur(15px);
   flex-direction: column;
-  background: #1a1a1a;
-  border-top: none;
-  padding: 0 1.5rem;
-  gap: 0.15rem;
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.35s ease, padding 0.35s ease, border-top 0s;
+  align-items: center;
+  padding: 2.5rem 1.5rem 5rem;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 90;
 }
 
 .nav-mobile--open {
-  max-height: 600px;
-  padding: 1rem 1.5rem 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 1;
+  visibility: visible;
 }
 
 .mobile-nav-link {
   display: block;
-  padding: 0.65rem 0;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 1rem;
+  padding: 0.85rem 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.4rem;
   font-weight: 500;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: var(--font-heading, inherit);
   text-decoration: none;
   background: none;
-  border-left: none;
-  border-right: none;
-  border-top: none;
+  border: none;
   width: 100%;
-  text-align: left;
-  font-family: var(--font-body);
+  text-align: center;
   cursor: pointer;
-  transition: color 0.2s;
-}
-
-.mobile-nav-link:last-child {
-  border-bottom: none;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .mobile-nav-link:hover,
 .mobile-nav-link.router-link-active {
   color: var(--color-primary);
+  transform: scale(1.05);
 }
 
-.mobile-nav-link--admin { color: var(--color-accent) !important; }
-.mobile-nav-link--danger { color: #ff6b6b !important; }
+.mobile-nav-link--small {
+  font-family: var(--font-body, inherit);
+  font-size: 1.1rem;
+}
+
+.mobile-nav-link--admin { 
+  font-family: var(--font-body, inherit);
+  font-size: 1.1rem;
+  color: var(--color-accent) !important;
+  padding: 0.6rem 0;
+}
+
+.admin-heading {
+  font-weight: 700;
+  opacity: 0.8;
+  pointer-events: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-nav-link--danger { 
+  font-family: var(--font-body, inherit);
+  font-size: 1.1rem;
+  color: #ff6b6b !important;
+  margin-top: 1rem;
+}
 
 .mobile-nav-divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 0.5rem 0;
+  width: 40px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 1.5rem auto;
+  border-radius: 2px;
 }
 
 .mobile-rsvp {
-  display: inline-block;
-  margin-bottom: 0.5rem;
-  text-align: center;
+  margin: 1.5rem 0 1.5rem;
+  width: 100%;
+  max-width: 280px;
+  font-size: 1.1rem;
+  padding: 0.9rem;
+  border-radius: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* ─── Layout ─── */
