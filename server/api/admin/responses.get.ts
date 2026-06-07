@@ -34,18 +34,18 @@ export default defineEventHandler(async (event) => {
     }
 
     // Map profiles and emails
-    const profilesMap = {};
-    profiles?.forEach(p => {
+    const profilesMap: Record<string, string> = {};
+    ((profiles as any[]) || []).forEach(p => {
       profilesMap[p.id] = `${p.first_name || ''} ${p.last_name || ''}`.trim();
     });
 
-    const emailsMap = {};
-    authData?.users?.forEach(u => {
+    const emailsMap: Record<string, string | undefined> = {};
+    (authData?.users || []).forEach(u => {
       emailsMap[u.id] = u.email;
     });
 
     // Format responses
-    const formattedResponses = rsvps.map(r => ({
+    const formattedResponses = ((rsvps as any[]) || []).map(r => ({
       ...r,
       name: profilesMap[r.user_id] || 'Unknown',
       email: emailsMap[r.user_id] || 'Unknown',
