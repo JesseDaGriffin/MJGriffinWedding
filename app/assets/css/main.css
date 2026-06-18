@@ -6,6 +6,7 @@
   --color-plum: #b565a7;
   --color-smoked-amber: #9e591f;
   --color-deep-teal: #003b46;
+  --color-amethyst-blue: #9a8eb5;
   
   --color-background: var(--color-charcoal);
   --color-text: #eaeaea;
@@ -58,7 +59,7 @@ h2 {
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--color-amethyst-blue);
   text-decoration: none;
   transition: var(--transition);
 }

@@ -2,81 +2,98 @@
   <div class="container section">
     <PageHeader 
       title="Weekend Itinerary" 
-      subtitle="A guide to our wedding weekend in Las Vegas" 
+      subtitle="Here is a sneak peek of what we're thinking so far! Keep an eye on your inbox for updates as we lock in these plans!" 
       subtitle-class="subtitle" 
     />
+    
     <div class="timeline">
-      
-      <!-- Day 1 -->
-      <div class="timeline-item">
-        <div class="timeline-marker"></div>
-        <GlassCard class="timeline-content">
-          <h2 class="day-title">Day 1: Friday</h2>
-          <h3 class="event-title text-accent">Family Day</h3>
-          <p class="event-desc">
-            We'll be spending the day with our families as everyone arrives and settles in. 
-            Enjoy your first day in Vegas! If you're looking for things to do, check out the strip or relax by the pool.
-          </p>
-        </GlassCard>
-      </div>
-
-      <!-- Day 2 -->
-      <div class="timeline-item">
-        <div class="timeline-marker"></div>
-        <GlassCard class="timeline-content">
-          <h2 class="day-title">Day 2: Saturday</h2>
-          <h3 class="event-title text-accent">The Big Day</h3>
-          <p class="event-desc mb-sm">
-            This is it! We are getting married today.
-          </p>
-          <NuxtLink to="/ceremony" class="btn btn-secondary mb-sm inline-block">View Ceremony Details</NuxtLink>
-          
-          <h3 class="event-title text-accent mt-md">After Party</h3>
-          <p class="event-desc">
-            Join us at <strong>Play Playground</strong> for a night of fun, games, and celebration to cap off our wedding day!
-          </p>
-        </GlassCard>
-      </div>
-
-      <!-- Day 3 -->
-      <div class="timeline-item">
-        <div class="timeline-marker"></div>
-        <GlassCard class="timeline-content">
-          <h2 class="day-title">Day 3: Sunday</h2>
-          <h3 class="event-title text-accent">Reception Dinner</h3>
-          <p class="event-desc">
-            In the evening, we will host a reception dinner for everyone to come together, share a meal, and celebrate.
-          </p>
-          <p class="event-desc mt-sm">
-            Later in the night, we'll be going out on the town! (Adults only)
-          </p>
-        </GlassCard>
-      </div>
-
-      <!-- Day 4 -->
-      <div class="timeline-item">
-        <div class="timeline-marker"></div>
-        <GlassCard class="timeline-content">
-          <h2 class="day-title">Day 4: Monday</h2>
-          <h3 class="event-title text-accent">Farewells &amp; Us Time</h3>
-          <p class="event-desc">
-            Most people will be traveling back home today. Safe travels!
-            Maddie and Jesse will be spending the rest of the day relaxing and enjoying our first day of married life together.
-          </p>
-        </GlassCard>
-      </div>
-
+      <ItineraryDay 
+        v-for="day in itineraryDays" 
+        :key="day.dayNumber" 
+        :day="day" 
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, useTemplateRef } from 'vue';
+import { ref, onMounted, onUnmounted, nextTick } from 'vue';
 
-const revealElements = ref([]);
+const itineraryDays = [
+  {
+    dayNumber: 1,
+    dayOfWeek: "Friday",
+    date: "March 12th, 2027",
+    events: [
+      {
+        title: "Family Day",
+        description: "Our first day is going to be family centric. We will be doing activities that are kid friendly, but should be fun for all. Here are a few activities we know we want to do: ",
+        activities: [
+          '<a href="https://meowwolf.com/visit/las-vegas" target="_blank" rel="noopener noreferrer" class="event-link">Omega Mart</a>',
+          '<a href="https://area15.com/" target="_blank" rel="noopener noreferrer" class="event-link">Area 15</a>',
+          '<a href="https://newyorknewyork.mgmresorts.com/en/entertainment/the-big-apple-coaster-and-arcade.html" target="_blank" rel="noopener noreferrer" class="event-link">New York roller coaster</a>',
+          'Dinner at Excalibur for the <a href="https://excalibur.mgmresorts.com/en/entertainment/tournament-of-kings.html" target="_blank" rel="noopener noreferrer" class="event-link">Tournament of Kings </a>',
+          'After the kids go to bed, casino time'
+        ]
+      }
+    ]
+  },
+  {
+    dayNumber: 2,
+    dayOfWeek: "Saturday",
+    date: "March 13th, 2027",
+    events: [
+      {
+        title: "The Big Day",
+        description: "All of our wedding day festivities can be found on the following page. ",
+        link: {
+          to: "/ceremony",
+          text: "View Ceremony Details",
+          class: "btn btn-secondary mb-sm inline-block",
+          isExternal: false
+        }
+      },
+      {
+        title: "After Party",
+        description: "Join us at <a href=\"https://www.playplayground.com/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"event-link\">Play Playground</a> for a night of fun."
+      }
+    ]
+  },
+  {
+    dayNumber: 3,
+    dayOfWeek: "Sunday",
+    date: "March 14th, 2027",
+    events: [
+      {
+        title: "The Day After",
+        description: "We are still putting together the plans for the afternoon. Stay tuned!"
+      },
+      {
+        title: "Reception Dinner",
+        description: "For our reception dinner, we will be meeting at <a href=\"https://happycamper.pizza/las-vegas/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"event-link\">Happy Camper</a> from <strong>6:30pm to 8:30pm</strong>. We will be providing food and bottomless drinks. Yes, that includes alcohol!",
+        subDescription: "Later in the night, we'll be going out on the town! (Adults only)"
+      }
+    ]
+  },
+  {
+    dayNumber: 4,
+    dayOfWeek: "Monday",
+    date: "March 15th, 2027",
+    events: [
+      {
+        title: "Farewells & Us Time",
+        description: "We anticipate that most people will be traveling back home today. <br/> Safe travels and we hope you had fun!"
+      }
+    ]
+  }
+];
+
 let observer = null;
 
-onMounted(() => {
+onMounted(async () => {
+  // Wait for children components to mount and layout
+  await nextTick();
+  
   const items = document.querySelectorAll('.timeline-item');
 
   observer = new IntersectionObserver((entries) => {
@@ -87,7 +104,7 @@ onMounted(() => {
       }
     });
   }, {
-    threshold: 0.15,
+    threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
   });
 
@@ -103,33 +120,19 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.text-center { text-align: center; }
-.mb-sm { margin-bottom: var(--spacing-sm); }
-.mb-md { margin-bottom: var(--spacing-md); }
-.mb-lg { margin-bottom: var(--spacing-lg); }
-.mt-sm { margin-top: var(--spacing-sm); }
-.mt-md { margin-top: var(--spacing-md); }
-
 .subtitle {
   color: rgba(255, 255, 255, 0.7);
   font-size: 1.2rem;
 }
 
-.text-accent {
-  color: var(--color-accent);
-}
-
-.inline-block {
-  display: inline-block;
-}
-
 .timeline {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   position: relative;
-  padding: 2rem 0;
+  padding: 3rem 0;
 }
 
+/* Vertical line with gradient fade at top and bottom */
 .timeline::before {
   content: '';
   position: absolute;
@@ -137,126 +140,68 @@ onUnmounted(() => {
   bottom: 0;
   left: 20px;
   width: 2px;
-  background-color: var(--color-primary);
+  background: linear-gradient(
+    to bottom,
+    rgba(107, 142, 35, 0) 0%,
+    var(--color-primary) 10%,
+    var(--color-primary) 90%,
+    rgba(107, 142, 35, 0) 100%
+  );
 }
 
-.timeline-item {
-  position: relative;
-  margin-bottom: 3rem;
-  padding-left: 60px;
+@media (max-width: 767px) {
+  .timeline {
+    padding: 1.5rem 0;
+  }
+  
+  .timeline::before {
+    left: 15px;
+  }
 }
 
-.timeline-item:last-child {
-  margin-bottom: 0;
-}
-
-/* ─── Card animation ─── */
-.timeline-item .timeline-content {
-  opacity: 0;
-  transform: translateY(40px) scale(0.96);
-  filter: blur(3px);
-  transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
-    filter 0.6s ease var(--reveal-delay, 0s),
-    box-shadow 0.5s ease calc(var(--reveal-delay, 0s) + 0.3s);
-}
-
-.timeline-item.revealed .timeline-content {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-  box-shadow: 0 0 18px rgba(107, 142, 35, 0.1), 0 8px 32px rgba(0, 0, 0, 0.25);
-}
-
-/* ─── Marker animation ─── */
-.timeline-marker {
-  position: absolute;
-  top: 0;
-  left: 11px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: var(--color-background);
-  border: 4px solid var(--color-primary);
-  box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.2);
-  transform: scale(0);
-  opacity: 0;
-  transition:
-    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--reveal-delay, 0s) + 0.25s),
-    opacity 0.3s ease calc(var(--reveal-delay, 0s) + 0.25s),
-    box-shadow 0.4s ease calc(var(--reveal-delay, 0s) + 0.4s);
-}
-
-.timeline-item.revealed .timeline-marker {
-  transform: scale(1);
-  opacity: 1;
-  box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.2), 0 0 12px rgba(107, 142, 35, 0.35);
-}
-
-.timeline-content {
-  padding: 2rem;
-}
-
-.day-title {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 0.5rem;
-}
-
-.event-title {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
-}
-
-.event-desc {
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-}
-
+/* ─── Desktop Alternating Layout ─── */
 @media (min-width: 768px) {
   .timeline::before {
     left: 50%;
     transform: translateX(-50%);
   }
   
-  .timeline-item {
+  /* Root element of ItineraryDay component */
+  :deep(.timeline-item) {
     width: 50%;
     padding-left: 0;
-    padding-right: 40px;
-    text-align: right;
+    padding-right: 45px;
   }
   
-  .timeline-item:nth-child(even) {
+  /* Even items sit on the right side */
+  :deep(.timeline-item:nth-child(even)) {
     margin-left: 50%;
     padding-right: 0;
-    padding-left: 40px;
-    text-align: left;
+    padding-left: 45px;
   }
   
-  .timeline-marker {
+  /* Alternating markers centered on 50% line */
+  :deep(.timeline-item .timeline-marker) {
     left: auto;
-    right: -10px;
+    right: -12px;
   }
   
-  .timeline-item:nth-child(even) .timeline-marker {
-    left: -10px;
+  :deep(.timeline-item:nth-child(even) .timeline-marker) {
+    left: -12px;
     right: auto;
   }
-
-  /* Desktop: cards slide toward the line */
-  .timeline-item:nth-child(odd) .timeline-content {
+  
+  /* Slide towards the center line on reveal */
+  :deep(.timeline-item:nth-child(odd) .timeline-content) {
     transform: translateX(-50px) scale(0.96);
   }
-
-  .timeline-item:nth-child(even) .timeline-content {
+  
+  :deep(.timeline-item:nth-child(even) .timeline-content) {
     transform: translateX(50px) scale(0.96);
   }
-
-  .timeline-item.revealed .timeline-content {
-    transform: translateX(0) scale(1);
+  
+  :deep(.timeline-item.revealed .timeline-content) {
+    transform: translate(0, 0) scale(1);
   }
 }
 </style>

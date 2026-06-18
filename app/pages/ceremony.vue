@@ -184,7 +184,7 @@
 .time {
   min-width: 90px;
   font-weight: 700;
-  color: var(--color-accent-alt);
+  color: var(--color-amethyst-blue);
   font-family: var(--font-heading);
 }
 
