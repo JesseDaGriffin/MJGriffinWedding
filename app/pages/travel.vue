@@ -45,41 +45,19 @@
         </div>
         <h2 class="mb-sm">Accommodations</h2>
         <p class="mb-md">
-          We are currently organizing a hotel block for our guests. 
-          Details and booking links will be provided here soon!
+          We are currently looking at booking at the <a href="https://www.caesars.com/flamingo-las-vegas" target="_blank" rel="noopener noreferrer">Flamingo Hotel</a>. 
         </p>
-        <p class="small-text">
+        <div class="nearby-hotels">
+          <p class="mb-sm">For other convenient options right in the Center Strip, these nearby hotels are also excellent choices:</p>
+          <ul class="hotel-list">
+            <li><a href="https://www.caesars.com/linq" target="_blank" rel="noopener noreferrer">The LINQ</a></li>
+            <li><a href="https://www.caesars.com/planet-hollywood" target="_blank" rel="noopener noreferrer">Planet Hollywood</a></li>
+            <li><a href="https://www.caesars.com/paris-las-vegas" target="_blank" rel="noopener noreferrer">Paris Hotel</a></li>
+          </ul>
+        </div>
+        <p class="small-text mt-md">
           Check back for updates on where we'll be staying.
         </p>
-      </GlassCard>
-
-      <!-- Getting Around -->
-      <GlassCard class="text-center full-width">
-        <div class="icon-container">
-          <span class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
-              <circle cx="7" cy="17" r="2"></circle>
-              <path d="M9 17h6"></path>
-              <circle cx="17" cy="17" r="2"></circle>
-            </svg>
-          </span>
-        </div>
-        <h2 class="mb-sm">Getting Around</h2>
-        <div class="transport-info">
-          <div class="transport-item">
-            <h4>Ride Share</h4>
-            <p>Uber and Lyft are widely available and often the easiest way to navigate off-strip or from the airport.</p>
-          </div>
-          <div class="transport-item">
-            <h4>Walking</h4>
-            <p>The Strip is very walkable, but remember things are farther apart than they appear!</p>
-          </div>
-          <div class="transport-item">
-            <h4>Monorail</h4>
-            <p>A great option for traveling quickly up and down the East side of the Strip.</p>
-          </div>
-        </div>
       </GlassCard>
 
     </div>
@@ -100,9 +78,7 @@
   margin: 0 auto;
 }
 
-.full-width {
-  grid-column: 1 / -1;
-}
+
 
 .icon-container {
   font-size: 3rem;
@@ -115,31 +91,53 @@
   font-style: italic;
 }
 
-.transport-info {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-md);
+
+
+.nearby-hotels {
   margin-top: var(--spacing-md);
-  text-align: left;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.transport-item h4 {
-  color: var(--color-accent);
-  margin-bottom: 0.5rem;
-}
-
-.transport-item p {
+.nearby-hotels p {
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+}
+
+.hotel-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1rem;
+  margin-top: var(--spacing-sm);
+}
+
+.hotel-list li a {
+  font-size: 0.9rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  display: inline-block;
+  transition: var(--transition);
+}
+
+.hotel-list li a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+.mt-md {
+  margin-top: var(--spacing-md);
 }
 
 @media (max-width: 768px) {
   .travel-grid {
     grid-template-columns: 1fr;
-  }
-  .transport-info {
-    grid-template-columns: 1fr;
-    text-align: center;
   }
 }
 </style>

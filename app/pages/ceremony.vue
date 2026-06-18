@@ -17,7 +17,7 @@
 
         <h3 class="mb-sm text-accent">Transportation</h3>
         <p>
-          We will be providing a shuttle for our guests. The shuttle will depart from the Pink Flamingo Hotel at 3:00 PM and take everyone to the Valley of Fire for the ceremony and celebration.
+          We will be providing a shuttle for our guests. The shuttle will depart from the <a href="https://www.caesars.com/flamingo-las-vegas" target="_blank" rel="noopener noreferrer">Pink Flamingo Hotel</a> at 3:00 PM and take everyone to the Valley of Fire for the ceremony and celebration.
         </p>
       </GlassCard>
 
