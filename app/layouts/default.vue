@@ -1,13 +1,13 @@
 <template>
   <div class="layout">
-    <header class="header">
+    <header class="header" :class="{ 'header--home-desktop-hidden': isHomepage }">
       <div class="container header-content">
 
         <!-- Logo -->
         <NuxtLink to="/" class="logo">M &amp; J</NuxtLink>
 
         <!-- Desktop nav (hidden on mobile) -->
-        <nav class="nav-desktop">
+        <nav v-if="!isHomepage" class="nav-desktop">
           <NuxtLink to="/" class="nav-link" @click="closeMenu">Home</NuxtLink>
           <NuxtLink to="/itinerary" class="nav-link" @click="closeMenu">Itinerary</NuxtLink>
           <NuxtLink to="/travel" class="nav-link" @click="closeMenu">Travel</NuxtLink>
@@ -27,7 +27,7 @@
 
         <!-- Desktop right-side actions (hidden on mobile) -->
         <div class="header-actions-desktop">
-          <NuxtLink to="/rsvp" class="btn rsvp-btn">RSVP</NuxtLink>
+          <NuxtLink v-if="!isHomepage" to="/rsvp" class="btn rsvp-btn">RSVP</NuxtLink>
 
           <!-- User dropdown -->
           <div v-if="isAuthenticated" class="user-menu" ref="userMenuRef">
@@ -94,6 +94,8 @@
 <script setup>
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
+const route = useRoute();
+const isHomepage = computed(() => route.path.replace(/\/$/, '') === '');
 
 const isMenuOpen = ref(false);
 const isDropdownOpen = ref(false);
@@ -148,12 +150,12 @@ watchEffect(() => {
 
 /* ─── Header ─── */
 .header {
-  background-color: rgba(28, 28, 28, 0.95);
+  background-color: rgba(17, 14, 14, 0.9);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(197, 168, 128, 0.12);
 }
 
 .header-content {
@@ -166,11 +168,13 @@ watchEffect(() => {
 
 .logo {
   font-family: var(--font-heading);
-  font-size: 1.7rem;
-  font-weight: 700;
-  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--color-primary);
   flex-shrink: 0;
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 /* ─── Desktop nav ─── */
@@ -234,7 +238,7 @@ watchEffect(() => {
 }
 
 .user-icon-btn:hover {
-  background: rgba(107, 142, 35, 0.22);
+  background: rgba(197, 168, 128, 0.22);
   border-color: var(--color-primary);
   color: #fff;
 }
@@ -479,5 +483,11 @@ watchEffect(() => {
 
 @media (max-width: 600px) {
   .logo { font-size: 1.4rem; }
+}
+
+@media (min-width: 901px) {
+  .header--home-desktop-hidden {
+    display: none;
+  }
 }
 </style>

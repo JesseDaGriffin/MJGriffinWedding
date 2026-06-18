@@ -142,10 +142,10 @@ onUnmounted(() => {
   width: 2px;
   background: linear-gradient(
     to bottom,
-    rgba(107, 142, 35, 0) 0%,
+    rgba(197, 168, 128, 0) 0%,
     var(--color-primary) 10%,
     var(--color-primary) 90%,
-    rgba(107, 142, 35, 0) 100%
+    rgba(197, 168, 128, 0) 100%
   );
 }
 

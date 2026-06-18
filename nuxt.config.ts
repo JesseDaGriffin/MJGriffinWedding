@@ -10,7 +10,10 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       Inter: [400, 500, 600, 700],
-      'Playfair Display': [400, 600, 700]
+      'Playfair Display': [400, 600, 700],
+      'UnifrakturMaguntia': true,
+      'Pirata One': true,
+      'Cinzel': [400, 500, 600, 700]
     }
   },
   supabase: {

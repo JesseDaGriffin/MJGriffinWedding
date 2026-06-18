@@ -96,7 +96,7 @@
 .nearby-hotels {
   margin-top: var(--spacing-md);
   padding-top: var(--spacing-md);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(197, 168, 128, 0.15);
 }
 
 .nearby-hotels p {
@@ -117,18 +117,19 @@
 
 .hotel-list li a {
   font-size: 0.9rem;
-  padding: 0.35rem 0.85rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  background: rgba(8, 6, 6, 0.5);
+  border: 1px solid rgba(197, 168, 128, 0.2);
+  border-radius: var(--border-radius);
   display: inline-block;
   transition: var(--transition);
+  color: var(--color-cream);
 }
 
 .hotel-list li a:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: var(--color-accent);
-  color: #fff;
+  background: rgba(197, 168, 128, 0.1);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .mt-md {

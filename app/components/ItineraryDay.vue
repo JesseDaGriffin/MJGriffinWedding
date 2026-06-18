@@ -108,7 +108,7 @@ defineProps({
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 2px solid rgba(107, 142, 35, 0.4);
+  border: 2px solid rgba(197, 168, 128, 0.4);
   animation: pulse 2.5s infinite ease-out;
   pointer-events: none;
   z-index: 1;
@@ -146,7 +146,7 @@ defineProps({
   opacity: 1;
   transform: translateY(0) scale(1);
   filter: blur(0);
-  box-shadow: 0 0 18px rgba(107, 142, 35, 0.1), 0 8px 32px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 18px rgba(197, 168, 128, 0.15), 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
 /* Scroll-Reveal marker transition */
@@ -254,7 +254,7 @@ defineProps({
 
 /* Deep selection to style dynamic HTML links within events */
 :deep(.event-link) {
-  color: var(--color-amethyst-blue);
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 500;
   border-bottom: 1px solid transparent;
@@ -262,8 +262,8 @@ defineProps({
 }
 
 :deep(.event-link:hover) {
-  border-bottom-color: var(--color-amethyst-blue);
-  text-shadow: 0 0 8px rgba(154, 142, 181, 0.4);
+  border-bottom-color: var(--color-primary);
+  text-shadow: 0 0 8px rgba(197, 168, 128, 0.4);
 }
 
 :deep(strong) {
