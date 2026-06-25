@@ -1,11 +1,15 @@
-# Site Todo List
+# Development Todo List
 
-- Link Gmail for sending emails.
-- Update site to send email when contact form is submitted.
-- Create custom email templates for the wedding.
-- Create dropdown for super user pages.
-    - Create page that super user can send emails to guests.
-    - Move resposnes page into the dropdown.
-- Update all text on site.
-- Add images to repo for carousel.
-- Update email to link to RSVP page.
+## Home Page
+- [ ] Take a picture for home page.
+- [ ] Write story for homepage.
+
+## Itinerary
+- [ ] Fix view ceremony button.
+- [ ] New color for days header.
+
+## Travel
+- [ ] Add one more box of information about tips on buying things, maximizing money etc.
+
+## Ceremony
+- [ ] Overhaul layout.
