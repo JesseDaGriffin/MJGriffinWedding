@@ -87,7 +87,7 @@
 
 .small-text {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-cream-muted);
   font-style: italic;
 }
 
@@ -101,7 +101,7 @@
 
 .nearby-hotels p {
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-cream-muted);
   line-height: 1.5;
 }
 
@@ -123,7 +123,7 @@
   border-radius: var(--border-radius);
   display: inline-block;
   transition: var(--transition);
-  color: var(--color-cream);
+  color: var(--color-cream-muted);
 }
 
 .hotel-list li a:hover {

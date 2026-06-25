@@ -10,12 +10,27 @@
   --color-cream: #e5e0d8;
   --color-cream-muted: #a8a39a;
   
+  /* Green Link Palette */
+  --color-green: #6b8e23;
+  --color-green-desaturated: #799154; /* Lowered saturation green for links */
+  --color-green-desaturated-hover: #98b471; /* Lighter hover color for links */
+  
+  /* Amethyst Purple Palette */
+  --color-amethyst-blue: #a290b4;
+  --color-amethyst-dark: #7c6a90;
+
+  /* Sapphire Blue Palette */
+  --color-sapphire-muted: #36495d;
+  --color-sapphire-muted-hover: #475e7a;
+  
+  --color-link: var(--color-green-desaturated);
+  --color-link-hover: var(--color-green-desaturated-hover);
   --color-background: var(--color-charcoal);
-  --color-text: var(--color-cream);
+  --color-text: var(--color-cream-muted);
   --color-primary: var(--color-gold);
-  --color-secondary: var(--color-burgundy);
-  --color-accent: var(--color-gold-muted);
-  --color-accent-alt: var(--color-burgundy);
+  --color-secondary: var(--color-sapphire-muted);
+  --color-accent: var(--color-amethyst-blue);
+  --color-accent-alt: var(--color-green-desaturated);
   --color-card-bg: rgba(12, 10, 10, 0.75);
 
   /* Fonts */
@@ -53,7 +68,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 500;
-  color: #fff;
+  color: var(--color-cream-muted);
   margin-bottom: var(--spacing-sm);
   letter-spacing: 0.1em;
 }
@@ -75,7 +90,7 @@ h2 {
 h3 {
   font-size: 1.5rem;
   text-transform: uppercase;
-  color: var(--color-cream);
+  color: var(--color-cream-muted);
 }
 
 a {
@@ -118,16 +133,16 @@ a:hover {
 
 .btn-secondary {
   background-color: transparent;
-  border: 1px solid var(--color-burgundy);
-  color: var(--color-cream) !important;
+  border: 1px solid var(--color-sapphire-muted);
+  color: var(--color-cream-muted) !important;
 }
 
 .btn-secondary:hover {
-  background-color: var(--color-burgundy);
-  border-color: var(--color-burgundy);
-  color: #fff !important;
+  background-color: var(--color-sapphire-muted-hover);
+  border-color: var(--color-sapphire-muted-hover);
+  color: var(--color-cream-muted) !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 16, 31, 0.4);
+  box-shadow: 0 4px 15px rgba(71, 94, 122, 0.4);
 }
 
 .container {

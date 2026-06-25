@@ -190,12 +190,12 @@
 
 .event h4 {
   margin-bottom: 0.25rem;
-  color: #fff;
+  color: var(--color-cream-muted);
   font-size: 1.1rem;
 }
 
 .event p {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-cream-muted);
   font-size: 0.95rem;
 }
 
@@ -232,7 +232,7 @@
 .pass-list li {
   margin-bottom: 1.25rem;
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-cream-muted);
   line-height: 1.5;
 }
 

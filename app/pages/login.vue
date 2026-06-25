@@ -192,7 +192,7 @@ const handleSubmit = async () => {
   background: none;
   border: none;
   padding: var(--spacing-sm);
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-cream-muted);
   font-family: var(--font-heading);
   font-size: 1.2rem;
   cursor: pointer;

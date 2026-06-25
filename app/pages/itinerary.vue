@@ -121,7 +121,7 @@ onUnmounted(() => {
 
 <style scoped>
 .subtitle {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-cream-muted);
   font-size: 1.2rem;
 }
 
@@ -142,10 +142,10 @@ onUnmounted(() => {
   width: 2px;
   background: linear-gradient(
     to bottom,
-    rgba(197, 168, 128, 0) 0%,
-    var(--color-primary) 10%,
-    var(--color-primary) 90%,
-    rgba(197, 168, 128, 0) 100%
+    rgba(121, 145, 84, 0) 0%,
+    var(--color-green-desaturated) 10%,
+    var(--color-green-desaturated) 90%,
+    rgba(121, 145, 84, 0) 100%
   );
 }
 

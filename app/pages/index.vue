@@ -164,7 +164,7 @@ const daysRemainingText = computed(() => {
   font-family: var(--font-gothic);
   font-size: 5.5rem;
   font-weight: 400;
-  color: #fff;
+  color: var(--color-cream-muted);
   margin-bottom: 0.5rem;
   line-height: 1;
   text-transform: none; /* Blackletter fonts should use normal casing */
@@ -188,7 +188,7 @@ const daysRemainingText = computed(() => {
 .wedding-details {
   font-family: var(--font-heading);
   font-size: 0.95rem;
-  color: var(--color-cream-muted);
+  color: var(--color-amethyst-dark);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
@@ -233,13 +233,13 @@ const daysRemainingText = computed(() => {
 
 .hero-nav-link:hover,
 .hero-nav-link.router-link-active {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
+  color: var(--color-link);
+  border-bottom-color: var(--color-link);
 }
 
 .hero-nav-link--rsvp {
   font-weight: 700;
-  color: #fff;
+  color: var(--color-cream-muted);
 }
 
 /* Portrait / Couple Photo Container */
@@ -296,7 +296,7 @@ const daysRemainingText = computed(() => {
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-cream);
+  color: var(--color-primary);
   margin-bottom: 0.25rem;
 }
 
@@ -315,6 +315,16 @@ const daysRemainingText = computed(() => {
 .rsvp-hero-btn {
   padding: 0.7rem 2rem;
   font-size: 0.85rem;
+  background-color: var(--color-sapphire-muted);
+  border-color: var(--color-sapphire-muted);
+  color: var(--color-cream-muted) !important;
+}
+
+.rsvp-hero-btn:hover {
+  background-color: var(--color-sapphire-muted-hover);
+  border-color: var(--color-sapphire-muted-hover);
+  color: var(--color-cream-muted) !important;
+  box-shadow: 0 4px 15px rgba(71, 94, 122, 0.35);
 }
 
 .story-section, .gallery-section {
@@ -455,7 +465,7 @@ const daysRemainingText = computed(() => {
   width: 100%;
   padding: 0.7rem 1.2rem;
   font-size: 0.85rem;
-  color: var(--color-cream);
+  color: var(--color-cream-muted);
   background: none;
   border: none;
   text-align: center;

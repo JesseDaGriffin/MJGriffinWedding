@@ -97,9 +97,9 @@ defineProps({
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: var(--color-primary);
+  background-color: var(--color-green-desaturated);
   border: 2px solid var(--color-charcoal);
-  box-shadow: 0 0 10px var(--color-primary);
+  box-shadow: 0 0 10px var(--color-green-desaturated);
   z-index: 2;
 }
 
@@ -108,7 +108,7 @@ defineProps({
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 2px solid rgba(197, 168, 128, 0.4);
+  border: 2px solid rgba(121, 145, 84, 0.4);
   animation: pulse 2.5s infinite ease-out;
   pointer-events: none;
   z-index: 1;
@@ -175,13 +175,13 @@ defineProps({
 .day-title {
   font-size: 2rem;
   margin-bottom: 0;
-  color: #fff;
+  color: var(--color-cream-muted);
   font-family: var(--font-heading);
 }
 
 .day-date {
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-cream-muted);
   font-weight: 400;
   font-family: var(--font-body);
 }
@@ -209,7 +209,7 @@ defineProps({
 }
 
 .event-desc {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-cream-muted);
   line-height: 1.7;
   font-size: 1.05rem;
   margin-bottom: 0.75rem;
@@ -231,7 +231,7 @@ defineProps({
   position: relative;
   padding-left: 1.5rem;
   margin-bottom: 0.75rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-cream-muted);
   line-height: 1.6;
   font-size: 1.05rem;
 }
@@ -267,7 +267,7 @@ defineProps({
 }
 
 :deep(strong) {
-  color: #fff;
+  color: var(--color-cream-muted);
   font-weight: 600;
 }
 

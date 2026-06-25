@@ -44,7 +44,7 @@ defineProps({
 }
 
 .subtitle {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-cream-muted);
   font-size: 1.1rem;
 }
 </style>

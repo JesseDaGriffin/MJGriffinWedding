@@ -241,7 +241,7 @@ const fetchResponses = async () => {
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-cream-muted);
 }
 
 .table-responsive {
@@ -317,6 +317,6 @@ const fetchResponses = async () => {
   padding: 0.2rem 0.6rem;
   border-radius: 20px;
   font-size: 0.8rem;
-  color: #fff;
+  color: var(--color-cream-muted);
 }
 </style>

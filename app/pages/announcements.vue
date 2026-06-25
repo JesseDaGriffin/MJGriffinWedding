@@ -298,7 +298,7 @@ const sendAnnouncement = async () => {
 
 .loading-text, .empty-text {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-cream-muted);
   font-style: italic;
   text-align: center;
   padding: 10px 0;

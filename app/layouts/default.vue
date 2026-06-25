@@ -187,7 +187,7 @@ watchEffect(() => {
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--color-cream-muted);
   font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
@@ -197,7 +197,7 @@ watchEffect(() => {
 
 .nav-link:hover,
 .nav-link.router-link-active {
-  color: var(--color-primary);
+  color: var(--color-link);
 }
 
 .nav-link--admin {
@@ -215,7 +215,16 @@ watchEffect(() => {
 .rsvp-btn {
   font-size: 0.875rem;
   padding: 0.5rem 1.2rem;
-  color: #fff !important;
+  background-color: var(--color-sapphire-muted);
+  border-color: var(--color-sapphire-muted);
+  color: var(--color-cream-muted) !important;
+}
+
+.rsvp-btn:hover {
+  background-color: var(--color-sapphire-muted-hover);
+  border-color: var(--color-sapphire-muted-hover);
+  color: var(--color-cream-muted) !important;
+  box-shadow: 0 4px 15px rgba(71, 94, 122, 0.35);
 }
 
 /* ─── User icon dropdown ─── */
@@ -232,7 +241,7 @@ watchEffect(() => {
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 50%;
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--color-cream-muted);
   cursor: pointer;
   transition: var(--transition);
 }
@@ -240,7 +249,7 @@ watchEffect(() => {
 .user-icon-btn:hover {
   background: rgba(197, 168, 128, 0.22);
   border-color: var(--color-primary);
-  color: #fff;
+  color: var(--color-cream-muted);
 }
 
 .dropdown {
@@ -275,7 +284,7 @@ watchEffect(() => {
   width: 100%;
   padding: 0.7rem 1rem;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-cream-muted);
   background: none;
   border: none;
   text-align: left;
@@ -287,7 +296,7 @@ watchEffect(() => {
 
 .dropdown-item:hover {
   background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  color: var(--color-cream-muted);
 }
 
 .dropdown-item--danger { color: #ff6b6b; }
@@ -347,7 +356,7 @@ watchEffect(() => {
   display: block;
   width: 24px;
   height: 2px;
-  background: #fff;
+  background: var(--color-cream-muted);
   border-radius: 2px;
   transition: var(--transition);
 }
@@ -380,7 +389,7 @@ watchEffect(() => {
 .mobile-nav-link {
   display: block;
   padding: 0.85rem 0;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-cream-muted);
   font-size: 1.4rem;
   font-weight: 500;
   font-family: var(--font-heading, inherit);
@@ -395,7 +404,7 @@ watchEffect(() => {
 
 .mobile-nav-link:hover,
 .mobile-nav-link.router-link-active {
-  color: var(--color-primary);
+  color: var(--color-link);
   transform: scale(1.05);
 }
 
@@ -460,7 +469,7 @@ watchEffect(() => {
 }
 
 .footer p {
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--color-cream-muted);
   font-size: 0.85rem;
   letter-spacing: 0.4px;
 }

@@ -271,7 +271,7 @@ const submitRsvp = async () => {
 }
 
 .subtitle {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--color-cream-muted);
     margin-bottom: 0.5rem;
 }
 
@@ -350,7 +350,7 @@ const submitRsvp = async () => {
 
 .checkbox-label input:checked + .custom-checkbox::after {
     content: "✓";
-    color: #fff;
+    color: var(--color-cream-muted);
     position: absolute;
     top: 50%;
     left: 50%;
