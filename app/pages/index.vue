@@ -278,7 +278,7 @@ const daysRemainingText = computed(() => {
     flex-direction: column;
     align-items: center;
     max-width: 1100px;
-    margin: 0 auto;
+    margin: 15px auto 0 auto;
     padding: 0 1rem;
     position: relative;
     z-index: 10;
