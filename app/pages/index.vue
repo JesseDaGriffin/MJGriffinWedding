@@ -152,11 +152,17 @@
             </GlassCard>
         </section>
 
+        <!-- Decorative section divider -->
+        <DecorativeDivider variant="gothic-jewel" size="md" />
+
         <!-- Gallery Carousel Section -->
         <section class="section container gallery-section">
             <h2 class="text-center mb-md">Gallery</h2>
             <ImageCarousel placeholderText="Our Favorite Memories" />
         </section>
+
+        <!-- Decorative section divider at bottom -->
+        <DecorativeDivider variant="gothic-jewel-bottom" size="md" />
     </div>
 </template>
 

@@ -84,6 +84,11 @@
         </ul>
       </GlassCard>
 
+      <!-- Decorative divider -->
+      <div class="full-width divider-row">
+        <DecorativeDivider variant="gothic-jewel" size="sm" />
+      </div>
+
       <!-- After Party -->
       <GlassCard class="after-party full-width">
         <div class="after-party-grid">
@@ -158,6 +163,12 @@
 
 .full-width {
   grid-column: 1 / -1;
+}
+
+.divider-row {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0;
 }
 
 .location-details {

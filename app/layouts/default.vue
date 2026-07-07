@@ -80,8 +80,16 @@
     </header>
 
     <main class="main-content">
+      <!-- Desktop vertical side borders -->
+      <div class="side-border side-border--left" aria-hidden="true"></div>
+      <div class="side-border side-border--right" aria-hidden="true"></div>
       <slot />
     </main>
+
+    <!-- Decorative border above footer -->
+    <div class="footer-border" aria-hidden="true">
+      <img src="/img/frames/horizontal_border_top_skull_roses_thorns.png" alt="" class="footer-border-img" loading="lazy" />
+    </div>
 
     <footer class="footer">
       <div class="container">
@@ -459,13 +467,71 @@ watchEffect(() => {
 /* ─── Layout ─── */
 .main-content {
   flex-grow: 1;
+  position: relative;
+}
+
+/* ─── Side Borders (Desktop only) ─── */
+.side-border {
+  display: none;
+  position: fixed;
+  top: 72px;
+  bottom: 0;
+  width: 60px;
+  z-index: 5;
+  pointer-events: none;
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  filter: brightness(0.5) saturate(0.7);
+  opacity: 0.4;
+}
+
+.side-border--left {
+  left: 0;
+  background-image: url('/img/frames/vertical_border_right_gothic_jewel_1.png');
+  background-position: center;
+  transform: scaleX(-1);
+}
+
+.side-border--right {
+  right: 0;
+  background-image: url('/img/frames/vertical_border_right_gothic_jewel_1.png');
+  background-position: center;
+}
+
+@media (min-width: 1400px) {
+  .side-border {
+    display: block;
+  }
+}
+
+/* ─── Footer Border ─── */
+.footer-border {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 600px;
+}
+
+.footer-border-img {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: contain;
+  filter: brightness(0.6) saturate(0.8);
+  opacity: 0.7;
 }
 
 .footer {
   background: #111;
   padding: var(--spacing-md) 0;
   text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: none;
 }
 
 .footer p {
