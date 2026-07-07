@@ -80,9 +80,6 @@
     </header>
 
     <main class="main-content">
-      <!-- Desktop vertical side borders -->
-      <div class="side-border side-border--left" aria-hidden="true"></div>
-      <div class="side-border side-border--right" aria-hidden="true"></div>
       <slot />
     </main>
 
@@ -470,51 +467,18 @@ watchEffect(() => {
   position: relative;
 }
 
-/* ─── Side Borders (Desktop only) ─── */
-.side-border {
-  display: none;
-  position: fixed;
-  top: 72px;
-  bottom: 0;
-  width: 60px;
-  z-index: 5;
-  pointer-events: none;
-  background-repeat: repeat-y;
-  background-size: 100% auto;
-  filter: brightness(0.5) saturate(0.7);
-  opacity: 0.4;
-}
-
-.side-border--left {
-  left: 0;
-  background-image: url('/img/frames/vertical_border_right_gothic_jewel_1.png');
-  background-position: center;
-  transform: scaleX(-1);
-}
-
-.side-border--right {
-  right: 0;
-  background-image: url('/img/frames/vertical_border_right_gothic_jewel_1.png');
-  background-position: center;
-}
-
-@media (min-width: 1400px) {
-  .side-border {
-    display: block;
-  }
-}
 
 /* ─── Footer Border ─── */
 .footer-border {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   overflow: hidden;
   pointer-events: none;
   user-select: none;
-  margin: 0 auto;
+  margin: 1.5rem auto 0.5rem;
   padding: 0;
-  max-width: 600px;
 }
 
 .footer-border-img {
@@ -523,8 +487,17 @@ watchEffect(() => {
   max-width: 500px;
   height: auto;
   object-fit: contain;
-  filter: brightness(0.6) saturate(0.8);
-  opacity: 0.7;
+  filter: brightness(0.85) saturate(0.9) drop-shadow(0 6px 15px rgba(0, 0, 0, 0.8));
+  opacity: 0.95;
+}
+
+@media (max-width: 768px) {
+  .footer-border {
+    margin: 1rem auto 0.25rem;
+  }
+  .footer-border-img {
+    max-width: 240px;
+  }
 }
 
 .footer {

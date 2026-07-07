@@ -160,9 +160,6 @@
             <h2 class="text-center mb-md">Gallery</h2>
             <ImageCarousel placeholderText="Our Favorite Memories" />
         </section>
-
-        <!-- Decorative section divider at bottom -->
-        <DecorativeDivider variant="gothic-jewel-bottom" size="md" />
     </div>
 </template>
 
@@ -227,7 +224,7 @@ const daysRemainingText = computed(() => {
 
 <style scoped>
 .landing-page {
-    background-color: var(--color-charcoal);
+    background-color: transparent;
     min-height: 100vh;
     overflow-x: hidden;
 }

@@ -1,6 +1,9 @@
 <template>
   <div class="login-page">
     <GlassCard class="login-container">
+      <div class="login-logo-wrapper">
+        <div class="login-logo">M &amp; J</div>
+      </div>
       <PageHeader 
         title="Welcome" 
         subtitle="The Griffin Wedding" 
@@ -155,7 +158,7 @@ const handleSubmit = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(rgba(28, 28, 28, 0.7), rgba(28, 28, 28, 0.9)), url('/hero-bg.jpg') center/cover;
+  background: radial-gradient(circle at 50% 30%, var(--color-purple-glow) 0%, var(--color-purple-dark) 70%);
   padding: var(--spacing-md);
 }
 
@@ -163,6 +166,22 @@ const handleSubmit = async () => {
   width: 100%;
   max-width: 450px;
   padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.login-logo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.login-logo {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(197, 168, 128, 0.3);
 }
 
 .text-center {

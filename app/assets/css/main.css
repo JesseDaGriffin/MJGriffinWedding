@@ -23,9 +23,13 @@
   --color-sapphire-muted: #36495d;
   --color-sapphire-muted-hover: #475e7a;
   
+  /* Dark Purple Palette */
+  --color-purple-dark: #110d14; /* Muted grayish purple-black */
+  --color-purple-glow: #231c2b; /* Muted grayish purple glow */
+  
   --color-link: var(--color-green-desaturated);
   --color-link-hover: var(--color-green-desaturated-hover);
-  --color-background: var(--color-charcoal);
+  --color-background: var(--color-purple-dark);
   --color-text: var(--color-cream-muted);
   --color-primary: var(--color-gold);
   --color-secondary: var(--color-sapphire-muted);
@@ -61,7 +65,7 @@ body {
   color: var(--color-text);
   line-height: 1.7;
   letter-spacing: 0.02em;
-  background-image: radial-gradient(circle at 50% 30%, #1c1717 0%, var(--color-charcoal) 70%);
+  background-image: radial-gradient(circle at 50% 30%, var(--color-purple-glow) 0%, var(--color-purple-dark) 70%);
   background-attachment: fixed;
 }
 
@@ -149,6 +153,12 @@ a:hover {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-sm);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
 }
 
 .section {
