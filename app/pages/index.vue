@@ -2,6 +2,13 @@
     <div class="landing-page">
         <!-- Hero / Title Section -->
         <section class="hero-section">
+            <!-- Decorative skull frame corners -->
+            <div class="frame-decor frame-decor--left" aria-hidden="true"></div>
+            <div
+                class="frame-decor frame-decor--right"
+                aria-hidden="true"
+            ></div>
+
             <div class="hero-container">
                 <!-- Centered Text Block -->
                 <header class="hero-header-text">
@@ -22,16 +29,6 @@
             </div>
 
             <div class="framed-content">
-                <!-- Decorative skull frame corners -->
-                <div
-                    class="frame-decor frame-decor--left"
-                    aria-hidden="true"
-                ></div>
-                <div
-                    class="frame-decor frame-decor--right"
-                    aria-hidden="true"
-                ></div>
-
                 <!-- Inline Navigation (Desktop Only) -->
                 <nav class="hero-nav">
                     <NuxtLink to="/" class="hero-nav-link">Home</NuxtLink>
@@ -226,16 +223,21 @@ const daysRemainingText = computed(() => {
     overflow-x: hidden;
 }
 
+.hero-section {
+    padding: 4rem 0 2rem;
+    position: relative;
+}
+
 .framed-content {
     order: 2;
     width: 100%;
     max-width: 1160px;
-    margin: -8rem auto 0; /* Pull framed content up into the header's negative space */
+    margin: 0 auto;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 7rem; /* push the nav down below the skulls */
+    padding-top: 0;
     transition:
         padding-top 0.3s ease,
         margin-top 0.3s ease;
@@ -246,14 +248,14 @@ const daysRemainingText = computed(() => {
     pointer-events: none; /* Let clicks pass through to nav links/buttons underneath */
     z-index: 5;
     background-repeat: no-repeat;
-    filter: brightness(1.1) saturate(0.8) contrast(1)
-        drop-shadow(0 8px 25px rgba(0, 0, 0, 0.8));
-    opacity: 0.95;
+    filter: brightness(0.9) saturate(0.7) contrast(1.05);
+    opacity: 0.85;
+    mix-blend-mode: screen;
 }
 
 .frame-decor--left {
-    left: -4.5rem;
-    top: -1.2rem;
+    left: calc(50% - 580px - 4.5rem);
+    top: 0;
     width: 440px;
     height: 622px; /* 440px / 0.707 aspect ratio */
     background-image: url("/img/frames/corner_top_left_skulls_roses.png");
@@ -262,17 +264,13 @@ const daysRemainingText = computed(() => {
 }
 
 .frame-decor--right {
-    right: -5rem;
-    top: -0.5rem;
+    right: calc(50% - 580px - 5rem);
+    top: 0;
     width: 510px;
     height: 721px; /* 510px / 0.707 aspect ratio */
     background-image: url("/img/frames/corner_top_right_skulls_roses.png");
     background-size: contain;
     background-position: top right;
-}
-
-.hero-section {
-    padding: 4rem 0 2rem;
 }
 
 .hero-container {
@@ -486,6 +484,57 @@ const daysRemainingText = computed(() => {
 }
 
 /* ── Responsive Styling ── */
+@media (min-width: 1201px) {
+    .hero-section {
+        padding-top: 8.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .frame-decor--left {
+        width: 360px;
+        height: 509px;
+        left: calc(50% - 440px);
+    }
+
+    .frame-decor--right {
+        width: 420px;
+        height: 594px;
+        right: calc(50% - 440px);
+    }
+
+    .gothic-title {
+        font-size: 4.2rem;
+    }
+
+    .couple-names {
+        font-size: 1.8rem;
+        margin-top: 0.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .wedding-details {
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .countdown-text {
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-nav {
+        margin: 1rem 0 1.75rem;
+        gap: 1.4rem;
+        padding: 0.6rem 0;
+    }
+
+    .couple-photo-container {
+        max-width: 820px;
+        margin-bottom: 1rem;
+    }
+}
+
 @media (max-width: 1200px) {
     .frame-decor {
         display: none;
@@ -498,7 +547,9 @@ const daysRemainingText = computed(() => {
 
 @media (max-width: 900px) {
     .hero-section {
-        height: calc(100vh - 72px); /* Stretch to fill viewport height below fixed header */
+        height: calc(
+            100vh - 72px
+        ); /* Stretch to fill viewport height below fixed header */
         display: flex;
         flex-direction: column; /* Vertical flex direction */
         padding: 0;
@@ -558,12 +609,12 @@ const daysRemainingText = computed(() => {
         margin-top: 0.25rem;
         margin-bottom: 0.5rem;
     }
-    
+
     .wedding-details {
         font-size: 0.85rem;
         margin-bottom: 0.25rem;
     }
-    
+
     .countdown-text {
         font-size: 0.8rem;
         margin-top: 0.25rem;

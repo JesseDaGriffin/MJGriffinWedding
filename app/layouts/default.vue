@@ -487,16 +487,14 @@ watchEffect(() => {
   max-width: 500px;
   height: auto;
   object-fit: contain;
-  filter: brightness(1.1) saturate(0.8) contrast(1.0) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
-  opacity: 0.95;
+  filter: brightness(0.9) saturate(0.75) contrast(1.05);
+  opacity: 0.85;
+  mix-blend-mode: screen;
 }
 
 @media (max-width: 768px) {
   .footer-border {
-    margin: 1rem auto 0.25rem;
-  }
-  .footer-border-img {
-    max-width: 240px;
+    display: none;
   }
 }
 

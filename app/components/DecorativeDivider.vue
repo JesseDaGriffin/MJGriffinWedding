@@ -55,9 +55,9 @@ const imageSrc = computed(
     width: 100%;
     height: auto;
     object-fit: contain;
-    filter: brightness(1.15) saturate(0.85) contrast(1.0)
-        drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
-    opacity: 0.95;
+    filter: brightness(0.92) saturate(0.8) contrast(1.05);
+    opacity: 0.88;
+    mix-blend-mode: screen;
     transition: opacity 0.4s ease;
 }
 
@@ -87,25 +87,10 @@ const imageSrc = computed(
     margin: 0.75rem auto 0.05rem;
 }
 
-/* Responsive: scale down on mobile */
+/* Responsive: hide on mobile */
 @media (max-width: 768px) {
-    .decorative-divider--sm .divider-image {
-        max-width: 240px;
-    }
-    .decorative-divider--md .divider-image {
-        max-width: 460px;
-    }
-    .decorative-divider--lg .divider-image {
-        max-width: 600px;
-    }
-    .decorative-divider--sm {
-        margin: 0.2rem auto 0.05rem;
-    }
-    .decorative-divider--md {
-        margin: 0.3rem auto 0.05rem;
-    }
-    .decorative-divider--lg {
-        margin: 0.4rem auto 0.05rem;
+    .decorative-divider {
+        display: none;
     }
 }
 </style>
