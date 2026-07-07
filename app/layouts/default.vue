@@ -487,7 +487,7 @@ watchEffect(() => {
   max-width: 500px;
   height: auto;
   object-fit: contain;
-  filter: brightness(0.85) saturate(0.9) drop-shadow(0 6px 15px rgba(0, 0, 0, 0.8));
+  filter: brightness(1.1) saturate(0.8) contrast(1.0) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
   opacity: 0.95;
 }
 

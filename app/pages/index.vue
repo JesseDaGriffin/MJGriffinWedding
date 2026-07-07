@@ -152,9 +152,6 @@
             </GlassCard>
         </section>
 
-        <!-- Decorative section divider -->
-        <DecorativeDivider variant="gothic-jewel" size="md" />
-
         <!-- Gallery Carousel Section -->
         <section class="section container gallery-section">
             <h2 class="text-center mb-md">Gallery</h2>
@@ -249,9 +246,8 @@ const daysRemainingText = computed(() => {
     pointer-events: none; /* Let clicks pass through to nav links/buttons underneath */
     z-index: 5;
     background-repeat: no-repeat;
-    filter: brightness(
-        0.7
-    ); /* Reduce brightness to blend with the dark background */
+    filter: brightness(1.1) saturate(0.8) contrast(1.0) drop-shadow(0 8px 25px rgba(0, 0, 0, 0.8));
+    opacity: 0.95;
 }
 
 .frame-decor--left {

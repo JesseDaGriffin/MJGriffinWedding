@@ -84,10 +84,7 @@
         </ul>
       </GlassCard>
 
-      <!-- Decorative divider -->
-      <div class="full-width divider-row">
-        <DecorativeDivider variant="gothic-jewel" size="sm" />
-      </div>
+
 
       <!-- After Party -->
       <GlassCard class="after-party full-width">
