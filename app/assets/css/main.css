@@ -75,6 +75,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-cream-muted);
   margin-bottom: var(--spacing-sm);
   letter-spacing: 0.1em;
+  line-height: 1.2;
 }
 
 h1 {
@@ -159,10 +160,34 @@ a:hover {
   .container {
     padding: 0 1.5rem;
   }
+  
+  h1 {
+    font-size: 2.0rem;
+    letter-spacing: 0.05em;
+  }
+  
+  h2 {
+    font-size: 1.6rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.6rem;
+    letter-spacing: 0.03em;
+  }
+  h2 {
+    font-size: 1.35rem;
+  }
 }
 
 .section {
-  padding: var(--spacing-lg) 0;
+  padding-top: var(--spacing-lg);
+  padding-bottom: var(--spacing-lg);
 }
 
 .card {

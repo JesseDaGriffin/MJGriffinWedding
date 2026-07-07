@@ -246,7 +246,8 @@ const daysRemainingText = computed(() => {
     pointer-events: none; /* Let clicks pass through to nav links/buttons underneath */
     z-index: 5;
     background-repeat: no-repeat;
-    filter: brightness(1.1) saturate(0.8) contrast(1.0) drop-shadow(0 8px 25px rgba(0, 0, 0, 0.8));
+    filter: brightness(1.1) saturate(0.8) contrast(1)
+        drop-shadow(0 8px 25px rgba(0, 0, 0, 0.8));
     opacity: 0.95;
 }
 
@@ -497,39 +498,76 @@ const daysRemainingText = computed(() => {
 
 @media (max-width: 900px) {
     .hero-section {
-        padding: 1rem 0 2rem;
-    }
-
-    /* Reverse layout order on mobile: Photo at top, text below */
-    .hero-container {
+        height: calc(100vh - 72px); /* Stretch to fill viewport height below fixed header */
+        display: flex;
+        flex-direction: column; /* Vertical flex direction */
         padding: 0;
+        margin: 0;
     }
 
-    .couple-photo-container {
-        order: 1;
-        margin-bottom: 2rem;
-        padding: 0; /* Full bleed photo placeholder on mobile! */
-    }
-
-    .couple-photo-placeholder {
-        aspect-ratio: 16 / 10; /* Less wide on mobile */
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-    }
-
-    .hero-header-text {
-        order: 2;
+    .hero-container {
+        flex: 0 0 60%; /* Top area occupies 60% of vertical height */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
         padding: 0 1.5rem;
     }
 
+    .hero-header-text {
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
+
+    .framed-content {
+        flex: 0 0 40%; /* Bottom area occupies 40% of vertical height */
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+    }
+
+    .couple-photo-container {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0 0 1.5rem; /* Give it a little breathing room at the bottom */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .couple-photo-placeholder {
+        width: 100%;
+        max-height: 100%;
+        aspect-ratio: 16 / 9.5;
+    }
+
     .gothic-title {
-        font-size: 4rem;
+        font-size: 3.2rem;
+        margin-bottom: 0.25rem;
     }
 
     .couple-names {
-        font-size: 1.6rem;
-        letter-spacing: 0.2em;
+        font-size: 1.4rem;
+        letter-spacing: 0.15em;
+        margin-top: 0.25rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .wedding-details {
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .countdown-text {
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+        margin-bottom: 0;
     }
 
     .hero-nav {

@@ -99,7 +99,7 @@ defineProps({
   border-radius: 50%;
   background-color: var(--color-green-desaturated);
   border: 2px solid var(--color-charcoal);
-  box-shadow: 0 0 10px var(--color-green-desaturated);
+  box-shadow: 0 0 6px rgba(121, 145, 84, 0.5);
   z-index: 2;
 }
 
@@ -108,7 +108,7 @@ defineProps({
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 2px solid rgba(121, 145, 84, 0.4);
+  border: 2px solid rgba(121, 145, 84, 0.2);
   animation: pulse 2.5s infinite ease-out;
   pointer-events: none;
   z-index: 1;
