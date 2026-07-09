@@ -1,6 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
+    app: {
+        head: {
+            title: "M & J Griffin Wedding",
+            link: [
+                { rel: "icon", type: "image/png", href: "/favicon.png" }
+            ]
+        }
+    },
     devtools: { enabled: true },
     css: ["~/assets/css/main.css"],
     modules: ["@nuxtjs/google-fonts", "@nuxtjs/supabase"],
