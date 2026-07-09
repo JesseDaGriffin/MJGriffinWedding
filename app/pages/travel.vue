@@ -1,9 +1,6 @@
 <template>
     <div class="container section">
-        <PageHeader
-            title="Travel & Accommodations"
-            subtitle="Information to help you plan your trip to Las Vegas."
-        />
+        <PageHeader title="Travel & Accommodations" />
         <div class="travel-grid">
             <!-- Flights -->
             <GlassCard class="text-center">
