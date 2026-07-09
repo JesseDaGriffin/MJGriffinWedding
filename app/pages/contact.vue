@@ -90,7 +90,7 @@ watchEffect(async () => {
           .from('profiles')
           .select('first_name, last_name')
           .eq('id', userId)
-          .single();
+          .maybeSingle();
           
         if (!error && data && (data.first_name || data.last_name)) {
           form.value.name = `${data.first_name || ''} ${data.last_name || ''}`.trim();

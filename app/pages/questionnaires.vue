@@ -202,7 +202,7 @@ const fetchQuestionnaires = async () => {
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-cream-muted);
 }
 
 .activity-summary-grid {
@@ -224,7 +224,7 @@ const fetchQuestionnaires = async () => {
 
 .activity-summary-count {
   background: var(--color-primary);
-  color: #fff;
+  color: var(--color-cream-muted);
   font-weight: bold;
   font-size: 1.1rem;
   width: 30px;
@@ -311,7 +311,7 @@ const fetchQuestionnaires = async () => {
 .date-val {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-cream-muted);
 }
 
 .section-label {

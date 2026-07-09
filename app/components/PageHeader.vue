@@ -1,6 +1,7 @@
 <template>
   <div class="page-header">
-    <h1 class="text-center" :class="{ 'mb-md': !subtitle, 'mb-sm': subtitle }">{{ title }}</h1>
+    <h1 class="text-center" :class="{ 'mb-xs': true }">{{ title }}</h1>
+    <DecorativeDivider variant="skull-roses" size="sm" />
     <p v-if="subtitle" class="text-center subtitle" :class="subtitleClass">{{ subtitle }}</p>
   </div>
 </template>
@@ -31,6 +32,10 @@ defineProps({
   text-align: center;
 }
 
+.mb-xs {
+  margin-bottom: 0.25rem;
+}
+
 .mb-sm {
   margin-bottom: var(--spacing-sm);
 }
@@ -44,7 +49,7 @@ defineProps({
 }
 
 .subtitle {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-cream-muted);
   font-size: 1.1rem;
 }
 </style>
