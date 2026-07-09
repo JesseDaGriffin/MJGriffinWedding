@@ -85,6 +85,29 @@
                                     @click="isDropdownOpen = false"
                                     >Account</NuxtLink
                                 >
+                                <template v-if="isAdmin">
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-header">Admin Tools</div>
+                                    <NuxtLink
+                                        to="/responses"
+                                        class="dropdown-item dropdown-item--admin"
+                                        @click="isDropdownOpen = false"
+                                        >Responses</NuxtLink
+                                    >
+                                    <NuxtLink
+                                        to="/questionnaires"
+                                        class="dropdown-item dropdown-item--admin"
+                                        @click="isDropdownOpen = false"
+                                        >Questionnaires</NuxtLink
+                                    >
+                                    <NuxtLink
+                                        to="/announcements"
+                                        class="dropdown-item dropdown-item--admin"
+                                        @click="isDropdownOpen = false"
+                                        >Announcements</NuxtLink
+                                    >
+                                </template>
+                                <div class="dropdown-divider"></div>
                                 <button
                                     @click="logout"
                                     class="dropdown-item dropdown-item--danger"
@@ -165,6 +188,7 @@ const user = useSupabaseUser();
 const targetDate = "2027-03-13T00:00:00";
 
 const isAuthenticated = ref(false);
+const isAdmin = ref(false);
 const isDropdownOpen = ref(false);
 const userMenuRef = ref(null);
 const router = useRouter();
@@ -189,14 +213,22 @@ const logout = async () => {
     localStorage.removeItem("wedding_auth");
     localStorage.removeItem("wedding_admin");
     isAuthenticated.value = false;
+    isAdmin.value = false;
     router.push("/login");
 };
 
 watchEffect(() => {
     if (user.value) {
         isAuthenticated.value = true;
+        const isLocalAdmin = import.meta.client ? localStorage.getItem('wedding_admin') === 'true' : false;
+        if (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' || isLocalAdmin) {
+            isAdmin.value = true;
+        } else {
+            isAdmin.value = false;
+        }
     } else {
         isAuthenticated.value = false;
+        isAdmin.value = false;
     }
 });
 
@@ -646,6 +678,7 @@ const daysRemainingText = computed(() => {
     display: inline-flex;
     align-items: center;
     transform: translateY(-2px);
+    margin-left: 0.5rem;
 }
 
 @media (min-width: 1201px) {
@@ -682,7 +715,7 @@ const daysRemainingText = computed(() => {
     transform: translateX(-50%) translateY(-10px);
     top: 100%;
     padding-top: 8px;
-    min-width: 140px;
+    min-width: 170px;
     opacity: 0;
     pointer-events: none;
     transition:
@@ -735,5 +768,32 @@ const daysRemainingText = computed(() => {
 .dropdown-item--danger:hover {
     background: rgba(255, 107, 107, 0.1);
     color: #ff6b6b;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 4px 0;
+}
+
+.dropdown-header {
+    padding: 0.6rem 1rem 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.85;
+    pointer-events: none;
+    text-align: center;
+}
+
+.dropdown-item--admin {
+    color: var(--color-accent);
+}
+
+.dropdown-item--admin:hover {
+    background: rgba(162, 144, 180, 0.08);
+    color: var(--color-accent);
 }
 </style>
