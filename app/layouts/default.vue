@@ -15,14 +15,6 @@
           <NuxtLink to="/registry" class="nav-link" @click="closeMenu">Registry</NuxtLink>
           <NuxtLink to="/contact" class="nav-link" @click="closeMenu">Contact</NuxtLink>
           <NuxtLink to="/questionnaire" class="nav-link" @click="closeMenu">Questionnaire</NuxtLink>
-          <div v-if="isAdmin" class="admin-group desktop-only">
-            <span class="nav-link nav-link--admin admin-label">Admin Tools ▼</span>
-            <div class="admin-dropdown">
-              <NuxtLink to="/responses" class="dropdown-item" @click="closeMenu">Responses</NuxtLink>
-              <NuxtLink to="/questionnaires" class="dropdown-item" @click="closeMenu">Questionnaires</NuxtLink>
-              <NuxtLink to="/announcements" class="dropdown-item" @click="closeMenu">Announcements</NuxtLink>
-            </div>
-          </div>
         </nav>
 
         <!-- Desktop right-side actions (hidden on mobile) -->
@@ -39,6 +31,16 @@
             <div class="dropdown" :class="{ 'dropdown-open': isDropdownOpen }">
               <div class="dropdown-inner">
                 <NuxtLink to="/account" class="dropdown-item" @click="isDropdownOpen = false">Account</NuxtLink>
+                
+                <template v-if="isAdmin">
+                  <div class="dropdown-divider"></div>
+                  <div class="dropdown-header">Admin Tools</div>
+                  <NuxtLink to="/responses" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Responses</NuxtLink>
+                  <NuxtLink to="/questionnaires" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Questionnaires</NuxtLink>
+                  <NuxtLink to="/announcements" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Announcements</NuxtLink>
+                </template>
+
+                <div class="dropdown-divider"></div>
                 <button @click="logout" class="dropdown-item dropdown-item--danger">Logout</button>
               </div>
             </div>
@@ -262,7 +264,7 @@ watchEffect(() => {
   right: 0;
   top: 100%;
   padding-top: 8px;
-  min-width: 140px;
+  min-width: 170px;
   opacity: 0;
   pointer-events: none;
   transform: translateY(-4px);
@@ -307,39 +309,30 @@ watchEffect(() => {
 .dropdown-item--danger { color: #ff6b6b; }
 .dropdown-item--danger:hover { background: rgba(255, 107, 107, 0.1); }
 
-/* ─── Admin Grouping ─── */
-.admin-group {
-  position: relative;
-  display: flex;
-  align-items: center;
+.dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 4px 0;
 }
 
-.admin-label {
-  cursor: pointer;
-  display: inline-block;
-}
-
-.admin-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  background: #1e1e1e;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--border-radius);
-  padding: 0.5rem 0;
-  min-width: 160px;
-  opacity: 0;
+.dropdown-header {
+  padding: 0.6rem 1rem 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  z-index: 200;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
-.admin-group:hover .admin-dropdown {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
+.dropdown-item--admin {
+  color: var(--color-accent);
+}
+
+.dropdown-item--admin:hover {
+  background: rgba(162, 144, 180, 0.08);
+  color: var(--color-accent);
 }
 
 .pl-md {
