@@ -221,7 +221,8 @@ const submitQuestionnaire = async () => {
 
 .checkbox-label input:checked + .custom-checkbox::after {
   content: '✓';
-  color: var(--color-cream-muted);
+  color: var(--color-black);
+  font-weight: bold;
   position: absolute;
   top: 50%;
   left: 50%;

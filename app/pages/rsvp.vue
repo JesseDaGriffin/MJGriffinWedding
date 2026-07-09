@@ -1,19 +1,26 @@
 <template>
     <div class="container section">
         <div class="rsvp-container">
-            <PageHeader 
-                title="RSVP" 
-                subtitle="Please let us know if you can make it by December 1st, 2026." 
+            <PageHeader
+                title="RSVP"
+                subtitle="Please let us know if you can make it by December 1st, 2026."
                 subtitle-class="subtitle"
             />
             <div class="deadline-countdown">
-                <CountdownTimer targetDate="2026-12-01T00:00:00" :compact="true" />
+                <CountdownTimer
+                    targetDate="2026-12-01T00:00:00"
+                    :compact="true"
+                />
             </div>
 
             <GlassCard v-if="submitted" class="text-center success-message">
                 <h2 class="mb-sm">Thank You!</h2>
                 <p>Your RSVP has been received. We can't wait to see you!</p>
-                <AppButton @click="submitted = false" class="mt-md" text="Update RSVP" />
+                <AppButton
+                    @click="submitted = false"
+                    class="mt-md"
+                    text="Update RSVP"
+                />
             </GlassCard>
 
             <form v-else @submit.prevent="submitRsvp" class="rsvp-form">
@@ -28,6 +35,7 @@
                                     :value="true"
                                     required
                                 />
+                                <span class="custom-radio"></span>
                                 Joyfully Accept
                             </label>
                             <label class="radio-label">
@@ -36,6 +44,7 @@
                                     v-model="form.attending"
                                     :value="false"
                                 />
+                                <span class="custom-radio"></span>
                                 Regretfully Decline
                             </label>
                         </div>
@@ -54,22 +63,26 @@
                                     <span class="custom-checkbox"></span>
                                     Ceremony
                                 </label>
-                                <div v-if="form.events.ceremony.attending" class="grid-2 mt-sm pl-lg" style="padding-left: 2rem;">
-                                    <FormGroup 
-                                        v-model="form.events.ceremony.adults" 
-                                        label="Adults" 
-                                        type="number" 
-                                        :min="1" 
-                                        :max="10" 
-                                        required 
+                                <div
+                                    v-if="form.events.ceremony.attending"
+                                    class="event-inputs-container mt-sm pl-lg"
+                                    style="padding-left: 2rem"
+                                >
+                                    <FormGroup
+                                        v-model="form.events.ceremony.adults"
+                                        label="Adults"
+                                        type="number"
+                                        :min="1"
+                                        :max="10"
+                                        required
                                     />
-                                    <FormGroup 
-                                        v-model="form.events.ceremony.kids" 
-                                        label="Children" 
-                                        type="number" 
-                                        :min="0" 
-                                        :max="10" 
-                                        required 
+                                    <FormGroup
+                                        v-model="form.events.ceremony.kids"
+                                        label="Children"
+                                        type="number"
+                                        :min="0"
+                                        :max="10"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -78,19 +91,25 @@
                                 <label class="checkbox-label">
                                     <input
                                         type="checkbox"
-                                        v-model="form.events.afterparty.attending"
+                                        v-model="
+                                            form.events.afterparty.attending
+                                        "
                                     />
                                     <span class="custom-checkbox"></span>
                                     21+ Ceremony After Party
                                 </label>
-                                <div v-if="form.events.afterparty.attending" class="grid-1 mt-sm pl-lg" style="padding-left: 2rem; max-width: 50%;">
-                                    <FormGroup 
-                                        v-model="form.events.afterparty.adults" 
-                                        label="Adults (21+)" 
-                                        type="number" 
-                                        :min="1" 
-                                        :max="10" 
-                                        required 
+                                <div
+                                    v-if="form.events.afterparty.attending"
+                                    class="event-inputs-container mt-sm pl-lg"
+                                    style="padding-left: 2rem"
+                                >
+                                    <FormGroup
+                                        v-model="form.events.afterparty.adults"
+                                        label="Adults (21+)"
+                                        type="number"
+                                        :min="1"
+                                        :max="10"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -104,22 +123,26 @@
                                     <span class="custom-checkbox"></span>
                                     Reception Dinner on Sunday
                                 </label>
-                                <div v-if="form.events.dinner.attending" class="grid-2 mt-sm pl-lg" style="padding-left: 2rem;">
-                                    <FormGroup 
-                                        v-model="form.events.dinner.adults" 
-                                        label="Adults" 
-                                        type="number" 
-                                        :min="1" 
-                                        :max="10" 
-                                        required 
+                                <div
+                                    v-if="form.events.dinner.attending"
+                                    class="event-inputs-container mt-sm pl-lg"
+                                    style="padding-left: 2rem"
+                                >
+                                    <FormGroup
+                                        v-model="form.events.dinner.adults"
+                                        label="Adults"
+                                        type="number"
+                                        :min="1"
+                                        :max="10"
+                                        required
                                     />
-                                    <FormGroup 
-                                        v-model="form.events.dinner.kids" 
-                                        label="Children" 
-                                        type="number" 
-                                        :min="0" 
-                                        :max="10" 
-                                        required 
+                                    <FormGroup
+                                        v-model="form.events.dinner.kids"
+                                        label="Children"
+                                        type="number"
+                                        :min="0"
+                                        :max="10"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -127,7 +150,12 @@
                     </div>
 
                     <div class="form-actions mt-lg">
-                        <AppButton type="submit" block :loading="loading" text="Send RSVP" />
+                        <AppButton
+                            type="submit"
+                            block
+                            :loading="loading"
+                            text="Send RSVP"
+                        />
                     </div>
                 </GlassCard>
             </form>
@@ -179,7 +207,7 @@ watchEffect(async () => {
                         attending: data.attending_afterparty,
                         adults: data.afterparty_adults || 1,
                         kids: data.afterparty_kids || 0,
-                    }
+                    },
                 },
             };
             submitted.value = true;
@@ -190,29 +218,49 @@ watchEffect(async () => {
 const submitRsvp = async () => {
     const userId = user.value?.id || user.value?.sub;
     if (!userId) return;
-    
+
     loading.value = true;
     try {
         const payload = {
             user_id: userId,
             attending: form.value.attending,
             adults_count: Math.max(
-                form.value.events.ceremony.attending ? form.value.events.ceremony.adults : 0, 
-                form.value.events.dinner.attending ? form.value.events.dinner.adults : 0, 
-                form.value.events.afterparty.attending ? form.value.events.afterparty.adults : 0
+                form.value.events.ceremony.attending
+                    ? form.value.events.ceremony.adults
+                    : 0,
+                form.value.events.dinner.attending
+                    ? form.value.events.dinner.adults
+                    : 0,
+                form.value.events.afterparty.attending
+                    ? form.value.events.afterparty.adults
+                    : 0,
             ),
             kids_count: Math.max(
-                form.value.events.ceremony.attending ? form.value.events.ceremony.kids : 0, 
-                form.value.events.dinner.attending ? form.value.events.dinner.kids : 0
+                form.value.events.ceremony.attending
+                    ? form.value.events.ceremony.kids
+                    : 0,
+                form.value.events.dinner.attending
+                    ? form.value.events.dinner.kids
+                    : 0,
             ),
             attending_ceremony: form.value.events.ceremony.attending,
-            ceremony_adults: form.value.events.ceremony.attending ? form.value.events.ceremony.adults : 0,
-            ceremony_kids: form.value.events.ceremony.attending ? form.value.events.ceremony.kids : 0,
+            ceremony_adults: form.value.events.ceremony.attending
+                ? form.value.events.ceremony.adults
+                : 0,
+            ceremony_kids: form.value.events.ceremony.attending
+                ? form.value.events.ceremony.kids
+                : 0,
             attending_dinner: form.value.events.dinner.attending,
-            dinner_adults: form.value.events.dinner.attending ? form.value.events.dinner.adults : 0,
-            dinner_kids: form.value.events.dinner.attending ? form.value.events.dinner.kids : 0,
+            dinner_adults: form.value.events.dinner.attending
+                ? form.value.events.dinner.adults
+                : 0,
+            dinner_kids: form.value.events.dinner.attending
+                ? form.value.events.dinner.kids
+                : 0,
             attending_afterparty: form.value.events.afterparty.attending,
-            afterparty_adults: form.value.events.afterparty.attending ? form.value.events.afterparty.adults : 0,
+            afterparty_adults: form.value.events.afterparty.attending
+                ? form.value.events.afterparty.adults
+                : 0,
             afterparty_kids: 0,
         };
 
@@ -221,34 +269,35 @@ const submitRsvp = async () => {
             .upsert(payload, { onConflict: "user_id" });
 
         if (error) throw error;
-        
+
         // Fetch user profile to get the name for the email
-        let guestName = user.value?.user_metadata?.first_name 
-            ? `${user.value.user_metadata.first_name} ${user.value.user_metadata.last_name || ''}`.trim() 
-            : '';
-            
+        let guestName = user.value?.user_metadata?.first_name
+            ? `${user.value.user_metadata.first_name} ${user.value.user_metadata.last_name || ""}`.trim()
+            : "";
+
         if (!guestName) {
             const { data: profile } = await supabase
-                .from('profiles')
-                .select('first_name, last_name')
-                .eq('id', userId)
+                .from("profiles")
+                .select("first_name, last_name")
+                .eq("id", userId)
                 .maybeSingle();
             if (profile && (profile.first_name || profile.last_name)) {
-                guestName = `${profile.first_name || ''} ${profile.last_name || ''}`.trim();
+                guestName =
+                    `${profile.first_name || ""} ${profile.last_name || ""}`.trim();
             }
         }
 
         // Send email notification to admin
-        await $fetch('/api/send-rsvp', {
-            method: 'POST',
+        await $fetch("/api/send-rsvp", {
+            method: "POST",
             body: {
                 name: guestName,
-                email: user.value?.email || '',
+                email: user.value?.email || "",
                 attending: form.value.attending,
                 ceremony: form.value.events.ceremony,
                 dinner: form.value.events.dinner,
-                afterparty: form.value.events.afterparty
-            }
+                afterparty: form.value.events.afterparty,
+            },
         });
 
         submitted.value = true;
@@ -290,6 +339,9 @@ const submitRsvp = async () => {
 .mb-lg {
     margin-bottom: var(--spacing-lg);
 }
+.mt-sm {
+    margin-top: var(--spacing-sm);
+}
 .mt-md {
     margin-top: var(--spacing-md);
 }
@@ -305,6 +357,12 @@ const submitRsvp = async () => {
     padding: var(--spacing-xl) var(--spacing-md);
 }
 
+.attending-details {
+    margin-top: var(--spacing-lg);
+    border-top: 1px solid rgba(197, 168, 128, 0.15);
+    padding-top: var(--spacing-md);
+}
+
 .radio-group {
     display: flex;
     gap: var(--spacing-md);
@@ -316,6 +374,14 @@ const submitRsvp = async () => {
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .radio-group {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
 }
 
 .grid-2 {
@@ -324,10 +390,41 @@ const submitRsvp = async () => {
     gap: var(--spacing-md);
 }
 
+.event-inputs-container {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
 .checkbox-group {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+}
+
+/* Custom Radio Buttons */
+.radio-label input {
+    display: none;
+}
+
+.custom-radio {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.radio-label input:checked + .custom-radio::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
 }
 
 /* Custom Checkbox */
@@ -350,7 +447,8 @@ const submitRsvp = async () => {
 
 .checkbox-label input:checked + .custom-checkbox::after {
     content: "✓";
-    color: var(--color-cream-muted);
+    color: var(--color-black);
+    font-weight: bold;
     position: absolute;
     top: 50%;
     left: 50%;
