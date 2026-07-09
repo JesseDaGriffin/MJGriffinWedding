@@ -82,7 +82,7 @@ watchEffect(async () => {
       .from('questionnaires')
       .select('*')
       .eq('user_id', userId)
-      .single();
+      .maybeSingle();
       
     if (data) {
       form.value = {
@@ -123,7 +123,7 @@ const submitQuestionnaire = async () => {
         .from('profiles')
         .select('first_name, last_name')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
         
       const guestName = profile ? `${profile.first_name || ''} ${profile.last_name || ''}`.trim() : 'Unknown';
       const guestEmail = user.value.email || 'Unknown';

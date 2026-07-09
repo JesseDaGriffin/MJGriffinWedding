@@ -64,9 +64,9 @@ watchEffect(async () => {
         .from('profiles')
         .select('first_name, last_name')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
         
-      if (error && error.code !== 'PGRST116') throw error; // PGRST116 is no rows returned
+      if (error) throw error;
       
       if (data) {
         profile.value.first_name = data.first_name || (user.value.user_metadata && user.value.user_metadata.first_name) || '';

@@ -159,7 +159,7 @@ watchEffect(async () => {
             .from("rsvps")
             .select("*")
             .eq("user_id", userId)
-            .single();
+            .maybeSingle();
 
         if (data) {
             form.value = {
@@ -232,7 +232,7 @@ const submitRsvp = async () => {
                 .from('profiles')
                 .select('first_name, last_name')
                 .eq('id', userId)
-                .single();
+                .maybeSingle();
             if (profile && (profile.first_name || profile.last_name)) {
                 guestName = `${profile.first_name || ''} ${profile.last_name || ''}`.trim();
             }
