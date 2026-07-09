@@ -71,7 +71,7 @@ defineEmits(['click']);
   opacity: 0.5;
   cursor: not-allowed;
   background-color: rgba(255, 255, 255, 0.1) !important;
-  color: rgba(255, 255, 255, 0.4) !important;
+  color: var(--color-cream-muted) !important;
   border-color: transparent !important;
 }
 
@@ -101,7 +101,7 @@ defineEmits(['click']);
   height: 1rem;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top-color: #fff;
+  border-top-color: var(--color-cream-muted);
   animation: spin 1s ease-in-out infinite;
   position: absolute;
   left: 1rem;

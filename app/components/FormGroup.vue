@@ -126,7 +126,7 @@ const id = useId();
 }
 
 .form-hint {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-cream-muted);
   font-size: 0.85rem;
   display: block;
   margin-top: 4px;

@@ -1,13 +1,13 @@
 <template>
   <div class="layout">
-    <header class="header">
+    <header class="header" :class="{ 'header--home-desktop-hidden': isHomepage }">
       <div class="container header-content">
 
         <!-- Logo -->
         <NuxtLink to="/" class="logo">M &amp; J</NuxtLink>
 
         <!-- Desktop nav (hidden on mobile) -->
-        <nav class="nav-desktop">
+        <nav v-if="!isHomepage" class="nav-desktop">
           <NuxtLink to="/" class="nav-link" @click="closeMenu">Home</NuxtLink>
           <NuxtLink to="/itinerary" class="nav-link" @click="closeMenu">Itinerary</NuxtLink>
           <NuxtLink to="/travel" class="nav-link" @click="closeMenu">Travel</NuxtLink>
@@ -15,19 +15,11 @@
           <NuxtLink to="/registry" class="nav-link" @click="closeMenu">Registry</NuxtLink>
           <NuxtLink to="/contact" class="nav-link" @click="closeMenu">Contact</NuxtLink>
           <NuxtLink to="/questionnaire" class="nav-link" @click="closeMenu">Questionnaire</NuxtLink>
-          <div v-if="isAdmin" class="admin-group desktop-only">
-            <span class="nav-link nav-link--admin admin-label">Admin Tools ▼</span>
-            <div class="admin-dropdown">
-              <NuxtLink to="/responses" class="dropdown-item" @click="closeMenu">Responses</NuxtLink>
-              <NuxtLink to="/questionnaires" class="dropdown-item" @click="closeMenu">Questionnaires</NuxtLink>
-              <NuxtLink to="/announcements" class="dropdown-item" @click="closeMenu">Announcements</NuxtLink>
-            </div>
-          </div>
         </nav>
 
         <!-- Desktop right-side actions (hidden on mobile) -->
         <div class="header-actions-desktop">
-          <NuxtLink to="/rsvp" class="btn rsvp-btn">RSVP</NuxtLink>
+          <NuxtLink v-if="!isHomepage" to="/rsvp" class="btn rsvp-btn">RSVP</NuxtLink>
 
           <!-- User dropdown -->
           <div v-if="isAuthenticated" class="user-menu" ref="userMenuRef">
@@ -39,6 +31,16 @@
             <div class="dropdown" :class="{ 'dropdown-open': isDropdownOpen }">
               <div class="dropdown-inner">
                 <NuxtLink to="/account" class="dropdown-item" @click="isDropdownOpen = false">Account</NuxtLink>
+                
+                <template v-if="isAdmin">
+                  <div class="dropdown-divider"></div>
+                  <div class="dropdown-header">Admin Tools</div>
+                  <NuxtLink to="/responses" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Responses</NuxtLink>
+                  <NuxtLink to="/questionnaires" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Questionnaires</NuxtLink>
+                  <NuxtLink to="/announcements" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Announcements</NuxtLink>
+                </template>
+
+                <div class="dropdown-divider"></div>
                 <button @click="logout" class="dropdown-item dropdown-item--danger">Logout</button>
               </div>
             </div>
@@ -83,6 +85,11 @@
       <slot />
     </main>
 
+    <!-- Decorative border above footer -->
+    <div class="footer-border" aria-hidden="true">
+      <img src="/img/frames/horizontal_border_top_skull_roses_thorns.png" alt="" class="footer-border-img" loading="lazy" />
+    </div>
+
     <footer class="footer">
       <div class="container">
         <p>The Griffin Wedding — March 13, 2027</p>
@@ -94,6 +101,8 @@
 <script setup>
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
+const route = useRoute();
+const isHomepage = computed(() => route.path.replace(/\/$/, '') === '');
 
 const isMenuOpen = ref(false);
 const isDropdownOpen = ref(false);
@@ -148,12 +157,12 @@ watchEffect(() => {
 
 /* ─── Header ─── */
 .header {
-  background-color: rgba(28, 28, 28, 0.95);
+  background-color: rgba(17, 14, 14, 0.9);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(197, 168, 128, 0.12);
 }
 
 .header-content {
@@ -166,11 +175,13 @@ watchEffect(() => {
 
 .logo {
   font-family: var(--font-heading);
-  font-size: 1.7rem;
-  font-weight: 700;
-  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--color-primary);
   flex-shrink: 0;
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 /* ─── Desktop nav ─── */
@@ -183,7 +194,7 @@ watchEffect(() => {
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--color-cream-muted);
   font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
@@ -193,7 +204,7 @@ watchEffect(() => {
 
 .nav-link:hover,
 .nav-link.router-link-active {
-  color: var(--color-primary);
+  color: var(--color-link);
 }
 
 .nav-link--admin {
@@ -211,7 +222,16 @@ watchEffect(() => {
 .rsvp-btn {
   font-size: 0.875rem;
   padding: 0.5rem 1.2rem;
-  color: #fff !important;
+  background-color: var(--color-sapphire-muted);
+  border-color: var(--color-sapphire-muted);
+  color: var(--color-cream-muted) !important;
+}
+
+.rsvp-btn:hover {
+  background-color: var(--color-sapphire-muted-hover);
+  border-color: var(--color-sapphire-muted-hover);
+  color: var(--color-cream-muted) !important;
+  box-shadow: 0 4px 15px rgba(71, 94, 122, 0.35);
 }
 
 /* ─── User icon dropdown ─── */
@@ -228,15 +248,15 @@ watchEffect(() => {
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 50%;
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--color-cream-muted);
   cursor: pointer;
   transition: var(--transition);
 }
 
 .user-icon-btn:hover {
-  background: rgba(107, 142, 35, 0.22);
+  background: rgba(197, 168, 128, 0.22);
   border-color: var(--color-primary);
-  color: #fff;
+  color: var(--color-cream-muted);
 }
 
 .dropdown {
@@ -244,7 +264,7 @@ watchEffect(() => {
   right: 0;
   top: 100%;
   padding-top: 8px;
-  min-width: 140px;
+  min-width: 170px;
   opacity: 0;
   pointer-events: none;
   transform: translateY(-4px);
@@ -271,7 +291,7 @@ watchEffect(() => {
   width: 100%;
   padding: 0.7rem 1rem;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-cream-muted);
   background: none;
   border: none;
   text-align: left;
@@ -283,45 +303,36 @@ watchEffect(() => {
 
 .dropdown-item:hover {
   background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  color: var(--color-cream-muted);
 }
 
 .dropdown-item--danger { color: #ff6b6b; }
 .dropdown-item--danger:hover { background: rgba(255, 107, 107, 0.1); }
 
-/* ─── Admin Grouping ─── */
-.admin-group {
-  position: relative;
-  display: flex;
-  align-items: center;
+.dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 4px 0;
 }
 
-.admin-label {
-  cursor: pointer;
-  display: inline-block;
-}
-
-.admin-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  background: #1e1e1e;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--border-radius);
-  padding: 0.5rem 0;
-  min-width: 160px;
-  opacity: 0;
+.dropdown-header {
+  padding: 0.6rem 1rem 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  z-index: 200;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
-.admin-group:hover .admin-dropdown {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
+.dropdown-item--admin {
+  color: var(--color-accent);
+}
+
+.dropdown-item--admin:hover {
+  background: rgba(162, 144, 180, 0.08);
+  color: var(--color-accent);
 }
 
 .pl-md {
@@ -343,7 +354,7 @@ watchEffect(() => {
   display: block;
   width: 24px;
   height: 2px;
-  background: #fff;
+  background: var(--color-cream-muted);
   border-radius: 2px;
   transition: var(--transition);
 }
@@ -376,7 +387,7 @@ watchEffect(() => {
 .mobile-nav-link {
   display: block;
   padding: 0.85rem 0;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-cream-muted);
   font-size: 1.4rem;
   font-weight: 500;
   font-family: var(--font-heading, inherit);
@@ -391,7 +402,7 @@ watchEffect(() => {
 
 .mobile-nav-link:hover,
 .mobile-nav-link.router-link-active {
-  color: var(--color-primary);
+  color: var(--color-link);
   transform: scale(1.05);
 }
 
@@ -446,17 +457,49 @@ watchEffect(() => {
 /* ─── Layout ─── */
 .main-content {
   flex-grow: 1;
+  position: relative;
+}
+
+
+/* ─── Footer Border ─── */
+.footer-border {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  margin: 1.5rem auto 0.5rem;
+  padding: 0;
+}
+
+.footer-border-img {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: contain;
+  filter: brightness(0.9) saturate(0.75) contrast(1.05);
+  opacity: 0.85;
+  mix-blend-mode: screen;
+}
+
+@media (max-width: 768px) {
+  .footer-border {
+    display: none;
+  }
 }
 
 .footer {
   background: #111;
   padding: var(--spacing-md) 0;
   text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: none;
 }
 
 .footer p {
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--color-cream-muted);
   font-size: 0.85rem;
   letter-spacing: 0.4px;
 }
@@ -479,5 +522,11 @@ watchEffect(() => {
 
 @media (max-width: 600px) {
   .logo { font-size: 1.4rem; }
+}
+
+@media (min-width: 901px) {
+  .header--home-desktop-hidden {
+    display: none;
+  }
 }
 </style>

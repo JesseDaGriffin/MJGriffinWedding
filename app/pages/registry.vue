@@ -61,7 +61,7 @@
 .description {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-cream-muted);
 }
 
 .divider {
@@ -73,7 +73,9 @@
 }
 
 .venmo-btn {
-  background-color: #008CFF;
+  background-color: var(--color-sapphire-muted);
+  border-color: var(--color-sapphire-muted);
+  color: var(--color-cream-muted) !important;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -82,7 +84,9 @@
 }
 
 .venmo-btn:hover {
-  background-color: #0077D9;
+  background-color: var(--color-sapphire-muted-hover);
+  border-color: var(--color-sapphire-muted-hover);
+  color: var(--color-cream-muted) !important;
 }
 
 .venmo-icon {

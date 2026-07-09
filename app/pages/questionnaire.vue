@@ -82,7 +82,7 @@ watchEffect(async () => {
       .from('questionnaires')
       .select('*')
       .eq('user_id', userId)
-      .single();
+      .maybeSingle();
       
     if (data) {
       form.value = {
@@ -123,7 +123,7 @@ const submitQuestionnaire = async () => {
         .from('profiles')
         .select('first_name, last_name')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
         
       const guestName = profile ? `${profile.first_name || ''} ${profile.last_name || ''}`.trim() : 'Unknown';
       const guestEmail = user.value.email || 'Unknown';
@@ -185,7 +185,7 @@ const submitQuestionnaire = async () => {
   display: block;
   font-size: 0.9rem;
   margin-bottom: 0.25rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-cream-muted);
 }
 
 .checkbox-grid {
@@ -221,7 +221,8 @@ const submitQuestionnaire = async () => {
 
 .checkbox-label input:checked + .custom-checkbox::after {
   content: '✓';
-  color: #fff;
+  color: var(--color-black);
+  font-weight: bold;
   position: absolute;
   top: 50%;
   left: 50%;

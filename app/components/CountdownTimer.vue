@@ -1,5 +1,5 @@
 <template>
-  <div class="countdown-container glass-panel" :class="{ 'mt-lg': !compact, 'countdown-compact': compact }">
+  <div class="countdown-container" :class="{ 'mt-lg': !compact, 'countdown-compact': compact }">
     <p v-if="label" class="countdown-heading" :class="{ 'countdown-heading--compact': compact }">{{ label }}</p>
     <div class="countdown-units" :class="{ 'countdown-units--compact': compact }">
       <div class="countdown-item">
@@ -74,18 +74,19 @@ onUnmounted(() => {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--spacing-md);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .countdown-units {
   display: flex;
-  gap: var(--spacing-md);
+  gap: 2.2rem;
 }
 
 .countdown-heading {
   font-family: var(--font-heading);
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-cream-muted);
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: var(--spacing-sm);
@@ -105,26 +106,29 @@ onUnmounted(() => {
 }
 
 .countdown-value {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 3.5rem;
+  font-weight: 400;
   font-family: var(--font-heading);
-  color: var(--color-accent);
+  color: var(--color-primary); /* Gold */
+  line-height: 1;
+  margin-bottom: 0.4rem;
 }
 
 .countdown-label {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  font-family: var(--font-heading);
+  color: var(--color-cream-muted);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.15em;
 }
 
 /* ── Compact variant ── */
 .countdown-compact {
-  padding: 0.75rem 1.25rem;
   margin-top: var(--spacing-md);
 }
 
 .countdown-units--compact {
-  gap: var(--spacing-sm);
+  gap: 1.25rem;
 }
 
 .countdown-compact .countdown-item {
@@ -132,20 +136,12 @@ onUnmounted(() => {
 }
 
 .countdown-compact .countdown-value {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
 }
 
 .countdown-compact .countdown-label {
   font-size: 0.65rem;
-}
-
-.glass-panel {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  border-radius: var(--border-radius);
+  letter-spacing: 0.1em;
 }
 
 .mt-lg {
@@ -154,19 +150,16 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .countdown-units {
-    gap: var(--spacing-sm);
-  }
-  .countdown-container {
-    padding: var(--spacing-sm);
+    gap: 1.25rem;
   }
   .countdown-item {
     min-width: 60px;
   }
   .countdown-value {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
   }
   .countdown-compact .countdown-value {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
   .countdown-compact .countdown-item {
     min-width: 42px;
