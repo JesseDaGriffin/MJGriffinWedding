@@ -126,6 +126,7 @@ const handleSubmit = async () => {
         email: form.value.email,
         password: form.value.password,
         options: {
+          emailRedirectTo: `${window.location.origin}/login`,
           data: {
             first_name: form.value.firstName,
             last_name: form.value.lastName
