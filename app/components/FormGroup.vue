@@ -14,6 +14,18 @@
       :disabled="disabled"
     ></textarea>
     
+    <AppDatePicker
+      v-else-if="type === 'date'"
+      :id="id"
+      :model-value="modelValue"
+      @update:model-value="$emit('update:modelValue', $event)"
+      :placeholder="placeholder"
+      :required="required"
+      :disabled="disabled"
+      :min="min"
+      :max="max"
+    />
+
     <input 
       v-else
       :id="id"

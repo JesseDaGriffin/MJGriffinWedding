@@ -125,57 +125,11 @@
                     >
                 </nav>
 
-                <!-- Wide Couple Portrait Placeholder -->
+                <!-- Wide Couple Portrait Carousel -->
                 <div class="couple-photo-container">
-                    <div class="couple-photo-placeholder">
-                        <div class="placeholder-overlay">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.2"
-                                class="placeholder-icon"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
-                                />
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
-                                />
-                            </svg>
-                            <div class="placeholder-text-main">
-                                Maddie &amp; Jesse
-                            </div>
-                            <div class="placeholder-text-sub">
-                                Insert Portrait Here
-                            </div>
-                        </div>
-                    </div>
+                    <ImageCarousel placeholderText="Our Favorite Memories" />
                 </div>
             </div>
-        </section>
-
-        <!-- About Us Section -->
-        <section class="section container story-section">
-            <h2 class="text-center mb-md">Our Story</h2>
-            <GlassCard class="about-content">
-                <p class="text-center">
-                    Welcome to the official home of the soon-to-be Griffins! We
-                    are so thrilled to celebrate our special day with the people
-                    we love most.
-                </p>
-            </GlassCard>
-        </section>
-
-        <!-- Gallery Carousel Section -->
-        <section class="section container gallery-section">
-            <h2 class="text-center mb-md">Gallery</h2>
-            <ImageCarousel placeholderText="Our Favorite Memories" />
         </section>
     </div>
 </template>
@@ -209,6 +163,8 @@ onUnmounted(() => {
 
 const logout = async () => {
     isDropdownOpen.value = false;
+    const bypassCookie = useCookie('sb_bypass_auth');
+    bypassCookie.value = null;
     await supabase.auth.signOut();
     localStorage.removeItem("wedding_auth");
     localStorage.removeItem("wedding_admin");
@@ -406,71 +362,12 @@ const daysRemainingText = computed(() => {
     color: var(--color-cream-muted);
 }
 
-/* Portrait / Couple Photo Container */
+/* Couple Photo Container with Carousel */
 .couple-photo-container {
     width: 100%;
     max-width: 1000px;
     margin-bottom: 2rem;
     order: 3;
-}
-
-.couple-photo-placeholder {
-    width: 100%;
-    aspect-ratio: 21 / 9; /* Wide landscape aspect ratio */
-    background: linear-gradient(135deg, #181414 0%, #090707 100%);
-    border: var(--gold-border);
-    border-radius: var(--border-radius);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    box-shadow:
-        inset 0 0 40px rgba(0, 0, 0, 0.8),
-        0 10px 25px rgba(0, 0, 0, 0.6);
-}
-
-/* Subtle inner editorial gold border frame */
-.couple-photo-placeholder::after {
-    content: "";
-    position: absolute;
-    inset: 12px;
-    border: 1px dashed rgba(197, 168, 128, 0.15);
-    pointer-events: none;
-}
-
-.placeholder-overlay {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    color: rgba(197, 168, 128, 0.4);
-    z-index: 2;
-}
-
-.placeholder-icon {
-    width: 42px;
-    height: 42px;
-    margin-bottom: 0.75rem;
-    color: var(--color-primary);
-    opacity: 0.6;
-}
-
-.placeholder-text-main {
-    font-family: var(--font-heading);
-    font-size: 1.2rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--color-primary);
-    margin-bottom: 0.25rem;
-}
-
-.placeholder-text-sub {
-    font-family: var(--font-body);
-    font-size: 0.8rem;
-    color: var(--color-cream-muted);
-    letter-spacing: 0.05em;
 }
 
 .hero-actions {
@@ -589,13 +486,13 @@ const daysRemainingText = computed(() => {
     }
 
     .hero-container {
-        flex: 0 0 60%; /* Top area occupies 60% of vertical height */
+        flex: 0 0 35%; /* Top area occupies 35% of vertical height */
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
-        padding: 0 1.5rem;
+        padding: 2.5rem 1.5rem 0 1.5rem;
     }
 
     .hero-header-text {
@@ -605,7 +502,7 @@ const daysRemainingText = computed(() => {
     }
 
     .framed-content {
-        flex: 0 0 40%; /* Bottom area occupies 40% of vertical height */
+        flex: 0 0 65%; /* Bottom area occupies 65% of vertical height */
         width: 100%;
         display: flex;
         flex-direction: column;

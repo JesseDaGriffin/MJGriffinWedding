@@ -31,8 +31,8 @@
                     Strip.
                 </p>
                 <p class="small-text">
-                    Pro Tip: Book your flights 3-4 months in advance for the
-                    best rates.
+                    <strong>Tip:</strong> Book your flights 3-4 months in
+                    advance for the best rates.
                 </p>
             </GlassCard>
 
@@ -74,18 +74,19 @@
                 </div>
                 <h2 class="mb-sm">Accommodations</h2>
                 <p class="mb-md">
-                    We are currently looking at booking at the
+                    We will be booking our rooms at the
                     <a
                         href="https://www.caesars.com/flamingo-las-vegas"
                         target="_blank"
                         rel="noopener noreferrer"
                         >Flamingo Hotel</a
-                    >.
+                    >. It is one of the more affordable hotels that is center
+                    strip.
                 </p>
                 <div class="nearby-hotels">
                     <p class="mb-sm">
-                        For other convenient options right in the Center Strip,
-                        these nearby hotels are also excellent choices:
+                        For other convenient options, these nearby hotels are
+                        also excellent choices:
                     </p>
                     <ul class="hotel-list">
                         <li>
@@ -114,9 +115,6 @@
                         </li>
                     </ul>
                 </div>
-                <p class="small-text mt-md">
-                    Check back for updates on where we'll be staying.
-                </p>
             </GlassCard>
         </div>
 

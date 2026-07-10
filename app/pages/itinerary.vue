@@ -28,7 +28,7 @@ const itineraryDays = [
             {
                 title: "Family Day",
                 description:
-                    "Our first day is going to be family centric. We will be doing activities that are kid friendly, but should be fun for all. Here are a few activities we know we want to do: ",
+                    "Our first day is going to be family oriented. We will be doing activities that are kid friendly, but should be fun for all. Here are a few activities we know we want to do: ",
                 activities: [
                     '<a href="https://meowwolf.com/visit/las-vegas" target="_blank" rel="noopener noreferrer" class="event-link">Omega Mart</a>',
                     '<a href="https://area15.com/" target="_blank" rel="noopener noreferrer" class="event-link">Area 15</a>',
