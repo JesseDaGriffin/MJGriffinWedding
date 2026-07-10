@@ -51,7 +51,7 @@
               </div>
             </div>
             
-            <div class="response-body mt-sm">
+            <div class="response-body">
               <div class="activities-section" v-if="response.activities && response.activities.length">
                 <span class="section-label">Interested In:</span>
                 <div class="activity-badges">
@@ -61,7 +61,7 @@
                 </div>
               </div>
               
-              <div class="suggestions-section mt-sm" v-if="response.suggestions">
+              <div class="suggestions-section" v-if="response.suggestions">
                 <span class="section-label">Suggestions / Ideas:</span>
                 <p class="suggestions-text">"{{ response.suggestions }}"</p>
               </div>
@@ -224,7 +224,7 @@ const fetchQuestionnaires = async () => {
 
 .activity-summary-count {
   background: var(--color-primary);
-  color: var(--color-cream-muted);
+  color: var(--color-black);
   font-weight: bold;
   font-size: 1.1rem;
   width: 30px;
@@ -246,6 +246,12 @@ const fetchQuestionnaires = async () => {
   gap: var(--spacing-md);
 }
 
+@media (min-width: 768px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .response-card {
   background: rgba(30, 30, 30, 0.6);
   backdrop-filter: blur(8px);
@@ -265,9 +271,13 @@ const fetchQuestionnaires = async () => {
   justify-content: space-between;
   align-items: flex-start;
   border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding-bottom: 1rem;
+  padding-bottom: 1.25rem;
   flex-wrap: wrap;
   gap: 1rem;
+}
+
+.guest-info {
+  min-width: 0;
 }
 
 .guest-info h3 {
@@ -281,6 +291,7 @@ const fetchQuestionnaires = async () => {
   color: rgba(255,255,255,0.6);
   font-size: 0.9rem;
   text-decoration: none;
+  word-break: break-all;
 }
 .guest-email:hover {
   color: var(--color-primary);
@@ -329,6 +340,15 @@ const fetchQuestionnaires = async () => {
   gap: 0.5rem;
 }
 
+.activity-badge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--color-cream-muted);
+  white-space: nowrap;
+}
+
 .suggestions-text {
   background: rgba(0,0,0,0.2);
   padding: 1rem;
@@ -344,5 +364,30 @@ const fetchQuestionnaires = async () => {
   text-align: center;
   padding: 2rem;
   color: rgba(255,255,255,0.5);
+}
+
+.response-body {
+  margin-top: 1.5rem;
+}
+
+.suggestions-section {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .response-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .travel-dates {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .date-badge {
+    flex: 1;
+    min-width: 0;
+  }
 }
 </style>

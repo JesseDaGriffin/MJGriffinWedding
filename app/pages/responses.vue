@@ -71,16 +71,16 @@
             </thead>
             <tbody>
               <tr v-for="response in mockData.responses" :key="response.id">
-                <td>{{ response.name }}</td>
-                <td>{{ response.email }}</td>
-                <td>
+                <td data-label="Guest Name" class="guest-name-cell">{{ response.name }}</td>
+                <td data-label="Guest Email" class="guest-email-cell">{{ response.email }}</td>
+                <td data-label="Status">
                   <span :class="response.attending ? 'status-yes' : 'status-no'">
                     {{ response.attending ? 'Attending' : 'Declined' }}
                   </span>
                 </td>
-                <td>{{ response.attending_ceremony ? `Yes (${response.ceremony_adults}A/${response.ceremony_kids}K)` : 'No' }}</td>
-                <td>{{ response.attending_dinner ? `Yes (${response.dinner_adults}A/${response.dinner_kids}K)` : 'No' }}</td>
-                <td>{{ response.attending_afterparty ? `Yes (${response.afterparty_adults}A)` : 'No' }}</td>
+                <td data-label="Ceremony">{{ response.attending_ceremony ? `Yes (${response.ceremony_adults}A/${response.ceremony_kids}K)` : 'No' }}</td>
+                <td data-label="Dinner">{{ response.attending_dinner ? `Yes (${response.dinner_adults}A/${response.dinner_kids}K)` : 'No' }}</td>
+                <td data-label="After Party">{{ response.attending_afterparty ? `Yes (${response.afterparty_adults}A)` : 'No' }}</td>
               </tr>
             </tbody>
           </table>
@@ -309,6 +309,8 @@ const fetchResponses = async () => {
 
 .event-counts {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.5rem;
 }
 
@@ -318,5 +320,102 @@ const fetchResponses = async () => {
   border-radius: 20px;
   font-size: 0.8rem;
   color: var(--color-cream-muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .responses-table, 
+  .responses-table thead, 
+  .responses-table tbody, 
+  .responses-table th, 
+  .responses-table td, 
+  .responses-table tr {
+    display: block;
+  }
+  
+  .responses-table thead {
+    display: none;
+  }
+  
+  .responses-table tr {
+    margin-bottom: var(--spacing-sm);
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+  }
+  
+  .responses-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: right;
+    font-size: 0.95rem;
+  }
+  
+  .responses-table td:last-child {
+    border-bottom: none;
+  }
+  
+  .responses-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    margin-right: 1rem;
+    text-align: left;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .responses-table .guest-name-cell,
+  .responses-table .guest-email-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .responses-table .guest-name-cell::before,
+  .responses-table .guest-email-cell::before {
+    margin-bottom: 0.2rem;
+  }
+
+  .responses-table .guest-email-cell {
+    word-break: break-all;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+  
+  .stat-item {
+    padding: 1rem;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+  }
+
+  .event-summary-item {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 120px;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .count-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  .event-counts {
+    gap: 0.3rem;
+  }
 }
 </style>
