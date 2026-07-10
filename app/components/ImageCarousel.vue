@@ -295,17 +295,18 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background: transparent;
     transition: transform 0.3s ease;
 }
 
 .carousel-image {
-    height: 100%;
-    width: auto;
+    max-height: 100%;
     max-width: 80vw;
+    height: auto;
+    width: auto;
     object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 .placeholder-slide {
     background-color: transparent;
@@ -322,6 +323,11 @@ onUnmounted(() => {
     justify-content: center;
 }
 
+@media (max-width: 900px) {
+    .carousel {
+        aspect-ratio: 4 / 3; /* Taller aspect ratio for portrait photos on mobile */
+    }
+}
 /* Carousel buttons removed */
 
 /* Carousel counter styling removed */

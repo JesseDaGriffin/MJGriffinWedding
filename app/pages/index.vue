@@ -131,20 +131,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- About Us Section -->
-        <section class="section container story-section">
-            <h2 class="text-center mb-md">Our Story</h2>
-            <GlassCard class="about-content">
-                <p class="text-center">
-                    Welcome to the official home of the soon-to-be Griffins! We
-                    are so thrilled to celebrate our special day with the people
-                    we love most.
-                </p>
-            </GlassCard>
-        </section>
-
-        <!-- Gallery section removed since it's merged with the portrait section above -->
     </div>
 </template>
 
@@ -500,13 +486,13 @@ const daysRemainingText = computed(() => {
     }
 
     .hero-container {
-        flex: 0 0 60%; /* Top area occupies 60% of vertical height */
+        flex: 0 0 35%; /* Top area occupies 35% of vertical height */
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
-        padding: 0 1.5rem;
+        padding: 2.5rem 1.5rem 0 1.5rem;
     }
 
     .hero-header-text {
@@ -516,7 +502,7 @@ const daysRemainingText = computed(() => {
     }
 
     .framed-content {
-        flex: 0 0 40%; /* Bottom area occupies 40% of vertical height */
+        flex: 0 0 65%; /* Bottom area occupies 65% of vertical height */
         width: 100%;
         display: flex;
         flex-direction: column;

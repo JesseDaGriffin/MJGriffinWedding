@@ -235,4 +235,8 @@ const submitQuestionnaire = async () => {
     grid-template-columns: 1fr;
   }
 }
+
+:deep(.form-textarea) {
+  resize: none;
+}
 </style>

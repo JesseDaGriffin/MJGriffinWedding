@@ -173,6 +173,12 @@ a:hover {
   h3 {
     font-size: 1.25rem;
   }
+
+  .btn-secondary {
+    background-color: var(--color-sapphire-muted-hover);
+    border-color: var(--color-sapphire-muted-hover);
+    color: var(--color-cream-muted) !important;
+  }
 }
 
 @media (max-width: 480px) {
