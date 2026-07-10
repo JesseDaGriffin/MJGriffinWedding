@@ -42,6 +42,17 @@
           :loading="loading" 
           :text="isLogin ? 'Login' : 'Create Account'" 
         />
+
+        <div v-if="isDev" class="dev-bypass-container">
+          <div class="dev-divider"><span>Testing</span></div>
+          <AppButton 
+            type="button" 
+            variant="secondary"
+            class="w-100 bypass-btn" 
+            @click="handleBypass"
+            text="Bypass Login (Dev Mock)" 
+          />
+        </div>
       </form>
     </GlassCard>
   </div>
@@ -55,6 +66,7 @@ definePageMeta({
   layout: false // don't use default layout for login
 });
 
+const isDev = process.dev;
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const isLogin = ref(true);
@@ -80,6 +92,22 @@ watchEffect(() => {
     router.push('/');
   }
 });
+
+const handleBypass = () => {
+  const bypassCookie = useCookie('sb_bypass_auth');
+  bypassCookie.value = 'true';
+  localStorage.setItem('wedding_admin', 'true');
+  user.value = {
+    id: 'mock-test-user-id',
+    email: 'dagriffinwedding@gmail.com',
+    role: 'authenticated',
+    user_metadata: {
+      first_name: 'Test',
+      last_name: 'User'
+    }
+  };
+  router.push('/');
+};
 
 const handleSubmit = async () => {
   errorMsg.value = '';
@@ -245,5 +273,50 @@ const handleSubmit = async () => {
   font-size: 0.9rem;
   margin-top: 0.5rem;
   text-align: center;
+}
+
+.dev-bypass-container {
+  width: 100%;
+}
+
+.dev-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--color-cream-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 1.5rem 0 1rem 0;
+  opacity: 0.5;
+}
+
+.dev-divider::before,
+.dev-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dev-divider:not(:empty)::before {
+  margin-right: 1em;
+}
+
+.dev-divider:not(:empty)::after {
+  margin-left: 1em;
+}
+
+.bypass-btn {
+  border: 1px dashed rgba(197, 168, 128, 0.4) !important;
+  background-color: rgba(197, 168, 128, 0.05) !important;
+  color: var(--color-primary) !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.05em;
+}
+
+.bypass-btn:hover {
+  background-color: rgba(197, 168, 128, 0.12) !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 15px rgba(197, 168, 128, 0.2);
 }
 </style>

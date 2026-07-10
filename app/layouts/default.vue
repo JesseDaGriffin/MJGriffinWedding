@@ -126,6 +126,8 @@ const closeMenu = () => { isMenuOpen.value = false; };
 const logout = async () => {
   isDropdownOpen.value = false;
   closeMenu();
+  const bypassCookie = useCookie('sb_bypass_auth');
+  bypassCookie.value = null;
   await supabase.auth.signOut();
   localStorage.removeItem('wedding_auth');
   localStorage.removeItem('wedding_admin');
