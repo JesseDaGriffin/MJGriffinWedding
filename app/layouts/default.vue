@@ -38,6 +38,7 @@
                   <NuxtLink to="/responses" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Responses</NuxtLink>
                   <NuxtLink to="/questionnaires" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Questionnaires</NuxtLink>
                   <NuxtLink to="/announcements" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Announcements</NuxtLink>
+                  <NuxtLink to="/emails" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Emails</NuxtLink>
                 </template>
 
                 <div class="dropdown-divider"></div>
@@ -71,6 +72,7 @@
           <NuxtLink to="/responses" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Responses</NuxtLink>
           <NuxtLink to="/questionnaires" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Questionnaires</NuxtLink>
           <NuxtLink to="/announcements" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Announcements</NuxtLink>
+          <NuxtLink to="/emails" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Emails</NuxtLink>
         </template>
         <div class="mobile-nav-divider"></div>
         <NuxtLink to="/rsvp" class="btn rsvp-btn mobile-rsvp" @click="closeMenu">RSVP</NuxtLink>
