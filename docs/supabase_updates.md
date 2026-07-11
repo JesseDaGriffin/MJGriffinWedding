@@ -221,3 +221,14 @@ ADD COLUMN attending_afterparty BOOLEAN DEFAULT false,
 ADD COLUMN afterparty_adults INTEGER DEFAULT 0,
 ADD COLUMN afterparty_kids INTEGER DEFAULT 0;
 ```
+
+### Helper: Delete User for Testing
+**Date:** July 10, 2026
+**Purpose:** Delete a user and all their associated data from tables referencing `auth.users` to allow re-registering with the same email.
+
+A script has been created at [delete_user.sql](file:///c:/Users/Jesse/Code/MJGriffinWedding/delete_user.sql) containing a reusable stored function `public.delete_user_by_email(target_email)` that can be invoked with:
+```sql
+SELECT public.delete_user_by_email('test@example.com');
+```
+
+

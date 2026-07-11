@@ -137,6 +137,15 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watchEffect } from "vue";
 
+useHead({
+    htmlAttrs: {
+        class: "html--home",
+    },
+    bodyAttrs: {
+        class: "body--home",
+    },
+});
+
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const targetDate = "2027-03-13T00:00:00";
@@ -475,10 +484,13 @@ const daysRemainingText = computed(() => {
 }
 
 @media (max-width: 900px) {
+    .landing-page {
+        min-height: 100%;
+        height: 100%;
+    }
+
     .hero-section {
-        height: calc(
-            100vh - 72px
-        ); /* Stretch to fill viewport height below fixed header */
+        height: 100%;
         display: flex;
         flex-direction: column; /* Vertical flex direction */
         padding: 0;
@@ -486,13 +498,14 @@ const daysRemainingText = computed(() => {
     }
 
     .hero-container {
-        flex: 0 0 35%; /* Top area occupies 35% of vertical height */
+        flex: 0 0 50%; /* Top area occupies 50% of vertical height */
+        height: 50%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
-        padding: 2.5rem 1.5rem 0 1.5rem;
+        padding: 1.5rem 1.5rem 0 1.5rem;
     }
 
     .hero-header-text {
@@ -502,7 +515,8 @@ const daysRemainingText = computed(() => {
     }
 
     .framed-content {
-        flex: 0 0 65%; /* Bottom area occupies 65% of vertical height */
+        flex: 0 0 50%; /* Bottom area occupies 50% of vertical height */
+        height: 50%;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -515,7 +529,7 @@ const daysRemainingText = computed(() => {
         width: 100%;
         height: 100%;
         margin: 0;
-        padding: 0 0 1.5rem; /* Give it a little breathing room at the bottom */
+        padding: 0 1.5rem 2.25rem 1.5rem; /* Tighten bottom padding to fit better and sit slightly off bottom */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -528,25 +542,25 @@ const daysRemainingText = computed(() => {
     }
 
     .gothic-title {
-        font-size: 3.2rem;
-        margin-bottom: 0.25rem;
+        font-size: 3rem;
+        margin-bottom: 0.2rem;
     }
 
     .couple-names {
-        font-size: 1.4rem;
+        font-size: 1.25rem;
         letter-spacing: 0.15em;
-        margin-top: 0.25rem;
-        margin-bottom: 0.5rem;
+        margin-top: 0.15rem;
+        margin-bottom: 0.35rem;
     }
 
     .wedding-details {
-        font-size: 0.85rem;
-        margin-bottom: 0.25rem;
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
     }
 
     .countdown-text {
-        font-size: 0.8rem;
-        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        margin-top: 0.15rem;
         margin-bottom: 0;
     }
 

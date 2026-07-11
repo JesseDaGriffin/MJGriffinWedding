@@ -324,8 +324,17 @@ onUnmounted(() => {
 }
 
 @media (max-width: 900px) {
+    .carousel-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     .carousel {
         aspect-ratio: 4 / 3; /* Taller aspect ratio for portrait photos on mobile */
+        max-height: 100%;
+        max-width: 100%;
+        width: 100%;
     }
 }
 /* Carousel buttons removed */

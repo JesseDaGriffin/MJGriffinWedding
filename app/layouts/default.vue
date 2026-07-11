@@ -1,5 +1,5 @@
 <template>
-  <div class="layout">
+  <div class="layout" :class="{ 'layout--home': isHomepage }">
     <header class="header" :class="{ 'header--home-desktop-hidden': isHomepage }">
       <div class="container header-content">
 
@@ -38,6 +38,7 @@
                   <NuxtLink to="/responses" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Responses</NuxtLink>
                   <NuxtLink to="/questionnaires" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Questionnaires</NuxtLink>
                   <NuxtLink to="/announcements" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Announcements</NuxtLink>
+                  <NuxtLink to="/emails" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Emails</NuxtLink>
                 </template>
 
                 <div class="dropdown-divider"></div>
@@ -71,6 +72,7 @@
           <NuxtLink to="/responses" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Responses</NuxtLink>
           <NuxtLink to="/questionnaires" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Questionnaires</NuxtLink>
           <NuxtLink to="/announcements" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Announcements</NuxtLink>
+          <NuxtLink to="/emails" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Emails</NuxtLink>
         </template>
         <div class="mobile-nav-divider"></div>
         <NuxtLink to="/rsvp" class="btn rsvp-btn mobile-rsvp" @click="closeMenu">RSVP</NuxtLink>
@@ -86,7 +88,7 @@
     </main>
 
     <!-- Decorative border above footer -->
-    <div class="footer-border" aria-hidden="true">
+    <div v-if="!isHomepage" class="footer-border" aria-hidden="true">
       <img src="/img/frames/horizontal_border_top_skull_roses_thorns.png" alt="" class="footer-border-img" loading="lazy" />
     </div>
 
@@ -508,6 +510,19 @@ watchEffect(() => {
 
 /* ─── Responsive ─── */
 @media (max-width: 900px) {
+  .layout--home {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .layout--home .main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
   .nav-desktop,
   .header-actions-desktop {
     display: none;
