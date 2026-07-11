@@ -506,14 +506,14 @@ const daysRemainingText = computed(() => {
     }
 
     .hero-container {
-        flex: 0 0 40%; /* Reduce top area height to 44% */
-        height: 40%;
+        flex: 0 0 35%; /* Reduce height to 35% */
+        height: 35%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
-        padding: 0.5rem 1rem 0 1rem; /* Reduced top padding to prevent overflow */
+        padding: 0.5rem 1rem 0 1rem;
     }
 
     .hero-header-text {
@@ -523,13 +523,13 @@ const daysRemainingText = computed(() => {
     }
 
     .hero-actions {
-        margin-top: 0.9rem; /* Increased space between text and button */
+        margin-top: 0.6rem; /* Slightly reduced margin to keep it compact */
         margin-bottom: 0.5rem;
     }
 
     .framed-content {
-        flex: 0 0 60%; /* Increase bottom area height to 60% for a larger carousel */
-        height: 60%;
+        flex: 0 0 47%; /* Reduce height to 47% to push the carousel up further */
+        height: 47%;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -555,25 +555,25 @@ const daysRemainingText = computed(() => {
     }
 
     .gothic-title {
-        font-size: 3rem;
-        margin-bottom: 0.5rem; /* Increased spacing */
+        font-size: 2.3rem; /* Reduced from 3rem */
+        margin-bottom: 0.4rem;
     }
 
     .couple-names {
-        font-size: 1.25rem;
+        font-size: 1.1rem; /* Reduced from 1.25rem */
         letter-spacing: 0.15em;
-        margin-top: 0.3rem; /* Increased spacing */
-        margin-bottom: 0.7rem; /* Increased spacing */
+        margin-top: 0.2rem;
+        margin-bottom: 0.5rem;
     }
 
     .wedding-details {
-        font-size: 0.8rem;
-        margin-bottom: 0.4rem; /* Increased spacing */
+        font-size: 0.75rem; /* Reduced from 0.8rem */
+        margin-bottom: 0.3rem;
     }
 
     .countdown-text {
-        font-size: 0.75rem;
-        margin-top: 0.3rem; /* Increased spacing */
+        font-size: 0.7rem; /* Reduced from 0.75rem */
+        margin-top: 0.2rem;
         margin-bottom: 0;
     }
 
