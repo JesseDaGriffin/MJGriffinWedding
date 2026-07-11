@@ -1,5 +1,5 @@
 <template>
-  <div class="layout">
+  <div class="layout" :class="{ 'layout--home': isHomepage }">
     <header class="header" :class="{ 'header--home-desktop-hidden': isHomepage }">
       <div class="container header-content">
 
@@ -86,7 +86,7 @@
     </main>
 
     <!-- Decorative border above footer -->
-    <div class="footer-border" aria-hidden="true">
+    <div v-if="!isHomepage" class="footer-border" aria-hidden="true">
       <img src="/img/frames/horizontal_border_top_skull_roses_thorns.png" alt="" class="footer-border-img" loading="lazy" />
     </div>
 
@@ -508,6 +508,19 @@ watchEffect(() => {
 
 /* ─── Responsive ─── */
 @media (max-width: 900px) {
+  .layout--home {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .layout--home .main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
   .nav-desktop,
   .header-actions-desktop {
     display: none;

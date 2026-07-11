@@ -69,6 +69,13 @@ body {
   background-attachment: fixed;
 }
 
+html.html--home,
+body.body--home {
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 500;
