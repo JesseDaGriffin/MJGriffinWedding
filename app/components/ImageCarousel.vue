@@ -331,7 +331,7 @@ onUnmounted(() => {
         justify-content: center;
     }
     .carousel {
-        aspect-ratio: 4 / 3; /* Taller aspect ratio for portrait photos on mobile */
+        aspect-ratio: 1.1; /* Taller aspect ratio for portrait photos on mobile */
         max-height: 100%;
         max-width: 100%;
         width: 100%;
