@@ -130,7 +130,14 @@ const logout = async () => {
   closeMenu();
   const bypassCookie = useCookie('sb_bypass_auth');
   bypassCookie.value = null;
-  await supabase.auth.signOut();
+  
+  try {
+    await supabase.auth.signOut();
+  } catch (e) {
+    console.error('SignOut failed:', e);
+  }
+  
+  user.value = null; // Clear mock user
   localStorage.removeItem('wedding_auth');
   localStorage.removeItem('wedding_admin');
   isAuthenticated.value = false;

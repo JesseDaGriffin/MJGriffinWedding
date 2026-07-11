@@ -66,6 +66,15 @@ definePageMeta({
   layout: false // don't use default layout for login
 });
 
+useHead({
+  htmlAttrs: {
+    class: 'html--login'
+  },
+  bodyAttrs: {
+    class: 'body--login'
+  }
+});
+
 const isDev = process.dev;
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -319,5 +328,12 @@ const handleSubmit = async () => {
   background-color: rgba(197, 168, 128, 0.12) !important;
   border-color: var(--color-primary) !important;
   box-shadow: 0 0 15px rgba(197, 168, 128, 0.2);
+}
+
+:global(html.html--login),
+:global(body.body--login) {
+  overflow: auto !important;
+  height: auto !important;
+  min-height: 100vh;
 }
 </style>
