@@ -523,6 +523,10 @@ watchEffect(() => {
     min-height: 0;
   }
 
+  .layout--home .footer {
+    display: none;
+  }
+
   .nav-desktop,
   .header-actions-desktop {
     display: none;

@@ -87,7 +87,9 @@
                                 >
                                 <template v-if="isAdmin">
                                     <div class="dropdown-divider"></div>
-                                    <div class="dropdown-header">Admin Tools</div>
+                                    <div class="dropdown-header">
+                                        Admin Tools
+                                    </div>
                                     <NuxtLink
                                         to="/responses"
                                         class="dropdown-item dropdown-item--admin"
@@ -172,7 +174,7 @@ onUnmounted(() => {
 
 const logout = async () => {
     isDropdownOpen.value = false;
-    const bypassCookie = useCookie('sb_bypass_auth');
+    const bypassCookie = useCookie("sb_bypass_auth");
     bypassCookie.value = null;
     await supabase.auth.signOut();
     localStorage.removeItem("wedding_auth");
@@ -185,8 +187,13 @@ const logout = async () => {
 watchEffect(() => {
     if (user.value) {
         isAuthenticated.value = true;
-        const isLocalAdmin = import.meta.client ? localStorage.getItem('wedding_admin') === 'true' : false;
-        if (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' || isLocalAdmin) {
+        const isLocalAdmin = import.meta.client
+            ? localStorage.getItem("wedding_admin") === "true"
+            : false;
+        if (
+            user.value.email?.toLowerCase() === "dagriffinwedding@gmail.com" ||
+            isLocalAdmin
+        ) {
             isAdmin.value = true;
         } else {
             isAdmin.value = false;
@@ -487,6 +494,7 @@ const daysRemainingText = computed(() => {
     .landing-page {
         min-height: 100%;
         height: 100%;
+        overflow: hidden; /* Prevent page scrolling on mobile */
     }
 
     .hero-section {
@@ -498,14 +506,14 @@ const daysRemainingText = computed(() => {
     }
 
     .hero-container {
-        flex: 0 0 50%; /* Top area occupies 50% of vertical height */
-        height: 50%;
+        flex: 0 0 40%; /* Reduce top area height to 44% */
+        height: 40%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
-        padding: 1.5rem 1.5rem 0 1.5rem;
+        padding: 0.5rem 1rem 0 1rem; /* Reduced top padding to prevent overflow */
     }
 
     .hero-header-text {
@@ -514,9 +522,14 @@ const daysRemainingText = computed(() => {
         text-align: center;
     }
 
+    .hero-actions {
+        margin-top: 0.9rem; /* Increased space between text and button */
+        margin-bottom: 0.5rem;
+    }
+
     .framed-content {
-        flex: 0 0 50%; /* Bottom area occupies 50% of vertical height */
-        height: 50%;
+        flex: 0 0 60%; /* Increase bottom area height to 60% for a larger carousel */
+        height: 60%;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -529,7 +542,7 @@ const daysRemainingText = computed(() => {
         width: 100%;
         height: 100%;
         margin: 0;
-        padding: 0 1.5rem 2.25rem 1.5rem; /* Tighten bottom padding to fit better and sit slightly off bottom */
+        padding: 0 0.75rem 1.25rem 0.75rem; /* Reduced padding to allow the carousel to expand larger on mobile */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -543,24 +556,24 @@ const daysRemainingText = computed(() => {
 
     .gothic-title {
         font-size: 3rem;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.5rem; /* Increased spacing */
     }
 
     .couple-names {
         font-size: 1.25rem;
         letter-spacing: 0.15em;
-        margin-top: 0.15rem;
-        margin-bottom: 0.35rem;
+        margin-top: 0.3rem; /* Increased spacing */
+        margin-bottom: 0.7rem; /* Increased spacing */
     }
 
     .wedding-details {
         font-size: 0.8rem;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.4rem; /* Increased spacing */
     }
 
     .countdown-text {
         font-size: 0.75rem;
-        margin-top: 0.15rem;
+        margin-top: 0.3rem; /* Increased spacing */
         margin-bottom: 0;
     }
 
