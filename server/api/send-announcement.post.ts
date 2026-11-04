@@ -1,5 +1,5 @@
-import { defineEventHandler, readBody } from 'h3';
-import { sendEmail, getAnnouncementEmailTemplate } from '../utils/email';
+import { defineEventHandler, readBody, getRequestURL } from 'h3';
+import { sendEmail, getAnnouncementEmailTemplate, getAnnouncementRecipients } from '../utils/email';
 import { serverSupabaseServiceRole } from '#supabase/server';
 
 export default defineEventHandler(async (event) => {
@@ -12,22 +12,15 @@ export default defineEventHandler(async (event) => {
 
   try {
     const supabaseAdmin = await serverSupabaseServiceRole(event);
-    
-    // Get all users from auth.users using the admin API
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.listUsers();
-    
-    if (authError) {
-      console.error('Error fetching users:', authError.message);
-      return { success: false, error: 'Failed to retrieve user list from the database' };
-    }
-
-    const emails = authData.users.map(u => u.email).filter(Boolean) as string[];
+    const { emails } = await getAnnouncementRecipients(supabaseAdmin);
 
     if (emails.length === 0) {
-      return { success: false, error: 'No users found to send email to.' };
+      return { success: false, error: 'No subscribed users found to send email to.' };
     }
 
-    const html = getAnnouncementEmailTemplate(message);
+    const requestUrl = getRequestURL(event);
+    const siteUrl = requestUrl?.origin || 'https://mjgriffinwedding.netlify.app';
+    const html = getAnnouncementEmailTemplate(message, siteUrl);
 
     // Using BCC to protect privacy and send the mass email efficiently
     const result = await sendEmail({

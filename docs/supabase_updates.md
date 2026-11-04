@@ -232,3 +232,20 @@ SELECT public.delete_user_by_email('test@example.com');
 ```
 
 
+### Update: Announcement Email Opt-Out Preference
+**Date:** November 3, 2026
+**Purpose:** Add `receive_announcements` column to `profiles` so guests can opt out of (or back into) wedding announcement emails via Account Settings or the email footer unsubscribe link.
+
+Run the following SQL in the Supabase SQL Editor:
+
+```sql
+ALTER TABLE public.profiles
+ADD COLUMN IF NOT EXISTS receive_announcements BOOLEAN DEFAULT true;
+
+-- Backfill from auth.users metadata if any user already updated their preference
+UPDATE public.profiles p
+SET receive_announcements = (u.raw_user_meta_data->>'receive_announcements')::boolean
+FROM auth.users u
+WHERE p.id = u.id
+  AND u.raw_user_meta_data ? 'receive_announcements';
+```

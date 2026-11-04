@@ -16,8 +16,10 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
   }
 
+  const publicPaths = ['/login', '/unsubscribe'];
+
   // Redirect to login if trying to access a protected route
-  if (!user.value && to.path !== '/login') {
+  if (!user.value && !publicPaths.includes(to.path)) {
     return navigateTo('/login');
   }
 
@@ -26,4 +28,3 @@ export default defineNuxtRouteMiddleware((to, from) => {
     return navigateTo('/');
   }
 });
-

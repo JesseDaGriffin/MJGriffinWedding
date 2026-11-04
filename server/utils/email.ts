@@ -41,6 +41,51 @@ export const sendEmail = async (options: {
   }
 };
 
+export const getAnnouncementRecipients = async (supabaseAdmin: any) => {
+  const { data: authData, error: authError } = await supabaseAdmin.auth.admin.listUsers();
+
+  if (authError) {
+    throw new Error(authError.message);
+  }
+
+  // Fetch profiles to check receive_announcements column if present
+  const profileMap = new Map<string, any>();
+  const { data: profilesData, error: profilesError } = await supabaseAdmin
+    .from('profiles')
+    .select('*');
+
+  if (!profilesError && Array.isArray(profilesData)) {
+    for (const p of profilesData) {
+      profileMap.set(p.id, p);
+    }
+  }
+
+  const emails: string[] = [];
+  let optedOutCount = 0;
+
+  for (const user of authData.users) {
+    if (!user.email) continue;
+
+    const profile = profileMap.get(user.id);
+    const metaPref = user.user_metadata?.receive_announcements;
+    const profilePref = profile?.receive_announcements;
+
+    const isOptedOut = profilePref === false || metaPref === false;
+
+    if (isOptedOut) {
+      optedOutCount++;
+    } else {
+      emails.push(user.email);
+    }
+  }
+
+  return {
+    emails,
+    optedOutCount,
+    totalUsers: authData.users.filter((u: any) => u.email).length,
+  };
+};
+
 export {
   getAnnouncementEmailTemplate,
   getWelcomeEmailTemplate,

@@ -10,7 +10,7 @@
       <!-- Compose Announcement -->
       <GlassCard class="compose-card full-width">
         <h2 class="mb-sm text-primary">Compose Announcement</h2>
-        <p class="mb-md">This email will be sent via BCC to all registered users in the database.</p>
+        <p class="mb-md">This email will be sent via BCC to all subscribed users in the database.</p>
         
         <form @submit.prevent="sendAnnouncement" class="form">
           <FormGroup 
@@ -59,13 +59,18 @@
             class="mt-sm mb-md" 
             :loading="sending" 
             :disabled="recipientEmails.length === 0 || loadingUsers"
-            text="Send Announcement to All Users" 
+            text="Send Announcement to Subscribed Users" 
             loading-text="Sending..." 
           />
 
           <div class="recipients-section">
             <div class="toggle-recipients" @click="showRecipients = !showRecipients">
-              <span>{{ recipientEmails.length }} Recipients Found</span>
+              <span>
+                {{ recipientEmails.length }} Subscribed Recipients
+                <span v-if="optedOutCount > 0" class="opted-out-note">
+                  ({{ optedOutCount }} opted out)
+                </span>
+              </span>
               <span class="toggle-icon">{{ showRecipients ? '▲' : '▼' }}</span>
             </div>
             
@@ -74,7 +79,7 @@
               <ul v-else-if="recipientEmails.length > 0">
                 <li v-for="email in recipientEmails" :key="email">{{ email }}</li>
               </ul>
-              <div v-else class="empty-text">No registered users found.</div>
+              <div v-else class="empty-text">No subscribed users found.</div>
             </div>
           </div>
         </form>
@@ -96,6 +101,7 @@ const sending = ref(false);
 const errorMsg = ref('');
 const successMsg = ref('');
 const recipientEmails = ref([]);
+const optedOutCount = ref(0);
 const showRecipients = ref(false);
 
 const form = ref({
@@ -118,6 +124,7 @@ const fetchUsers = async () => {
     const response = await $fetch('/api/admin/users');
     if (response.success) {
       recipientEmails.value = response.emails;
+      optedOutCount.value = response.optedOutCount || 0;
     } else {
       console.error('Failed to load users:', response.error);
     }
@@ -157,7 +164,10 @@ const siteRoutes = computed(() => {
     !route.path.includes('login') &&
     !route.path.includes('account') &&
     !route.path.includes('responses') &&
-    !route.path.includes('announcements')
+    !route.path.includes('announcements') &&
+    !route.path.includes('emails') &&
+    !route.path.includes('questionnaires') &&
+    !route.path.includes('unsubscribe')
   ).map(route => {
     let name = String(route.name).replace(/-/g, ' ');
     // capitalize words
@@ -264,6 +274,13 @@ const sendAnnouncement = async () => {
 
 .toggle-recipients:hover {
   background-color: rgba(255, 255, 255, 0.05);
+}
+
+.opted-out-note {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--color-cream-muted);
+  margin-left: 6px;
 }
 
 .toggle-icon {

@@ -178,8 +178,17 @@ const wrapEmailHtml = (
 </html>`;
 };
 
-export const getAnnouncementEmailTemplate = (messageHtml: string) => {
-  return wrapEmailHtml('Wedding Announcement', messageHtml);
+
+export const getAnnouncementEmailTemplate = (messageHtml: string, siteUrl: string = 'https://mjgriffinwedding.netlify.app') => {
+  const cleanUrl = siteUrl.replace(/\/$/, '');
+  const footer = `
+    <p>The Griffin Wedding — March 13, 2027</p>
+    <p>Please do not reply directly to this email.</p>
+    <p style="margin-top: 12px;">
+      <a href="${cleanUrl}/unsubscribe" style="color: #c5a880; text-decoration: underline;">Unsubscribe from announcement emails</a>
+    </p>
+  `;
+  return wrapEmailHtml('Wedding Announcement', messageHtml, footer);
 };
 
 export const getWelcomeEmailTemplate = (firstName: string) => {
