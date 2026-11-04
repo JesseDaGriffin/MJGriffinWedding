@@ -169,7 +169,8 @@ import {
   getContactEmailTemplate,
   getRsvpEmailTemplate,
   getQuestionnaireEmailTemplate,
-  getSupabaseConfirmEmailTemplate
+  getSupabaseConfirmEmailTemplate,
+  getSupabaseResetPasswordEmailTemplate
 } from '../../utils/emailTemplates';
 
 const user = useSupabaseUser();
@@ -226,7 +227,8 @@ const formData = ref({
   questionnaire_suggestions: 'We would love to request some classic rock songs during the reception. Thank you!',
 
   // Supabase fields
-  supabase_confirmationUrl: '{{ .ConfirmationURL }}'
+  supabase_confirmationUrl: '{{ .ConfirmationURL }}',
+  supabase_resetUrl: '{{ .ConfirmationURL }}'
 });
 
 // Definitions for each template config
@@ -375,6 +377,15 @@ const templates = [
       { id: 'supabase_confirmationUrl', label: 'Confirmation Link URL', type: 'text' }
     ],
     getHtml: (data) => getSupabaseConfirmEmailTemplate(data.supabase_confirmationUrl)
+  },
+  {
+    id: 'supabase_reset',
+    name: 'Supabase Password Reset Email',
+    description: 'Password recovery email sent by Supabase authentication flow (raw HTML format).',
+    fields: [
+      { id: 'supabase_resetUrl', label: 'Reset Link URL', type: 'text' }
+    ],
+    getHtml: (data) => getSupabaseResetPasswordEmailTemplate(data.supabase_resetUrl)
   }
 ];
 

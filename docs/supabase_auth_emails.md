@@ -162,3 +162,164 @@ Copy the code block below and paste it directly into the Message Body field in S
 ### Optional: Updating the Subject Line
 While on the **Confirm signup** tab in Supabase, you can also update the **Subject** field to something more personalized, such as:
 `Verify your email for The Griffin Wedding!`
+
+
+---
+
+## Password Reset Email Template
+
+To style the **Reset Password** email sent by Supabase when a guest clicks "Forgot your password?":
+
+### 1. Add Redirect URLs in Supabase
+1. In your [Supabase Dashboard](https://app.supabase.com), go to **Authentication > URL Configuration**.
+2. Under **Redirect URLs**, add both your production and local reset URLs:
+   - `https://mjgriffinwedding.netlify.app/reset-password`
+   - `http://localhost:3000/reset-password`
+3. Click **Save**.
+
+### 2. Update the Reset Password Email Template
+1. Go to **Authentication > Email Templates**.
+2. Select the **Reset Password** tab.
+3. Update the **Subject** field (e.g., `Reset your password for The Griffin Wedding`).
+4. Paste the HTML template below into the **Message Body** field (you can also preview and copy this directly from the `/emails` admin dashboard on the website):
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;600&display=swap');
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #a8a39a;
+      line-height: 1.7;
+      background-color: #110d14;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 30px;
+      border-radius: 4px;
+      background-color: #0c0a0a;
+      border: 1px solid rgba(197, 168, 128, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+    .logo-container {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .logo-text {
+      font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: #c5a880;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-right: -0.25em;
+    }
+    .header {
+      text-align: center;
+      padding-bottom: 25px;
+      border-bottom: 1px solid rgba(197, 168, 128, 0.15);
+      margin-bottom: 25px;
+    }
+    .header h1 {
+      color: #e5e0d8;
+      margin: 0;
+      font-size: 22px;
+      font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .content {
+      color: #a8a39a;
+      font-size: 15px;
+    }
+    .content h2 {
+      color: #c5a880;
+      font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+      font-size: 18px;
+      font-weight: 500;
+      margin-top: 0;
+      margin-bottom: 15px;
+      letter-spacing: 0.05em;
+    }
+    .content p {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    .btn-container {
+      text-align: center;
+      margin: 30px 0;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: #c5a880;
+      color: #080606 !important;
+      text-decoration: none;
+      border-radius: 4px;
+      font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 10px rgba(197, 168, 128, 0.15);
+    }
+    .footer {
+      text-align: center;
+      padding-top: 25px;
+      border-top: 1px solid rgba(197, 168, 128, 0.15);
+      font-size: 11px;
+      color: rgba(168, 163, 154, 0.5);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 25px;
+    }
+    .footer p {
+      margin: 5px 0;
+    }
+    a {
+      color: #c5a880;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body style="background-color: #110d14; margin: 0; padding: 0; height: 100%; width: 100%;">
+  <table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #110d14; height: 100%; min-height: 100vh;">
+    <tr>
+      <td align="center" valign="top" style="padding: 40px 20px;">
+        <div class="container" style="background-color: #0c0a0a; color: #a8a39a; text-align: left;">
+          <div class="logo-container">
+            <span class="logo-text">M &amp; J</span>
+          </div>
+          <div class="header">
+            <h1>Reset Your Password</h1>
+          </div>
+          <div class="content">
+            <h2>Password Reset Request</h2>
+            <p>We received a request to reset the password for your account on our wedding website. Click the button below to choose a new password:</p>
+            <div class="btn-container">
+              <a href="{{ .ConfirmationURL }}" class="btn" style="color: #080606 !important;">Reset Password</a>
+            </div>
+            <p>This link will expire shortly for your security. If you did not request a password reset, no changes have been made to your account and you can safely ignore this email.</p>
+          </div>
+          <div class="footer">
+            <p>The Griffin Wedding — March 13, 2027</p>
+            <p>If you did not request a password reset, you can safely ignore this email.</p>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+```
+5. Click **Save**.

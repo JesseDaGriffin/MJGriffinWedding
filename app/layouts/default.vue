@@ -119,8 +119,20 @@ const handleClickOutside = (event) => {
   }
 };
 
-onMounted(() => document.addEventListener('click', handleClickOutside));
-onUnmounted(() => document.removeEventListener('click', handleClickOutside));
+let authSubscription = null;
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+  const { data } = supabase.auth.onAuthStateChange((event) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      router.push('/reset-password');
+    }
+  });
+  authSubscription = data?.subscription || null;
+});
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+  authSubscription?.unsubscribe?.();
+});
 
 const toggleMenu = () => { isMenuOpen.value = !isMenuOpen.value; };
 const closeMenu = () => { isMenuOpen.value = false; };

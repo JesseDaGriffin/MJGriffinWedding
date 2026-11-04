@@ -16,7 +16,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
   }
 
-  const publicPaths = ['/login', '/unsubscribe'];
+  const publicPaths = ['/login', '/unsubscribe', '/reset-password'];
 
   // Redirect to login if trying to access a protected route
   if (!user.value && !publicPaths.includes(to.path)) {

@@ -92,5 +92,6 @@ export {
   getContactEmailTemplate,
   getRsvpEmailTemplate,
   getQuestionnaireEmailTemplate,
-  getSupabaseConfirmEmailTemplate
+  getSupabaseConfirmEmailTemplate,
+  getSupabaseResetPasswordEmailTemplate
 } from '../../utils/emailTemplates';

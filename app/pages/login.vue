@@ -5,32 +5,59 @@
         <div class="login-logo">M &amp; J</div>
       </div>
       <PageHeader 
-        title="Welcome" 
+        :title="isForgotPassword ? 'Reset Password' : 'Welcome'" 
         subtitle="The Griffin Wedding" 
         subtitle-class="mb-md" 
       />
-      <div class="tabs">
+      <div v-if="!isForgotPassword" class="tabs">
         <button 
+          type="button"
           class="tab-btn" 
           :class="{ active: isLogin }" 
-          @click="isLogin = true"
+          @click="switchMode(true)"
         >Login</button>
         <button 
+          type="button"
           class="tab-btn" 
           :class="{ active: !isLogin }" 
-          @click="isLogin = false"
+          @click="switchMode(false)"
         >Sign Up</button>
       </div>
 
       <form @submit.prevent="handleSubmit" class="form">
-        <template v-if="!isLogin">
-          <FormGroup v-model="form.code" label="Invitation Code" placeholder="Enter the code from your invite" required />
-          <FormGroup v-model="form.firstName" label="First Name" placeholder="First Name" required />
-          <FormGroup v-model="form.lastName" label="Last Name" placeholder="Last Name" required />
+        <template v-if="isForgotPassword">
+          <p class="recovery-description">
+            Enter the email address associated with your account and we will send you a link to reset your password.
+          </p>
+          <FormGroup
+            v-model="form.email"
+            label="Email"
+            type="email"
+            placeholder="your@email.com"
+            required
+          />
         </template>
-        
-        <FormGroup v-model="form.email" label="Email" type="email" placeholder="your@email.com" required />
-        <FormGroup v-model="form.password" label="Password" type="password" placeholder="••••••••" required />
+
+        <template v-else>
+          <template v-if="!isLogin">
+            <FormGroup v-model="form.code" label="Invitation Code" placeholder="Enter the code from your invite" required />
+            <FormGroup v-model="form.firstName" label="First Name" placeholder="First Name" required />
+            <FormGroup v-model="form.lastName" label="Last Name" placeholder="Last Name" required />
+          </template>
+          
+          <FormGroup v-model="form.email" label="Email" type="email" placeholder="your@email.com" required />
+          <FormGroup v-model="form.password" label="Password" type="password" placeholder="••••••••" required />
+
+          <div v-if="isLogin" class="forgot-password-row">
+            <button
+              type="button"
+              class="forgot-password-link"
+              @click="openForgotPassword"
+            >
+              Forgot your password?
+            </button>
+          </div>
+        </template>
 
         <AlertMessage v-if="successMsg" type="success" :message="successMsg" />
         <AlertMessage v-if="errorMsg" type="error" :message="errorMsg" />
@@ -40,10 +67,20 @@
           class="mt-md" 
           block 
           :loading="loading" 
-          :text="isLogin ? 'Login' : 'Create Account'" 
+          :text="isForgotPassword ? 'Send Reset Link' : (isLogin ? 'Login' : 'Create Account')" 
         />
 
-        <div v-if="isDev" class="dev-bypass-container">
+        <div v-if="isForgotPassword" class="back-to-login-row">
+          <button
+            type="button"
+            class="back-to-login-link"
+            @click="closeForgotPassword"
+          >
+            &larr; Back to Login
+          </button>
+        </div>
+
+        <div v-if="isDev && !isForgotPassword" class="dev-bypass-container">
           <div class="dev-divider"><span>Testing</span></div>
           <AppButton 
             type="button" 
@@ -59,8 +96,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, onUnmounted, watchEffect } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 definePageMeta({
   layout: false // don't use default layout for login
@@ -79,7 +116,9 @@ const isDev = process.dev;
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const isLogin = ref(true);
+const isForgotPassword = ref(false);
 const router = useRouter();
+const route = useRoute();
 const errorMsg = ref('');
 const successMsg = ref('');
 const loading = ref(false);
@@ -92,9 +131,51 @@ const form = ref({
   password: ''
 });
 
+const switchMode = (loginMode) => {
+  isLogin.value = loginMode;
+  isForgotPassword.value = false;
+  errorMsg.value = '';
+  successMsg.value = '';
+};
+
+const openForgotPassword = () => {
+  isForgotPassword.value = true;
+  errorMsg.value = '';
+  successMsg.value = '';
+};
+
+const closeForgotPassword = () => {
+  isForgotPassword.value = false;
+  errorMsg.value = '';
+  successMsg.value = '';
+};
+
+let authSubscription = null;
+onMounted(() => {
+  const { data } = supabase.auth.onAuthStateChange((event) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      router.push('/reset-password');
+    }
+  });
+  authSubscription = data?.subscription || null;
+});
+
+onUnmounted(() => {
+  authSubscription?.unsubscribe?.();
+});
+
 // Watch for user login
 watchEffect(() => {
   if (user.value) {
+    const isRecoveryRedirect =
+      route.query?.type === 'recovery' ||
+      (import.meta.client && window.location.hash.includes('type=recovery'));
+
+    if (isRecoveryRedirect) {
+      router.push('/reset-password');
+      return;
+    }
+
     if (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com') {
       localStorage.setItem('wedding_admin', 'true');
     }
@@ -124,6 +205,21 @@ const handleSubmit = async () => {
   loading.value = true;
   
   try {
+    if (isForgotPassword.value) {
+      const { error } = await supabase.auth.resetPasswordForEmail(
+        form.value.email.trim(),
+        {
+          redirectTo: `${window.location.origin}/reset-password`,
+        }
+      );
+
+      if (error) throw error;
+
+      successMsg.value =
+        'Password reset link sent! Please check your email inbox (and spam folder) for instructions.';
+      return;
+    }
+
     if (!isLogin.value) {
       if (form.value.code !== '031327') {
         errorMsg.value = 'Invalid invitation code. Please check your invite.';
@@ -269,6 +365,59 @@ const handleSubmit = async () => {
   width: 100%;
   height: 2px;
   background-color: var(--color-primary);
+}
+
+.recovery-description {
+  color: var(--color-cream-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+.forgot-password-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -0.5rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.forgot-password-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+  opacity: 0.85;
+  transition: var(--transition);
+}
+
+.forgot-password-link:hover {
+  opacity: 1;
+}
+
+.back-to-login-row {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-md);
+}
+
+.back-to-login-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-cream-muted);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.back-to-login-link:hover {
+  color: var(--color-primary);
 }
 
 .error-msg {

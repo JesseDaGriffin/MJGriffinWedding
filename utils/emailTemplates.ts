@@ -342,3 +342,20 @@ export const getSupabaseConfirmEmailTemplate = (confirmationUrl: string = '{{ .C
   `;
   return wrapEmailHtml('Verify your email address', content, footer);
 };
+
+
+export const getSupabaseResetPasswordEmailTemplate = (confirmationUrl: string = '{{ .ConfirmationURL }}') => {
+  const content = `
+    <h2>Password Reset Request</h2>
+    <p>We received a request to reset the password for your account on our wedding website. Click the button below to choose a new password:</p>
+    <div class="btn-container">
+      <a href="${confirmationUrl}" class="btn" style="color: #080606 !important;">Reset Password</a>
+    </div>
+    <p>This link will expire shortly for your security. If you did not request a password reset, no changes have been made to your account and you can safely ignore this email.</p>
+  `;
+  const footer = `
+    <p>The Griffin Wedding — March 13, 2027</p>
+    <p>If you did not request a password reset, you can safely ignore this email.</p>
+  `;
+  return wrapEmailHtml('Reset Your Password', content, footer);
+};

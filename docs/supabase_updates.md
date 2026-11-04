@@ -249,3 +249,13 @@ FROM auth.users u
 WHERE p.id = u.id
   AND u.raw_user_meta_data ? 'receive_announcements';
 ```
+
+
+### Update: Password Recovery Flow Configuration
+**Date:** November 4, 2026
+**Purpose:** Allow guests to request a password reset link and set a new password at `/reset-password`, with a custom-styled Supabase Reset Password email.
+
+1. In Supabase Dashboard > **Authentication > URL Configuration**, add the following to **Redirect URLs**:
+   - `https://mjgriffinwedding.netlify.app/reset-password`
+   - `http://localhost:3000/reset-password`
+2. In Supabase Dashboard > **Authentication > Email Templates > Reset Password**, paste the styled HTML template from [docs/supabase_auth_emails.md](file:///c:/Users/Jesse/Code/MJGriffinWedding/docs/supabase_auth_emails.md) (or copy it from the `/emails` admin dashboard).
