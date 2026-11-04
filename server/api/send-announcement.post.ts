@@ -1,8 +1,12 @@
 import { defineEventHandler, readBody, getRequestURL } from 'h3';
-import { sendEmail, getAnnouncementEmailTemplate, getAnnouncementRecipients } from '../utils/email';
+import { sendEmail, getAnnouncementEmailTemplate, getAnnouncementRecipients, isAuthorizedAdmin } from '../utils/email';
 import { serverSupabaseServiceRole } from '#supabase/server';
 
 export default defineEventHandler(async (event) => {
+  if (!(await isAuthorizedAdmin(event))) {
+    return { success: false, error: 'Unauthorized: Admin access required.' };
+  }
+
   const body = await readBody(event);
   const { subject, message } = body;
 
@@ -19,7 +23,10 @@ export default defineEventHandler(async (event) => {
     }
 
     const requestUrl = getRequestURL(event);
-    const siteUrl = requestUrl?.origin || 'https://mjgriffinwedding.netlify.app';
+    const isLocalhost = requestUrl?.hostname === 'localhost' || requestUrl?.hostname === '127.0.0.1';
+    const siteUrl = !isLocalhost && requestUrl?.origin
+      ? requestUrl.origin
+      : 'https://mjgriffinwedding.netlify.app';
     const html = getAnnouncementEmailTemplate(message, siteUrl);
 
     // Using BCC to protect privacy and send the mass email efficiently

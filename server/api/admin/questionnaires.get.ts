@@ -1,8 +1,12 @@
 import { defineEventHandler } from 'h3';
 import { serverSupabaseServiceRole } from '#supabase/server';
+import { isAuthorizedAdmin } from '../../utils/email';
 
 export default defineEventHandler(async (event) => {
   try {
+    if (!(await isAuthorizedAdmin(event))) {
+      return { success: false, error: 'Unauthorized: Admin access required.' };
+    }
     const supabaseAdmin = await serverSupabaseServiceRole(event);
     
     // 1. Fetch all questionnaires
@@ -26,7 +30,10 @@ export default defineEventHandler(async (event) => {
     }
 
     // 3. Fetch all Users for emails
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.listUsers();
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.listUsers({
+      page: 1,
+      perPage: 1000,
+    });
     
     if (authError) {
       console.error('Error fetching users:', authError.message);

@@ -307,7 +307,7 @@ To style the **Reset Password** email sent by Supabase when a guest clicks "Forg
             <h2>Password Reset Request</h2>
             <p>We received a request to reset the password for your account on our wedding website. Click the button below to choose a new password:</p>
             <div class="btn-container">
-              <a href="{{ .ConfirmationURL }}" class="btn" style="color: #080606 !important;">Reset Password</a>
+              <a href="{{ .SiteURL }}/reset-password?token_hash={{ .TokenHash }}&type=recovery" class="btn" style="color: #080606 !important;">Reset Password</a>
             </div>
             <p>This link will expire shortly for your security. If you did not request a password reset, no changes have been made to your account and you can safely ignore this email.</p>
           </div>

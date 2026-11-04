@@ -1,4 +1,6 @@
 import nodemailer from 'nodemailer';
+import { getCookie, type H3Event } from 'h3';
+import { serverSupabaseUser } from '#supabase/server';
 
 // Nodemailer transporter setup
 // Nitro uses the environment variables directly, so we can use process.env
@@ -11,6 +13,19 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,
   },
 });
+
+export const isAuthorizedAdmin = async (event: H3Event): Promise<boolean> => {
+  if (process.dev && getCookie(event, 'sb_bypass_auth') === 'true') {
+    return true;
+  }
+
+  try {
+    const user = await serverSupabaseUser(event);
+    return user?.email?.toLowerCase() === 'dagriffinwedding@gmail.com';
+  } catch {
+    return false;
+  }
+};
 
 export const sendEmail = async (options: {
   to?: string;
@@ -42,7 +57,10 @@ export const sendEmail = async (options: {
 };
 
 export const getAnnouncementRecipients = async (supabaseAdmin: any) => {
-  const { data: authData, error: authError } = await supabaseAdmin.auth.admin.listUsers();
+  const { data: authData, error: authError } = await supabaseAdmin.auth.admin.listUsers({
+    page: 1,
+    perPage: 1000,
+  });
 
   if (authError) {
     throw new Error(authError.message);

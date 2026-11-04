@@ -16,15 +16,16 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
   }
 
+  const normalizedPath = to.path.replace(/\/$/, '') || '/';
   const publicPaths = ['/login', '/unsubscribe', '/reset-password'];
 
   // Redirect to login if trying to access a protected route
-  if (!user.value && !publicPaths.includes(to.path)) {
+  if (!user.value && !publicPaths.includes(normalizedPath)) {
     return navigateTo('/login');
   }
 
   // Redirect to home if logged in and trying to access login
-  if (user.value && to.path === '/login') {
+  if (user.value && normalizedPath === '/login') {
     return navigateTo('/');
   }
 });

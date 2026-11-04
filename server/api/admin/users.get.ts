@@ -1,9 +1,13 @@
 import { defineEventHandler } from 'h3';
 import { serverSupabaseServiceRole } from '#supabase/server';
-import { getAnnouncementRecipients } from '../../utils/email';
+import { getAnnouncementRecipients, isAuthorizedAdmin } from '../../utils/email';
 
 export default defineEventHandler(async (event) => {
   try {
+    if (!(await isAuthorizedAdmin(event))) {
+      return { success: false, error: 'Unauthorized: Admin access required.' };
+    }
+
     const supabaseAdmin = await serverSupabaseServiceRole(event);
     const { emails, optedOutCount, totalUsers } = await getAnnouncementRecipients(supabaseAdmin);
 

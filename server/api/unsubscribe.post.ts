@@ -12,7 +12,10 @@ export default defineEventHandler(async (event) => {
 
   try {
     const supabaseAdmin = await serverSupabaseServiceRole(event);
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.listUsers();
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.listUsers({
+      page: 1,
+      perPage: 1000,
+    });
 
     if (authError) {
       console.error('Error fetching users for unsubscribe:', authError.message);
@@ -46,13 +49,19 @@ export default defineEventHandler(async (event) => {
       return { success: false, error: 'Failed to update email preferences.' };
     }
 
-    // Also update profiles table if receive_announcements column exists
+    // Preserve existing first_name and last_name in profiles before upserting receive_announcements
+    const { data: existingProfile } = await supabaseAdmin
+      .from('profiles')
+      .select('first_name, last_name')
+      .eq('id', targetUser.id)
+      .maybeSingle();
+
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
       .upsert({
         id: targetUser.id,
-        first_name: targetUser.user_metadata?.first_name || '',
-        last_name: targetUser.user_metadata?.last_name || '',
+        first_name: existingProfile?.first_name || targetUser.user_metadata?.first_name || '',
+        last_name: existingProfile?.last_name || targetUser.user_metadata?.last_name || '',
         receive_announcements: subscribe,
       });
 

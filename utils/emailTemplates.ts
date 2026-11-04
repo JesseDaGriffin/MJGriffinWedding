@@ -344,7 +344,7 @@ export const getSupabaseConfirmEmailTemplate = (confirmationUrl: string = '{{ .C
 };
 
 
-export const getSupabaseResetPasswordEmailTemplate = (confirmationUrl: string = '{{ .ConfirmationURL }}') => {
+export const getSupabaseResetPasswordEmailTemplate = (confirmationUrl: string = '{{ .SiteURL }}/reset-password?token_hash={{ .TokenHash }}&type=recovery') => {
   const content = `
     <h2>Password Reset Request</h2>
     <p>We received a request to reset the password for your account on our wedding website. Click the button below to choose a new password:</p>

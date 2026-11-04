@@ -167,7 +167,8 @@ const siteRoutes = computed(() => {
     !route.path.includes('announcements') &&
     !route.path.includes('emails') &&
     !route.path.includes('questionnaires') &&
-    !route.path.includes('unsubscribe')
+    !route.path.includes('unsubscribe') &&
+    !route.path.includes('reset-password')
   ).map(route => {
     let name = String(route.name).replace(/-/g, ' ');
     // capitalize words

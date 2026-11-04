@@ -228,7 +228,7 @@ const formData = ref({
 
   // Supabase fields
   supabase_confirmationUrl: '{{ .ConfirmationURL }}',
-  supabase_resetUrl: '{{ .ConfirmationURL }}'
+  supabase_resetUrl: '{{ .SiteURL }}/reset-password?token_hash={{ .TokenHash }}&type=recovery'
 });
 
 // Definitions for each template config
