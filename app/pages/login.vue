@@ -98,7 +98,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watchEffect } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { isAdminUser } from '../../utils/admin';
 
 definePageMeta({
   layout: false // don't use default layout for login
@@ -177,9 +176,6 @@ watchEffect(() => {
       return;
     }
 
-    if (isAdminUser(user.value)) {
-      localStorage.setItem('wedding_admin', 'true');
-    }
     router.push('/');
   }
 });
@@ -187,7 +183,6 @@ watchEffect(() => {
 const handleBypass = () => {
   const bypassCookie = useCookie('sb_bypass_auth');
   bypassCookie.value = 'true';
-  localStorage.setItem('wedding_admin', 'true');
   user.value = {
     id: 'mock-test-user-id',
     email: 'dagriffinwedding@gmail.com',

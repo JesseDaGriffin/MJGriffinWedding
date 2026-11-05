@@ -181,7 +181,7 @@ onMounted(async () => {
   currentGreeting.value = greetings[Math.floor(Math.random() * greetings.length)];
   currentSignOff.value = signOffs[Math.floor(Math.random() * signOffs.length)];
 
-  if (user.value && (isAdminUser(user.value) || localStorage.getItem('wedding_admin') === 'true')) {
+  if (isAdminUser(user.value)) {
     isAdmin.value = true;
     await fetchUsers();
   }

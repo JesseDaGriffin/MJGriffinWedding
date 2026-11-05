@@ -164,10 +164,10 @@ const resolvedAdminEmail = computed(() => {
   if (newAdminEmail.value) return newAdminEmail.value;
   const q = userSearchQuery.value.trim().toLowerCase();
   if (!q) return '';
-  const exactMatch = eligibleUsers.value.find(
-    u => u.email.toLowerCase() === q || (u.name && u.name.toLowerCase() === q)
+  const exactEmailMatch = eligibleUsers.value.find(
+    u => u.email.toLowerCase() === q
   );
-  return exactMatch ? exactMatch.email : '';
+  return exactEmailMatch ? exactEmailMatch.email : '';
 });
 
 const handleSearchInput = () => {
@@ -227,7 +227,7 @@ const fetchAdmins = async () => {
 
 onMounted(async () => {
   document.addEventListener('click', handleClickOutside);
-  if (user.value && (isAdminUser(user.value) || localStorage.getItem('wedding_admin') === 'true')) {
+  if (isAdminUser(user.value)) {
     isAdmin.value = true;
     await fetchAdmins();
   }

@@ -178,11 +178,7 @@ const user = useSupabaseUser();
 const isAdmin = ref(false);
 
 onMounted(() => {
-  if (
-    user.value &&
-    (isAdminUser(user.value) ||
-      localStorage.getItem('wedding_admin') === 'true')
-  ) {
+  if (isAdminUser(user.value)) {
     isAdmin.value = true;
   }
 });

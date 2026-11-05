@@ -237,7 +237,7 @@ const nonRsvpTableItems = computed(() => {
 });
 
 onMounted(async () => {
-  if (user.value && (isAdminUser(user.value) || localStorage.getItem('wedding_admin') === 'true')) {
+  if (isAdminUser(user.value)) {
     isAdmin.value = true;
     await fetchResponses();
   } else {

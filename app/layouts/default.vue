@@ -164,8 +164,7 @@ const logout = async () => {
 watchEffect(() => {
   if (user.value) {
     isAuthenticated.value = true;
-    const isLocalAdmin = import.meta.client ? localStorage.getItem('wedding_admin') === 'true' : false;
-    isAdmin.value = isAdminUser(user.value) || isLocalAdmin;
+    isAdmin.value = isAdminUser(user.value);
   } else {
     isAuthenticated.value = false;
     isAdmin.value = false;
