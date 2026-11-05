@@ -94,7 +94,7 @@
                                         to="/responses"
                                         class="dropdown-item dropdown-item--admin"
                                         @click="isDropdownOpen = false"
-                                        >Responses</NuxtLink
+                                        >RSVPs</NuxtLink
                                     >
                                     <NuxtLink
                                         to="/questionnaires"

@@ -43,22 +43,63 @@ export default defineEventHandler(async (event) => {
     // Map profiles and emails
     const profilesMap: Record<string, string> = {};
     ((profiles as any[]) || []).forEach(p => {
-      profilesMap[p.id] = `${p.first_name || ''} ${p.last_name || ''}`.trim();
+      const fullName = `${p.first_name || ''} ${p.last_name || ''}`.trim();
+      if (fullName) {
+        profilesMap[p.id] = fullName;
+      }
     });
 
     const emailsMap: Record<string, string | undefined> = {};
     (authData?.users || []).forEach(u => {
       emailsMap[u.id] = u.email;
+      if (!profilesMap[u.id]) {
+        const metaName = `${u.user_metadata?.first_name || ''} ${u.user_metadata?.last_name || ''}`.trim();
+        if (metaName) {
+          profilesMap[u.id] = metaName;
+        }
+      }
     });
 
-    // Format responses
-    const formattedResponses = ((rsvps as any[]) || []).map(r => ({
+    // Format RSVP responses
+    const rsvpList = (rsvps as any[]) || [];
+    const rsvpUserIds = new Set(rsvpList.map(r => r.user_id));
+
+    const formattedResponses = rsvpList.map(r => ({
       ...r,
-      name: profilesMap[r.user_id] || 'Unknown',
+      name: profilesMap[r.user_id] || emailsMap[r.user_id] || 'Unknown',
       email: emailsMap[r.user_id] || 'Unknown',
     }));
 
-    return { success: true, data: formattedResponses };
+    // Build list of users who created an account but have not RSVP'd
+    const seenUserIds = new Set<string>();
+    const nonRsvpUsers: Array<{ id: string; name: string; email: string }> = [];
+
+    (authData?.users || []).forEach(u => {
+      seenUserIds.add(u.id);
+      if (!rsvpUserIds.has(u.id)) {
+        nonRsvpUsers.push({
+          id: u.id,
+          name: profilesMap[u.id] || u.email || 'Unknown',
+          email: u.email || 'Unknown',
+        });
+      }
+    });
+
+    ((profiles as any[]) || []).forEach(p => {
+      if (!seenUserIds.has(p.id) && !rsvpUserIds.has(p.id)) {
+        nonRsvpUsers.push({
+          id: p.id,
+          name: profilesMap[p.id] || emailsMap[p.id] || 'Unknown',
+          email: emailsMap[p.id] || 'Unknown',
+        });
+      }
+    });
+
+    return {
+      success: true,
+      data: formattedResponses,
+      nonRsvpUsers,
+    };
   } catch (err: any) {
     console.error('Exception in admin/responses:', err.message);
     return { success: false, error: `Internal server error: ${err.message}` };
