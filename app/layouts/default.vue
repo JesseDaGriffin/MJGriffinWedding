@@ -35,6 +35,7 @@
                 <template v-if="isAdmin">
                   <div class="dropdown-divider"></div>
                   <div class="dropdown-header">Admin Tools</div>
+                  <NuxtLink to="/admins" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Admins</NuxtLink>
                   <NuxtLink to="/responses" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">RSVPs</NuxtLink>
                   <NuxtLink to="/questionnaires" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Questionnaires</NuxtLink>
                   <NuxtLink to="/announcements" class="dropdown-item dropdown-item--admin" @click="isDropdownOpen = false">Announcements</NuxtLink>
@@ -69,6 +70,7 @@
         <template v-if="isAdmin">
           <div class="mobile-nav-divider"></div>
           <span class="mobile-nav-link mobile-nav-link--admin admin-heading">Admin Tools</span>
+          <NuxtLink to="/admins" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Admins</NuxtLink>
           <NuxtLink to="/responses" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">RSVPs</NuxtLink>
           <NuxtLink to="/questionnaires" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Questionnaires</NuxtLink>
           <NuxtLink to="/announcements" class="mobile-nav-link mobile-nav-link--admin" @click="closeMenu">Announcements</NuxtLink>
@@ -101,6 +103,8 @@
 </template>
 
 <script setup>
+import { isAdminUser } from '../../utils/admin';
+
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const route = useRoute();
@@ -161,9 +165,7 @@ watchEffect(() => {
   if (user.value) {
     isAuthenticated.value = true;
     const isLocalAdmin = import.meta.client ? localStorage.getItem('wedding_admin') === 'true' : false;
-    if (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' || isLocalAdmin) {
-      isAdmin.value = true;
-    }
+    isAdmin.value = isAdminUser(user.value) || isLocalAdmin;
   } else {
     isAuthenticated.value = false;
     isAdmin.value = false;

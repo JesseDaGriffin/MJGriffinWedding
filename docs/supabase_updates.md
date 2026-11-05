@@ -259,3 +259,10 @@ WHERE p.id = u.id
    - `https://mjgriffinwedding.netlify.app/reset-password`
    - `http://localhost:3000/reset-password`
 2. In Supabase Dashboard > **Authentication > Email Templates > Reset Password**, paste the styled HTML template from [docs/supabase_auth_emails.md](file:///c:/Users/Jesse/Code/MJGriffinWedding/docs/supabase_auth_emails.md) (or copy it from the `/emails` admin dashboard).
+
+
+### Update: Data Cleanup & Admin Role Expansion
+**Date:** November 5, 2026
+**Purpose:** Store admin status in `auth.users.raw_app_meta_data` (`{"is_admin": true}`), update `public.is_admin()` to read `app_metadata.is_admin` from the JWT, add reusable `public.set_user_admin(target_email, admin_status)` SQL function, promote `madelinejean2@gmail.com` and `dagriffinwedding@gmail.com` to admin while removing any RSVP records for them, and delete duplicate user `bd1b04cb-ffda-412b-ab15-b692b040460d` and all associated records.
+
+Run the script at [data_cleanup.sql](file:///c:/Users/Jesse/Code/MJGriffinWedding/data_cleanup.sql) in the Supabase SQL Editor.

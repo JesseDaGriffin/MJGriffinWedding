@@ -91,6 +91,12 @@
                                         Admin Tools
                                     </div>
                                     <NuxtLink
+                                        to="/admins"
+                                        class="dropdown-item dropdown-item--admin"
+                                        @click="isDropdownOpen = false"
+                                        >Admins</NuxtLink
+                                    >
+                                    <NuxtLink
                                         to="/responses"
                                         class="dropdown-item dropdown-item--admin"
                                         @click="isDropdownOpen = false"
@@ -107,6 +113,12 @@
                                         class="dropdown-item dropdown-item--admin"
                                         @click="isDropdownOpen = false"
                                         >Announcements</NuxtLink
+                                    >
+                                    <NuxtLink
+                                        to="/emails"
+                                        class="dropdown-item dropdown-item--admin"
+                                        @click="isDropdownOpen = false"
+                                        >Emails</NuxtLink
                                     >
                                 </template>
                                 <div class="dropdown-divider"></div>
@@ -138,6 +150,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watchEffect } from "vue";
+import { isAdminUser } from "../../utils/admin";
 
 useHead({
     htmlAttrs: {
@@ -197,14 +210,7 @@ watchEffect(() => {
         const isLocalAdmin = import.meta.client
             ? localStorage.getItem("wedding_admin") === "true"
             : false;
-        if (
-            user.value.email?.toLowerCase() === "dagriffinwedding@gmail.com" ||
-            isLocalAdmin
-        ) {
-            isAdmin.value = true;
-        } else {
-            isAdmin.value = false;
-        }
+        isAdmin.value = isAdminUser(user.value) || isLocalAdmin;
     } else {
         isAuthenticated.value = false;
         isAdmin.value = false;

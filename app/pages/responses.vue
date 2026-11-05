@@ -175,6 +175,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { isAdminUser } from '../../utils/admin';
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -236,7 +237,7 @@ const nonRsvpTableItems = computed(() => {
 });
 
 onMounted(async () => {
-  if (user.value && (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' || localStorage.getItem('wedding_admin') === 'true')) {
+  if (user.value && (isAdminUser(user.value) || localStorage.getItem('wedding_admin') === 'true')) {
     isAdmin.value = true;
     await fetchResponses();
   } else {
@@ -262,7 +263,7 @@ const fetchResponses = async () => {
     let dinnerKids = 0;
     let afterpartyAdults = 0;
 
-    const formattedResponses = res.data.map(r => {
+    const formattedResponses = (res.data || []).map(r => {
       const partyAdults = r.attending
         ? Math.max(
             r.adults_count || 0,

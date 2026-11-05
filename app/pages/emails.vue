@@ -163,6 +163,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
+import { isAdminUser } from '../../utils/admin';
 import {
   getWelcomeEmailTemplate,
   getAnnouncementEmailTemplate,
@@ -179,7 +180,7 @@ const isAdmin = ref(false);
 onMounted(() => {
   if (
     user.value &&
-    (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' ||
+    (isAdminUser(user.value) ||
       localStorage.getItem('wedding_admin') === 'true')
   ) {
     isAdmin.value = true;

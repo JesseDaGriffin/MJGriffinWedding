@@ -8,6 +8,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
         id: 'mock-test-user-id',
         email: 'dagriffinwedding@gmail.com', // Admin by default
         role: 'authenticated',
+        app_metadata: {
+          is_admin: true
+        },
         user_metadata: {
           first_name: 'Test',
           last_name: 'User'

@@ -145,6 +145,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import { isAdminUser } from '../../utils/admin';
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -180,7 +181,7 @@ onMounted(async () => {
   currentGreeting.value = greetings[Math.floor(Math.random() * greetings.length)];
   currentSignOff.value = signOffs[Math.floor(Math.random() * signOffs.length)];
 
-  if (user.value && (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' || localStorage.getItem('wedding_admin') === 'true')) {
+  if (user.value && (isAdminUser(user.value) || localStorage.getItem('wedding_admin') === 'true')) {
     isAdmin.value = true;
     await fetchUsers();
   }

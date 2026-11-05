@@ -79,6 +79,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { isAdminUser } from '../../utils/admin';
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -111,7 +112,7 @@ const mapActivities = (activitiesArray) => {
 };
 
 onMounted(async () => {
-  if (user.value && (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com' || localStorage.getItem('wedding_admin') === 'true')) {
+  if (user.value && (isAdminUser(user.value) || localStorage.getItem('wedding_admin') === 'true')) {
     isAdmin.value = true;
     await fetchQuestionnaires();
   } else {

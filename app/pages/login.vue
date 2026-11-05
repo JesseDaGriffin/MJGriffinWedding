@@ -98,6 +98,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watchEffect } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { isAdminUser } from '../../utils/admin';
 
 definePageMeta({
   layout: false // don't use default layout for login
@@ -176,7 +177,7 @@ watchEffect(() => {
       return;
     }
 
-    if (user.value.email?.toLowerCase() === 'dagriffinwedding@gmail.com') {
+    if (isAdminUser(user.value)) {
       localStorage.setItem('wedding_admin', 'true');
     }
     router.push('/');
@@ -191,6 +192,9 @@ const handleBypass = () => {
     id: 'mock-test-user-id',
     email: 'dagriffinwedding@gmail.com',
     role: 'authenticated',
+    app_metadata: {
+      is_admin: true
+    },
     user_metadata: {
       first_name: 'Test',
       last_name: 'User'

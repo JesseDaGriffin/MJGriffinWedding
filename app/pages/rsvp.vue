@@ -172,6 +172,7 @@
 
 <script setup>
 import { ref, watchEffect } from "vue";
+import { isAdminUser } from "../../utils/admin";
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -189,7 +190,7 @@ const form = ref({
 
 watchEffect(async () => {
     const userId = user.value?.id || user.value?.sub;
-    if (user.value && userId) {
+    if (user.value && userId && !isAdminUser(user.value)) {
         const { data } = await supabase
             .from("rsvps")
             .select("*")
@@ -224,7 +225,7 @@ watchEffect(async () => {
 
 const submitRsvp = async () => {
     const userId = user.value?.id || user.value?.sub;
-    if (!userId) return;
+    if (!userId || isAdminUser(user.value)) return;
 
     loading.value = true;
     try {
