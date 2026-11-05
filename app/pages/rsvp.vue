@@ -15,7 +15,10 @@
 
             <GlassCard v-if="submitted" class="text-center success-message">
                 <h2 class="mb-sm">Thank You!</h2>
-                <p>Your RSVP has been received. We can't wait to see you!</p>
+                <p v-if="form.attending">Your RSVP has been received. We can't wait to see you!</p>
+                <p v-else>
+                    Your RSVP has been received. We're sorry you won't be able to make it, and you will no longer receive wedding announcement emails.
+                </p>
                 <AppButton
                     @click="submitted = false"
                     class="mt-md"
@@ -48,6 +51,10 @@
                                 Regretfully Decline
                             </label>
                         </div>
+                        <p v-if="form.attending === false" class="decline-email-notice mt-sm">
+                            We appreciate the consideration and we still love you!<br /><br />
+                            By selecting Regretfully Decline, you will no longer receive future wedding announcement emails.
+                        </p>
                     </div>
 
                     <div v-if="form.attending" class="attending-details">
@@ -375,6 +382,15 @@ const submitRsvp = async () => {
     gap: 0.5rem;
     cursor: pointer;
     white-space: nowrap;
+}
+
+.decline-email-notice {
+    font-size: 0.9rem;
+    color: var(--color-cream-muted);
+    background-color: rgba(197, 168, 128, 0.08);
+    border-left: 3px solid var(--color-primary);
+    padding: 0.65rem 0.9rem;
+    border-radius: var(--border-radius);
 }
 
 @media (max-width: 600px) {

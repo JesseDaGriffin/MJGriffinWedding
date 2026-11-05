@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody(event);
-  const { subject, message } = body;
+  const { subject, message, target = 'all' } = body;
 
   if (!subject || !message) {
     return { success: false, error: 'Subject and message are required' };
@@ -16,10 +16,17 @@ export default defineEventHandler(async (event) => {
 
   try {
     const supabaseAdmin = await serverSupabaseServiceRole(event);
-    const { emails } = await getAnnouncementRecipients(supabaseAdmin);
+    const { emails, attendingEmails, notRsvpdEmails } = await getAnnouncementRecipients(supabaseAdmin);
 
-    if (emails.length === 0) {
-      return { success: false, error: 'No subscribed users found to send email to.' };
+    let recipientList = emails;
+    if (target === 'attending') {
+      recipientList = attendingEmails;
+    } else if (target === 'not_rsvpd') {
+      recipientList = notRsvpdEmails;
+    }
+
+    if (recipientList.length === 0) {
+      return { success: false, error: 'No matching subscribed users found to send email to.' };
     }
 
     const requestUrl = getRequestURL(event);
@@ -31,13 +38,17 @@ export default defineEventHandler(async (event) => {
 
     // Using BCC to protect privacy and send the mass email efficiently
     const result = await sendEmail({
-      bcc: emails,
+      bcc: recipientList,
       subject,
       html,
     });
 
     if (result) {
-      return { success: true, message: 'Announcement sent successfully' };
+      return {
+        success: true,
+        message: 'Announcement sent successfully',
+        recipientCount: recipientList.length,
+      };
     } else {
       return { success: false, error: 'Failed to send announcement' };
     }

@@ -10,9 +10,9 @@
       <!-- Compose Announcement -->
       <GlassCard class="compose-card full-width">
         <h2 class="mb-sm text-primary">Compose Announcement</h2>
-        <p class="mb-md">This email will be sent via BCC to all subscribed users in the database.</p>
+        <p class="mb-md">This email will be sent via BCC to subscribed users who have not declined their RSVP, or to a specific group below.</p>
         
-        <form @submit.prevent="sendAnnouncement" class="form">
+        <form ref="formRef" @submit.prevent="sendAnnouncement('all')" class="form">
           <FormGroup 
             v-model="form.subject" 
             label="Subject" 
@@ -54,32 +54,87 @@
           <AlertMessage v-if="successMsg" type="success" :message="successMsg" />
           <AlertMessage v-if="errorMsg" type="error" :message="errorMsg" />
 
-          <AppButton 
-            type="submit" 
-            class="mt-sm mb-md" 
-            :loading="sending" 
-            :disabled="recipientEmails.length === 0 || loadingUsers"
-            text="Send Announcement to Subscribed Users" 
-            loading-text="Sending..." 
-          />
+          <div class="send-actions mt-sm mb-md">
+            <AppButton 
+              type="submit" 
+              block
+              :loading="sendingTarget === 'all'" 
+              :disabled="sending || recipientEmails.length === 0 || loadingUsers"
+              :text="`Send to All Subscribed (${recipientEmails.length})`" 
+              loading-text="Sending..." 
+            />
+
+            <div class="sub-send-buttons">
+              <AppButton 
+                type="button" 
+                variant="secondary"
+                class="sub-send-btn"
+                :loading="sendingTarget === 'attending'" 
+                :disabled="sending || attendingEmails.length === 0 || loadingUsers"
+                :text="`Send Only to Attending (${attendingEmails.length})`" 
+                loading-text="Sending..." 
+                @click="handleSubSend('attending')"
+              />
+              <AppButton 
+                type="button" 
+                variant="secondary"
+                class="sub-send-btn"
+                :loading="sendingTarget === 'not_rsvpd'" 
+                :disabled="sending || notRsvpdEmails.length === 0 || loadingUsers"
+                :text="`Send Only to Not RSVP'd (${notRsvpdEmails.length})`" 
+                loading-text="Sending..." 
+                @click="handleSubSend('not_rsvpd')"
+              />
+            </div>
+          </div>
 
           <div class="recipients-section">
             <div class="toggle-recipients" @click="showRecipients = !showRecipients">
               <span>
-                {{ recipientEmails.length }} Subscribed Recipients
-                <span v-if="optedOutCount > 0" class="opted-out-note">
-                  ({{ optedOutCount }} opted out)
+                {{ recipientEmails.length }} Eligible Subscribed Recipients
+                <span v-if="optedOutCount > 0 || declinedCount > 0" class="opted-out-note">
+                  ({{ [
+                    optedOutCount > 0 ? `${optedOutCount} opted out` : '',
+                    declinedCount > 0 ? `${declinedCount} declined` : ''
+                  ].filter(Boolean).join(', ') }})
                 </span>
               </span>
               <span class="toggle-icon">{{ showRecipients ? '▲' : '▼' }}</span>
             </div>
             
             <div v-if="showRecipients" class="recipients-list">
+              <div class="recipient-filter-tabs mb-sm">
+                <button
+                  type="button"
+                  class="recipient-tab-btn"
+                  :class="{ active: recipientViewFilter === 'all' }"
+                  @click="recipientViewFilter = 'all'"
+                >
+                  All Subscribed ({{ recipientEmails.length }})
+                </button>
+                <button
+                  type="button"
+                  class="recipient-tab-btn"
+                  :class="{ active: recipientViewFilter === 'attending' }"
+                  @click="recipientViewFilter = 'attending'"
+                >
+                  Attending ({{ attendingEmails.length }})
+                </button>
+                <button
+                  type="button"
+                  class="recipient-tab-btn"
+                  :class="{ active: recipientViewFilter === 'not_rsvpd' }"
+                  @click="recipientViewFilter = 'not_rsvpd'"
+                >
+                  Not RSVP'd ({{ notRsvpdEmails.length }})
+                </button>
+              </div>
+
               <div v-if="loadingUsers" class="loading-text">Loading users...</div>
-              <ul v-else-if="recipientEmails.length > 0">
-                <li v-for="email in recipientEmails" :key="email">{{ email }}</li>
+              <ul v-else-if="displayedRecipientEmails.length > 0">
+                <li v-for="email in displayedRecipientEmails" :key="email">{{ email }}</li>
               </ul>
-              <div v-else class="empty-text">No subscribed users found.</div>
+              <div v-else class="empty-text">No matching subscribed users found.</div>
             </div>
           </div>
         </form>
@@ -97,12 +152,24 @@ const router = useRouter();
 const isAdmin = ref(false);
 
 const loadingUsers = ref(true);
-const sending = ref(false);
+const sendingTarget = ref(null);
+const sending = computed(() => sendingTarget.value !== null);
+const formRef = ref(null);
 const errorMsg = ref('');
 const successMsg = ref('');
 const recipientEmails = ref([]);
+const attendingEmails = ref([]);
+const notRsvpdEmails = ref([]);
 const optedOutCount = ref(0);
+const declinedCount = ref(0);
 const showRecipients = ref(false);
+const recipientViewFilter = ref('all');
+
+const displayedRecipientEmails = computed(() => {
+  if (recipientViewFilter.value === 'attending') return attendingEmails.value;
+  if (recipientViewFilter.value === 'not_rsvpd') return notRsvpdEmails.value;
+  return recipientEmails.value;
+});
 
 const form = ref({
   subject: '',
@@ -123,8 +190,11 @@ const fetchUsers = async () => {
   try {
     const response = await $fetch('/api/admin/users');
     if (response.success) {
-      recipientEmails.value = response.emails;
+      recipientEmails.value = response.emails || [];
+      attendingEmails.value = response.attendingEmails || [];
+      notRsvpdEmails.value = response.notRsvpdEmails || [];
       optedOutCount.value = response.optedOutCount || 0;
+      declinedCount.value = response.declinedCount || 0;
     } else {
       console.error('Failed to load users:', response.error);
     }
@@ -199,22 +269,37 @@ const previewMessage = computed(() => {
   return `${currentGreeting.value}<br><br>${messageHtml}<br><br>${currentSignOff.value}`.replace(/\n/g, '<br>');
 });
 
-const sendAnnouncement = async () => {
+const handleSubSend = (target) => {
+  if (formRef.value && !formRef.value.reportValidity()) {
+    return;
+  }
+  sendAnnouncement(target);
+};
+
+const sendAnnouncement = async (target = 'all') => {
   errorMsg.value = '';
   successMsg.value = '';
-  sending.value = true;
+  sendingTarget.value = target;
+
+  const targetLabels = {
+    all: 'all subscribed users',
+    attending: 'attending guests',
+    not_rsvpd: "users who haven't RSVP'd",
+  };
 
   try {
     const response = await $fetch('/api/send-announcement', {
       method: 'POST',
       body: {
         subject: form.value.subject,
-        message: previewMessage.value
+        message: previewMessage.value,
+        target,
       }
     });
 
     if (response.success) {
-      successMsg.value = 'Announcement sent successfully!';
+      const label = targetLabels[target] || 'recipients';
+      successMsg.value = `Announcement sent successfully to ${label}!`;
       form.value.subject = '';
       form.value.message = '';
       currentGreeting.value = greetings[Math.floor(Math.random() * greetings.length)];
@@ -225,7 +310,7 @@ const sendAnnouncement = async () => {
   } catch (error) {
     errorMsg.value = error.message || 'Failed to send announcement.';
   } finally {
-    sending.value = false;
+    sendingTarget.value = null;
   }
 };
 </script>
@@ -252,6 +337,59 @@ const sendAnnouncement = async () => {
 .textarea {
   resize: vertical;
   font-family: inherit;
+}
+
+.send-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sub-send-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.sub-send-btn {
+  width: 100%;
+  font-size: 0.8rem;
+  padding: 0.7rem 1rem;
+}
+
+@media (max-width: 640px) {
+  .sub-send-buttons {
+    grid-template-columns: 1fr;
+  }
+}
+
+.recipient-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.recipient-tab-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-cream-muted);
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.recipient-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--color-cream);
+}
+
+.recipient-tab-btn.active {
+  background: rgba(197, 168, 128, 0.2);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 .recipients-section {

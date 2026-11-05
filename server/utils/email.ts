@@ -78,8 +78,23 @@ export const getAnnouncementRecipients = async (supabaseAdmin: any) => {
     }
   }
 
+  // Fetch RSVPs to check attending status
+  const rsvpMap = new Map<string, any>();
+  const { data: rsvpsData, error: rsvpsError } = await supabaseAdmin
+    .from('rsvps')
+    .select('user_id, attending');
+
+  if (!rsvpsError && Array.isArray(rsvpsData)) {
+    for (const r of rsvpsData) {
+      rsvpMap.set(r.user_id, r);
+    }
+  }
+
   const emails: string[] = [];
+  const attendingEmails: string[] = [];
+  const notRsvpdEmails: string[] = [];
   let optedOutCount = 0;
+  let declinedCount = 0;
 
   for (const user of authData.users) {
     if (!user.email) continue;
@@ -92,14 +107,33 @@ export const getAnnouncementRecipients = async (supabaseAdmin: any) => {
 
     if (isOptedOut) {
       optedOutCount++;
+      continue;
+    }
+
+    const rsvp = rsvpMap.get(user.id);
+    const hasRsvpd = rsvp !== undefined && rsvp.attending !== null && rsvp.attending !== undefined;
+
+    if (hasRsvpd && rsvp.attending === false) {
+      declinedCount++;
+      continue;
+    }
+
+    // User is subscribed and has not declined
+    emails.push(user.email);
+
+    if (hasRsvpd && rsvp.attending === true) {
+      attendingEmails.push(user.email);
     } else {
-      emails.push(user.email);
+      notRsvpdEmails.push(user.email);
     }
   }
 
   return {
     emails,
+    attendingEmails,
+    notRsvpdEmails,
     optedOutCount,
+    declinedCount,
     totalUsers: authData.users.filter((u: any) => u.email).length,
   };
 };

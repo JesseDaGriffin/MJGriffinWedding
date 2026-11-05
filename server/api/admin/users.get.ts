@@ -9,9 +9,24 @@ export default defineEventHandler(async (event) => {
     }
 
     const supabaseAdmin = await serverSupabaseServiceRole(event);
-    const { emails, optedOutCount, totalUsers } = await getAnnouncementRecipients(supabaseAdmin);
+    const {
+      emails,
+      attendingEmails,
+      notRsvpdEmails,
+      optedOutCount,
+      declinedCount,
+      totalUsers,
+    } = await getAnnouncementRecipients(supabaseAdmin);
 
-    return { success: true, emails, optedOutCount, totalUsers };
+    return {
+      success: true,
+      emails,
+      attendingEmails,
+      notRsvpdEmails,
+      optedOutCount,
+      declinedCount,
+      totalUsers,
+    };
   } catch (err: any) {
     console.error('Exception in get-users:', err.message);
     return { success: false, error: `Failed to retrieve user list: ${err.message}` };
